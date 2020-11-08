@@ -1,0 +1,3 @@
+﻿remove-migration
+add-migration initial
+update-database
