@@ -5,6 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201109153634_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109153634_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109154921_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109154921_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109155630_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109155630_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109155919_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109155919_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109160006_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109160006_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109160653_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109160653_AddedSeedDataWChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201109160914_AddedSeedDataWChanges.cs" />
+    <Compile Remove="Migrations\20201109160914_AddedSeedDataWChanges.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>

@@ -1,6 +1,8 @@
 ﻿using OplevOgDel.Api.Data.Base;
 using OplevOgDel.Api.Data.Models.Enums;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,14 +19,20 @@ namespace OplevOgDel.Api.Data.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
 
-        [Column(TypeName = "date")]
+        //[Column(TypeName = "Date")]
         public DateTime Birthday { get; set; }
         public int Age { get; set; }
         [Required]
         [StringLength(maximumLength: 250, MinimumLength = 5, ErrorMessage = "City Must be Less than 250 characters and more than 5 characters")]
         public string City { get; set; }
-        [Required]
-        [StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Address Must be Less than 500 characters and more than 5 characters")]
-        public string Address { get; set; }
+        //[Required]
+        //[StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Address Must be Less than 500 characters and more than 5 characters")]
+        //public string Address { get; set; }
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+        public ICollection<ListOfExps> ListOfExps { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Report> Reports { get; set; }
     }
 }
