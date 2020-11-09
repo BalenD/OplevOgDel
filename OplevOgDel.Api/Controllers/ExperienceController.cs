@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OplevOgDel.Api.Data.Models;
-using OplevOgDel.Api.services;
+using OplevOgDel.Api.Services;
 
 namespace OplevOgDel.Api.Controllers
 {

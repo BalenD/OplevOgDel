@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace OplevOgDel.Api.services.RepositoryBase
+namespace OplevOgDel.Api.Services.RepositoryBase
 {
     public interface IRepositoryBase<T> where T : class
     {

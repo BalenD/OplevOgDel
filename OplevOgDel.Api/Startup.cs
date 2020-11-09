@@ -13,8 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OplevOgDel.Api.Data;
-using OplevOgDel.Api.services;
-using OplevOgDel.Api.services.RepositoryBase;
+using OplevOgDel.Api.Services;
+using OplevOgDel.Api.Services.RepositoryBase;
 
 namespace OplevOgDel.Api
 {
