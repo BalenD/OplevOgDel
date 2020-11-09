@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace OplevOgDel.Api.services.RepositoryBase
+namespace OplevOgDel.Api.Services.RepositoryBase
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
