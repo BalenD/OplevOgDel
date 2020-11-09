@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    [Table("Users")]
+    [Table("AdminUsers")]
     public class User : BaseModel
     {
         public string Username { get; set; }
