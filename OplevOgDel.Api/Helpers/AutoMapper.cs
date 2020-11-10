@@ -9,7 +9,8 @@ namespace OplevOgDel.Api.Helpers
         public AutoMapper()
         {
             CreateMap<Experience, ViewExperienceDto>();
-            CreateMap<EditExperienceDto, Experience>().ForMember(x => x.Category, opt => opt.Ignore());
+            CreateMap<Experience, ViewOneExperienceDto>();
+            CreateMap<EditExperienceDto, Experience>().ForMember(x => x.Category, opt => opt.Ignore()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<NewExperienceDto, Experience>().ForMember(x => x.Category, opt => opt.Ignore());
         }
     }

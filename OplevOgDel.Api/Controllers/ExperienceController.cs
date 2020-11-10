@@ -42,14 +42,14 @@ namespace OplevOgDel.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetOne([FromRoute] Guid id)
         {
-            var foundExp = await _context.GetFirstByExpressionAsync(x => x.Id == id);
+            var foundExp = await _context.GetAnExperience(id);
             
             if (foundExp == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<ViewOneExperience>(foundExp));
+            return Ok(_mapper.Map<ViewOneExperienceDto>(foundExp));
         }
 
         [HttpPost]
@@ -61,10 +61,11 @@ namespace OplevOgDel.Api.Controllers
             var exprToAdd = _mapper.Map<Experience>(expr);
             exprToAdd.Id = Guid.NewGuid();
 
-            var category = await _context.GetCategoryByName(expr.Name);
-            exprToAdd.Category.Id = category.Id;
-
-            // TODO: add owner profile here
+            var category = await _context.GetCategoryByName(expr.Category);
+            
+            exprToAdd.Category = category;
+            
+            // TODO: add creator to experience or it will crash
 
             _context.Create(exprToAdd);
 
@@ -90,25 +91,27 @@ namespace OplevOgDel.Api.Controllers
                 return NotFound();
             }
 
-            var updatedExpr = _mapper.Map(expr, exprFromDb);
-            if (expr.Category != null || expr.Category != string.Empty)
+            _mapper.Map(expr, exprFromDb);
+            exprFromDb.ModifiedOn = DateTime.UtcNow;
+            
+                if (expr.Category != null && expr.Category != string.Empty)
             {
                 var categoryUpdated = await _context.GetCategoryByName(expr.Category);
                 if (categoryUpdated == null)
                 {
                     return BadRequest();
                 }
-                updatedExpr.ExpCategoryId = categoryUpdated.Id;
+                exprFromDb.ExpCategoryId = categoryUpdated.Id;
             }
 
-            _context.Update(updatedExpr);
+            _context.Update(exprFromDb);
 
             if (!await _context.Saveasync())
             {
                 _logger.LogError("Failed to update experience");
                 return StatusCode(500);
             }
-            return Ok(updatedExpr);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
