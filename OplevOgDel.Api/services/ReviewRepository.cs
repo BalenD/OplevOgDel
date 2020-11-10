@@ -1,8 +1,8 @@
 ﻿using OplevOgDel.Api.Data;
 using OplevOgDel.Api.Data.Models;
-using OplevOgDel.Api.services.RepositoryBase;
+using OplevOgDel.Api.Services.RepositoryBase;
 
-namespace OplevOgDel.Api.services
+namespace OplevOgDel.Api.Services
 {
     public class ReviewRepository : RepositoryBase<Review>, IReviewRepository
     {

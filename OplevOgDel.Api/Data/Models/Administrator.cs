@@ -1,15 +1,15 @@
 ﻿using OplevOgDel.Api.Data.Base;
-using OplevOgDel.Api.Data.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    [Table("AdminUsers")]
-    public class User : BaseModel
+    public class Administrator : BaseModel
     {
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        //public UserRole Role { get; set; }
     }
 }
