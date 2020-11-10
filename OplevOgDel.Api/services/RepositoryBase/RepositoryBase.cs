@@ -10,14 +10,14 @@ namespace OplevOgDel.Api.Services.RepositoryBase
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private readonly OplevOgDelDbContext _context;
+        protected readonly OplevOgDelDbContext _context;
 
 
         public RepositoryBase(OplevOgDelDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }

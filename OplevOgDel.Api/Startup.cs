@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace OplevOgDel.Api
         {
             var connectionString = Configuration.GetConnectionString("OplevOgDelDb");
             services.AddDbContext<OplevOgDelDbContext>(x => x.UseSqlServer(connectionString));
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers();
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
