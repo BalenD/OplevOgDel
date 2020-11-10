@@ -1,5 +1,4 @@
 ﻿using OplevOgDel.Api.Data.Base;
-using OplevOgDel.Api.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

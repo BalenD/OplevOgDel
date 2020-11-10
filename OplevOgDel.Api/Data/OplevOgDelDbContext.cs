@@ -13,6 +13,7 @@ namespace OplevOgDel.Api.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ListOfExps> ListOfExperiences { get; set; }
+        public DbSet<ExpCategory> Categories { get; set; }
 
         public OplevOgDelDbContext(DbContextOptions<OplevOgDelDbContext> options) : base(options)
         {
