@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Models;
 using OplevOgDel.Api.Services;
+using KissLog;
 
 namespace OplevOgDel.Api.Controllers
 {
@@ -15,11 +15,11 @@ namespace OplevOgDel.Api.Controllers
     [ApiController]
     public class ExperienceController : ControllerBase
     {
-        private readonly ILogger<ExperienceController> _logger;
+        private readonly ILogger _logger;
         private readonly IExperienceRepository _context;
         private readonly IMapper _mapper;
 
-        public ExperienceController(ILogger<ExperienceController> logger, IExperienceRepository context, IMapper mapper)
+        public ExperienceController(ILogger logger, IExperienceRepository context, IMapper mapper)
         {
             _logger = logger;
             _context = context;
@@ -30,6 +30,8 @@ namespace OplevOgDel.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
+            _logger.Info("testing this");
+            
             // get all experiences from the database
             var allExperiences = await _context.GetAllAsync();
             // map it to the DTO and return
@@ -53,6 +55,7 @@ namespace OplevOgDel.Api.Controllers
         }
 
         [HttpPost]
+        [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateOne([FromBody] NewExperienceDto expr)
@@ -71,7 +74,7 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-                _logger.LogError("Failed to create experience");
+                _logger.Error("Failed to create experience");
                 return StatusCode(500);
             }
             return CreatedAtAction(nameof(GetOne), new { id =  exprToAdd.Id }, expr);
@@ -108,7 +111,7 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-                _logger.LogError("Failed to update experience");
+               _logger.Error("Failed to update experience");
                 return StatusCode(500);
             }
             return NoContent();
@@ -131,7 +134,7 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-                _logger.LogError("Failed to delete experience");
+                //_logger.LogError("Failed to delete experience");
                 return StatusCode(500);
             }
             return Ok(exprToDelete);
