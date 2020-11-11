@@ -1,0 +1,19 @@
+﻿@model OplevOgDel.Web.Models.ViewModel.ExperienceViewModel
+@{
+    ViewData["Title"] = "Experience";
+}
+
+<h1>Experiences</h1>
+
+@if (Model.Experience != null)
+{
+    <div class="text-center">
+        <h4>@Model.Experience.Name</h4>
+        <p>@Model.Experience.Description</p>
+        <p>@Model.Experience.Category.Name</p>
+    </div>
+}
+else
+{
+    <p>Oplevelse eksiterer ikke</p>
+}
