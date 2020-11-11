@@ -1,21 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using OplevOgDel.Api.Data;
 using OplevOgDel.Api.Services;
 using OplevOgDel.Api.Services.RepositoryBase;
+using KissLog;
+using KissLog.AspNetCore;
+using KissLog.CloudListeners.Auth;
+using KissLog.CloudListeners.RequestLogsListener;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.Diagnostics;
 
 namespace OplevOgDel.Api
 {
@@ -36,6 +36,12 @@ namespace OplevOgDel.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped((context) =>
+            {
+                return Logger.Factory.Get();
+            });
+
             services.AddControllers();
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
@@ -50,6 +56,11 @@ namespace OplevOgDel.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/error-local-development");
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseHttpsRedirection();
@@ -58,10 +69,53 @@ namespace OplevOgDel.Api
 
             app.UseAuthorization();
 
+            app.UseKissLogMiddleware(options => {
+                ConfigureKissLog(options);
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void ConfigureKissLog(IOptionsBuilder options)
+        {
+            // optional KissLog configuration
+            options.Options
+                .AppendExceptionDetails((Exception ex) =>
+                {
+                    StringBuilder sb = new StringBuilder();
+ 
+                    if (ex is NullReferenceException nullRefException)
+                    {
+                        sb.AppendLine("Important: check for null references");
+                    }
+ 
+                    return sb.ToString();
+                });
+ 
+            // KissLog internal logs
+            options.InternalLog = (message) =>
+            {
+                Debug.WriteLine(message);
+            };
+ 
+            // register logs output
+            RegisterKissLogListeners(options);
+        }
+ 
+        private void RegisterKissLogListeners(IOptionsBuilder options)
+        {
+            var organizationId = Configuration["KissLog.OrganizationId"];
+            var applicationId = Configuration["KissLog.ApplicationId"];
+            var apiUrl = Configuration["KissLog.ApiUrl"];
+
+            // register KissLog.net cloud listener
+            options.Listeners.Add(new RequestLogsApiListener(new Application(organizationId, applicationId))
+            {
+                ApiUrl = apiUrl
+            });;
         }
     }
 }
