@@ -1,4 +1,5 @@
-﻿@{
+﻿@model OplevOgDel.Web.Models.ViewModel.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +7,32 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@if (Model.Categories.Count != 0)
+{
+    @foreach (var category in Model.Categories)
+    {
+        <p>@category.Name</p>
+
+    }
+}
+else
+{
+    <p>Ingen kategorier fundet</p>
+}
+
+
+@if (Model.Experiences.Count != 0)
+{
+    @foreach (var experience in Model.Experiences)
+    {
+        <div class="text-center">
+            <h4>@experience.Name</h4>
+            <p>@experience.Description</p>
+        </div>
+    }
+}
+else
+{
+    <p>Ingen oplevelser fundet</p>
+}

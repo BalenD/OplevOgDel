@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OplevOgDel.Api.Data;
 
 namespace OplevOgDel.Api.Migrations
 {
     [DbContext(typeof(OplevOgDelDbContext))]
-    partial class OplevOgDelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201110132347_added_categories")]
+    partial class added_categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
