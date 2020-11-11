@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Models;
 using OplevOgDel.Api.Services;
 using KissLog;
+using OplevOgDel.Api.Helpers;
 
 namespace OplevOgDel.Api.Controllers
 {
     [Route("api/experiences")]
+    [ApiConventionType(typeof(OplevOgDelConvention))]
     [ApiController]
     public class ExperienceController : ControllerBase
     {
@@ -27,11 +28,8 @@ namespace OplevOgDel.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllExperiences()
         {
-            _logger.Info("testing this");
-            
             // get all experiences from the database
             var allExperiences = await _context.GetAllAsync();
             // map it to the DTO and return
@@ -40,9 +38,7 @@ namespace OplevOgDel.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetOne([FromRoute] Guid id)
+        public async Task<IActionResult> GetOneExperience([FromRoute] Guid id)
         {
             var foundExp = await _context.GetAnExperience(id);
             
@@ -55,16 +51,13 @@ namespace OplevOgDel.Api.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateOne([FromBody] NewExperienceDto expr)
+        public async Task<IActionResult> CreateOneExperience([FromBody] NewExperienceDto createdExpr)
         {
 
-            var exprToAdd = _mapper.Map<Experience>(expr);
+            var exprToAdd = _mapper.Map<Experience>(createdExpr);
             exprToAdd.Id = Guid.NewGuid();
 
-            var category = await _context.GetCategoryByName(expr.Category);
+            var category = await _context.GetCategoryByName(createdExpr.Category);
             
             exprToAdd.Category = category;
             
@@ -75,17 +68,13 @@ namespace OplevOgDel.Api.Controllers
             if (!await _context.Saveasync())
             {
                 _logger.Error("Failed to create experience");
-                return StatusCode(500);
+                return Problem();
             }
-            return CreatedAtAction(nameof(GetOne), new { id =  exprToAdd.Id }, expr);
+            return CreatedAtAction(nameof(GetOneExperience), new { id =  exprToAdd.Id }, createdExpr);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateOne([FromRoute] Guid id, [FromBody] EditExperienceDto expr)
+        public async Task<IActionResult> UpdateOneExperience([FromRoute] Guid id, [FromBody] EditExperienceDto updatedExpr)
         {
             
             var exprFromDb = await _context.GetFirstByExpressionAsync(x => x.Id == id);
@@ -94,12 +83,12 @@ namespace OplevOgDel.Api.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(expr, exprFromDb);
+            _mapper.Map(updatedExpr, exprFromDb);
             exprFromDb.ModifiedOn = DateTime.UtcNow;
             
-                if (expr.Category != null && expr.Category != string.Empty)
+                if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
             {
-                var categoryUpdated = await _context.GetCategoryByName(expr.Category);
+                var categoryUpdated = await _context.GetCategoryByName(updatedExpr.Category);
                 if (categoryUpdated == null)
                 {
                     return BadRequest();
@@ -112,16 +101,13 @@ namespace OplevOgDel.Api.Controllers
             if (!await _context.Saveasync())
             {
                _logger.Error("Failed to update experience");
-                return StatusCode(500);
+                return Problem();
             }
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteOne([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteOneExperience([FromRoute] Guid id)
         {
             var exprToDelete = await _context.GetFirstByExpressionAsync(x => x.Id == id);
             
@@ -135,7 +121,7 @@ namespace OplevOgDel.Api.Controllers
             if (!await _context.Saveasync())
             {
                 //_logger.LogError("Failed to delete experience");
-                return StatusCode(500);
+                return Problem();
             }
             return Ok(exprToDelete);
         }
