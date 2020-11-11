@@ -7,6 +7,7 @@ namespace OplevOgDel.Api.Controllers
     {
 
         [Route("/error")]
+        [HttpGet]
         public IActionResult Error() => Problem();
     }
 }

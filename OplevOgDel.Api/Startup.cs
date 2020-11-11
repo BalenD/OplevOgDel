@@ -16,6 +16,7 @@ using KissLog.CloudListeners.RequestLogsListener;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 using System.Diagnostics;
+using Microsoft.OpenApi.Models;
 
 namespace OplevOgDel.Api
 {
@@ -43,6 +44,17 @@ namespace OplevOgDel.Api
             });
 
             services.AddControllers();
+
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Oplev Og Del API",
+                    Description = "The Api for the OplevOgDel.dk webpage",
+                });
+            });
+
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
@@ -62,6 +74,12 @@ namespace OplevOgDel.Api
             {
                 app.UseExceptionHandler("/error");
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options => 
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "OplevOgDel Api V1");
+            });
 
             app.UseHttpsRedirection();
 
