@@ -8,11 +8,12 @@ using OplevOgDel.Api.Models;
 using OplevOgDel.Api.Services;
 using KissLog;
 using OplevOgDel.Api.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace OplevOgDel.Api.Controllers
 {
     [Route("api/experiences")]
-    [ApiConventionType(typeof(OplevOgDelConvention))]
+    [Produces("application/json")]
     [ApiController]
     public class ExperienceController : ControllerBase
     {
@@ -27,7 +28,13 @@ namespace OplevOgDel.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all the experiences
+        /// </summary>
+        /// <returns>Returns all the experiences</returns>
+        /// <response code="200">Returns all the experiences</response>
         [HttpGet]
+        [Produces(typeof(IEnumerable<ViewExperienceDto>))]
         public async Task<IActionResult> GetAllExperiences()
         {
             // get all experiences from the database
@@ -37,7 +44,16 @@ namespace OplevOgDel.Api.Controllers
             return Ok(listToReturn);
         }
 
+        /// <summary>
+        /// Gets an experience by ID
+        /// </summary>
+        /// <returns>Returns found experience</returns>
+        /// <param name="id">Id of experience to get</param>
+        /// <response code="200">Successfully returned the found experience</response>
+        /// <response code="404">If no experience is found</response>     
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ViewExperienceDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetOneExperience([FromRoute] Guid id)
         {
             var foundExp = await _context.GetAnExperience(id);
@@ -50,7 +66,27 @@ namespace OplevOgDel.Api.Controllers
             return Ok(_mapper.Map<ViewOneExperienceDto>(foundExp));
         }
 
+        /// <summary>
+        /// Create an experience
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/experiences
+        ///     {
+        ///        "name": "Location1",
+        ///        "Description": "A beautiful place",
+        ///        "City": "København",
+        ///        "Address": "Gadenavn 5",
+        ///        "Category": "Musik"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Successfully created an experience</response>
+        /// <response code="500">If a problem occurs during creation</response>     
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateOneExperience([FromBody] NewExperienceDto createdExpr)
         {
 
@@ -73,7 +109,28 @@ namespace OplevOgDel.Api.Controllers
             return CreatedAtAction(nameof(GetOneExperience), new { id =  exprToAdd.Id }, createdExpr);
         }
 
+        /// <summary>
+        /// Update an experience
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/experiences/:id
+        ///     {
+        ///        "Description": "a very nice place",
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">Id of experience to update</param>
+        /// <response code="204">Successfully updated an experience</response>
+        /// <response code="404">Can't find the experience to update</response>
+        /// <response code="400">If you type in a non-existent category</response>
+        /// <response code="500">If a problem occurs during update</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateOneExperience([FromRoute] Guid id, [FromBody] EditExperienceDto updatedExpr)
         {
             
@@ -105,8 +162,18 @@ namespace OplevOgDel.Api.Controllers
             }
             return NoContent();
         }
-
+        /// <summary>
+        /// Deletes an experience by ID
+        /// </summary>
+        /// <returns>Returns found experience</returns>
+        /// <param name="id">Id of experience to delete</param>
+        /// <response code="200">Successfully returned the deleted experience</response>
+        /// <response code="404">If no experience is found</response>
+        /// <response code="500">If a problem occurs during update</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ViewExperienceDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteOneExperience([FromRoute] Guid id)
         {
             var exprToDelete = await _context.GetFirstByExpressionAsync(x => x.Id == id);
@@ -120,10 +187,10 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-                //_logger.LogError("Failed to delete experience");
+                _logger.Error("Failed to delete experience");
                 return Problem();
             }
-            return Ok(exprToDelete);
+            return Ok(_mapper.Map<ViewOneExperienceDto>(exprToDelete));
         }
     }
 }

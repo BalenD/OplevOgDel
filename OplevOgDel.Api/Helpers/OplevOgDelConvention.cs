@@ -8,7 +8,7 @@ namespace OplevOgDel.Api.Helpers
     public static class OplevOgDelConvention
     {
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void GetOne([ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)] Guid id)
         {
