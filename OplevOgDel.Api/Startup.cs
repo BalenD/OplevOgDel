@@ -18,6 +18,7 @@ using System.Text;
 using System.Diagnostics;
 using Microsoft.OpenApi.Models;
 using OplevOgDel.Api.Models.configuration;
+using System.IO;
 
 namespace OplevOgDel.Api
 {
@@ -70,6 +71,9 @@ namespace OplevOgDel.Api
                     }
 
                 });
+
+                var filepath = Path.Combine(AppContext.BaseDirectory, "OplevOgDel.Api.xml");
+                c.IncludeXmlComments(filepath);
             });
 
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
