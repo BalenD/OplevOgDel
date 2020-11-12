@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.DTO
 {
-    public class ExperienceDTO
+    public class ListOfExpsDTO
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public CategoryDTO Category { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
+        public Guid ProfileId { get; set; }
+        public List<ListOfExpsExperienceDTO> ListOfExpsExperiences { get; set; } = new List<ListOfExpsExperienceDTO>();
     }
 }

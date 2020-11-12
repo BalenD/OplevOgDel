@@ -1,0 +1,22 @@
+﻿@model OplevOgDel.Web.Models.DTO.ProfileDTO
+@{
+    ViewData["Title"] = "Profile Page";
+}
+
+<div class="text-center">
+    <h1 class="display-3">Velkommen @Model.FirstName</h1>
+
+    <h2 class="display-4">Her er dine lister</h2>
+    @if (Model.ListOfExp.Count != 0)
+    {
+        @foreach (var list in Model.ListOfExp)
+        {
+            <p>@list.Name</p>
+            <p>@list.Description</p>
+
+        }
+    } else
+    {
+        <p>Ingen lister fundet</p>
+    }
+</div>

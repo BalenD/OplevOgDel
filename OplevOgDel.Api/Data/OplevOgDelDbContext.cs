@@ -252,6 +252,7 @@ namespace OplevOgDel.Api.Data
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 });
 
+            // REVIEW SEED DATA
             modelBuilder.Entity<Review>().HasData(
                 new Review()
                 { 
@@ -268,6 +269,7 @@ namespace OplevOgDel.Api.Data
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
                 });
 
+            // RATING SEED DATA
             modelBuilder.Entity<Rating>().HasData(
                 new Rating() 
                 { 
@@ -282,6 +284,45 @@ namespace OplevOgDel.Api.Data
                     RatingCount = 5,
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
+                });
+
+            // LISTOFEXPS SEED DATA
+            modelBuilder.Entity<ListOfExps>().HasData(
+                new ListOfExps()
+                {
+                    Id = Guid.Parse("dadfd17a-7e46-4d8f-87af-abd32bd6c12d"),
+                    Name = "Egne oplevelser",
+                    Description = "De oplevelser jeg har oprettet",
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                },
+                new ListOfExps()
+                {
+                    Id = Guid.Parse("0e88c548-be6e-4437-b30a-ecfe39f05a8a"),
+                    Name = "Favorit oplevelser",
+                    Description = "Mine favorit oplevelser",
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                });
+
+            modelBuilder.Entity<ListOfExpsExperience>().HasData(
+                new ListOfExpsExperience()
+                {
+
+                },
+                new ListOfExpsExperience()
+                {
+
+                },
+                new ListOfExpsExperience()
+                {
+
+                },
+                new ListOfExpsExperience()
+                {
+
+                },
+                new ListOfExpsExperience()
+                {
+
                 });
         }
     }

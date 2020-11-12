@@ -7,5 +7,8 @@ namespace OplevOgDel.Web.Models.DTO
 {
     public class ProfileDTO
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public List<ListOfExpsDTO> ListOfExp { get; set; } = new List<ListOfExpsDTO>();
     }
 }

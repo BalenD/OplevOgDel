@@ -1,9 +1,12 @@
 ﻿using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Services.RepositoryBase;
+using System;
+using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Services
 {
-    interface IProfileRepository : IRepositoryBase<Profile>
+    public interface IProfileRepository : IRepositoryBase<Profile>
     {
+        Task<Profile> GetAProfile(Guid id);
     }
 }
