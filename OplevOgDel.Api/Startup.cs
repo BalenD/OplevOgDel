@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.OpenApi.Models;
+using OplevOgDel.Api.Models.configuration;
 
 namespace OplevOgDel.Api
 {
@@ -28,6 +29,7 @@ namespace OplevOgDel.Api
         }
 
         public IConfiguration Configuration { get; }
+        private SwaggerOptions swaggerOptions { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,13 +47,28 @@ namespace OplevOgDel.Api
 
             services.AddControllers();
 
+            swaggerOptions = Configuration.GetSection(SwaggerOptions.Swagger).Get<SwaggerOptions>();
+
             services.AddSwaggerGen(c => 
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc(swaggerOptions.Version, new OpenApiInfo
                 {
-                    Version = "v1",
-                    Title = "Oplev Og Del API",
-                    Description = "The Api for the OplevOgDel.dk webpage",
+                    Version = swaggerOptions.Version,
+                    Title = swaggerOptions.Title,
+                    Description = swaggerOptions.Description,
+                    TermsOfService = new Uri(swaggerOptions.TermsOfService),
+                    Contact = new OpenApiContact
+                    {
+                        Name = swaggerOptions.ContactName,
+                        Email = swaggerOptions.ContactEmail,
+                        Url = new Uri(swaggerOptions.ContactUrl)
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = swaggerOptions.LicenseName,
+                        Url = new Uri(swaggerOptions.LicenseUrl)
+                    }
+
                 });
             });
 
@@ -78,7 +95,7 @@ namespace OplevOgDel.Api
             app.UseSwagger();
             app.UseSwaggerUI(options => 
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "OplevOgDel Api V1");
+                options.SwaggerEndpoint(swaggerOptions.Endpoint, swaggerOptions.Name);
             });
 
             app.UseHttpsRedirection();
