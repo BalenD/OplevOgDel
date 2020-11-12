@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,12 @@ namespace OplevOgDel.Web.Controllers
         {
             _logger = logger;
         }
+
         public async Task<IActionResult> IndexAsync()
         {
             string endPoint = "https://localhost:44360/" + "api/profiles/9600bf95-bf37-4e6d-aeed-53d84a96a205";
 
-            ProfileDTO profile = new ProfileDTO();
+            ProfileViewModel viewModel = new ProfileViewModel();
 
             using (HttpClient client = new HttpClient())
             {
@@ -34,11 +36,17 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    profile = JsonConvert.DeserializeObject<ProfileDTO>(result);
+                    viewModel.Profile = JsonConvert.DeserializeObject<ProfileDTO>(result);
                 }
             }
 
-            return View(profile);
+            if (viewModel.Profile.ListOfExps.Count != 0)
+            {
+                viewModel.SelectedListOfExps = viewModel.Profile.ListOfExps[0];
+                viewModel.ListOfListOfExps = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(viewModel.Profile.ListOfExps, "Id", "Name");
+            }
+
+            return View(viewModel);
         }
     }
 }

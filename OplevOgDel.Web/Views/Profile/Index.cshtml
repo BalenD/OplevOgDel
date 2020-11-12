@@ -1,22 +1,45 @@
-﻿@model OplevOgDel.Web.Models.DTO.ProfileDTO
+﻿@model OplevOgDel.Web.Models.ViewModel.ProfileViewModel
 @{
     ViewData["Title"] = "Profile Page";
 }
 
-<div class="text-center">
-    <h1 class="display-3">Velkommen @Model.FirstName</h1>
+<div>
+    <h1 class="text-center display-3">Velkommen @Model.Profile.FirstName</h1>
 
-    <h2 class="display-4">Her er dine lister</h2>
-    @if (Model.ListOfExp.Count != 0)
-    {
-        @foreach (var list in Model.ListOfExp)
+    <p>@Model.SelectedListOfExps.Name</p>
+    <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>
+
+    <h2>Her er dine lister</h2>
+    <div>
+        @if (Model.Profile.ListOfExps.Count != 0)
         {
-            <p>@list.Name</p>
-            <p>@list.Description</p>
+            @foreach (var list in Model.Profile.ListOfExps)
+            {
+                <label><strong>Navn</strong></label>
+                <p>@list.Name</p>
+                <label><strong>Beskrivelse</strong></label>
+                <p>@list.Description</p>
 
+
+                <label><strong>Oplevelser i denne liste</strong></label>
+                <hr />
+                foreach (var leexp in list.ListOfExpsExperiences)
+                {
+                    <label><strong>Id</strong></label>
+                    <p>@leexp.Experience.Id</p>
+                    <label><strong>Navn</strong></label>
+                    <p>@leexp.Experience.Name</p>
+                    <label><strong>Beskrivelse</strong></label>
+                    <p>@leexp.Experience.Description</p>
+                    <label><strong>Kategori</strong></label>
+                    <p>@leexp.Experience.Category.Name</p>
+                }
+
+            }
         }
-    } else
-    {
-        <p>Ingen lister fundet</p>
-    }
+        else
+        {
+            <p>Ingen lister fundet</p>
+        }
+    </div>
 </div>

@@ -20,7 +20,9 @@ namespace OplevOgDel.Api.Services
         {
             return await _context.Profiles.Where(p => p.Id == id)
                                             .Include(p => p.ListOfExps)
-                                            .ThenInclude(l => l.ListOfExpsExperiences).FirstOrDefaultAsync();
+                                                .ThenInclude(l => l.ListOfExpsExperiences)
+                                                    .ThenInclude(le => le.Experience)
+                                                        .ThenInclude(e => e.Category).FirstOrDefaultAsync();
         }
     }
 }
