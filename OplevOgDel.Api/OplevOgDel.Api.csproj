@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>E:\TestProgrammeriVisualStudio\OplevOgDel\OplevOgDel.Api\OplevOgDel.Api.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Bruger\source\repos\OplevOgDel2\OplevOgDel.Api\OplevOgDel.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
