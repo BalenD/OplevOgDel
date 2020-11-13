@@ -1,6 +1,11 @@
-﻿using OplevOgDel.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OplevOgDel.Api.Data;
 using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Services.RepositoryBase;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Services
 {
@@ -8,7 +13,17 @@ namespace OplevOgDel.Api.Services
     {
         public ReviewRepository(OplevOgDelDbContext context) : base(context)
         {
+            
+        }
 
+        public async Task<IEnumerable<Review>> GetAllReviews(Guid experienceId)
+        {
+            return await this._context.Reviews.Include(x => x.Creator).Where(x => x.ExperienceId == experienceId).ToListAsync();
+        }
+
+        public async Task<Review> GetAReview(Guid id)
+        {
+            return await this._context.Reviews.Where(x => x.Id == id).Include(x => x.Creator).FirstOrDefaultAsync();
         }
     }
 }
