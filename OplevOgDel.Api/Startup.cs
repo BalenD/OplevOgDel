@@ -46,7 +46,8 @@ namespace OplevOgDel.Api
                 return Logger.Factory.Get();
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             swaggerOptions = Configuration.GetSection(SwaggerOptions.Swagger).Get<SwaggerOptions>();
 
