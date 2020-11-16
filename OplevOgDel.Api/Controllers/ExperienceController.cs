@@ -150,7 +150,7 @@ namespace OplevOgDel.Api.Controllers
                 {
                     return BadRequest();
                 }
-                exprFromDb.ExpCategoryId = categoryUpdated.Id;
+                exprFromDb.CategoryId = categoryUpdated.Id;
             }
 
             _context.Update(exprFromDb);

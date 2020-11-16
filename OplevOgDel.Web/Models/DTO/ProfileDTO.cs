@@ -9,6 +9,7 @@ namespace OplevOgDel.Web.Models.DTO
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string City { get; set; }
         public List<ListOfExpsDTO> ListOfExps { get; set; } = new List<ListOfExpsDTO>();
     }
 }

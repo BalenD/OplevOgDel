@@ -11,9 +11,10 @@ namespace OplevOgDel.Api.Data
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Rating> Rating { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Report> Reports { get; set; }
+        public DbSet<ReviewReport> ReviewReports { get; set; }
+        public DbSet<ExperienceReport> ExperienceReport { get; set; }
         public DbSet<ListOfExps> ListOfExperiences { get; set; }
-        public DbSet<ExpCategory> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public OplevOgDelDbContext(DbContextOptions<OplevOgDelDbContext> options) : base(options)
         {
@@ -52,10 +53,16 @@ namespace OplevOgDel.Api.Data
                 .WithMany(p => p.Reviews)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // One-to-many between Profile and Report
-            modelBuilder.Entity<Report>()
+            // One-to-many between Profile and ReviewReport
+            modelBuilder.Entity<ReviewReport>()
                 .HasOne(r => r.Creator)
-                .WithMany(p => p.Reports)
+                .WithMany(p => p.ReviewReports)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // One-to-many between Profile and ExperienceReport
+            modelBuilder.Entity<ExperienceReport>()
+                .HasOne(r => r.Creator)
+                .WithMany(p => p.ExperienceReports)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // SEED DATA
@@ -137,33 +144,33 @@ namespace OplevOgDel.Api.Data
                 });
 
             // EXPCATEGORY SEED DATA
-            modelBuilder.Entity<ExpCategory>().HasData(
-                new ExpCategory()
+            modelBuilder.Entity<Category>().HasData(
+                new Category()
                 {
                     Id = Guid.Parse("199b5113-ae3b-47ce-adee-dcbac4935f88"),
                     Name = "Mad"
                 },
-                new ExpCategory()
+                new Category()
                 {
                     Id = Guid.Parse("45671c48-b7a2-4663-b826-044aeefd59ff"),
                     Name = "Natur"
                 },
-                new ExpCategory()
+                new Category()
                 {
                     Id = Guid.Parse("21015075-67a0-4f6e-8db7-b9eefd4361a8"),
                     Name = "Musik"
                 },
-                new ExpCategory()
+                new Category()
                 {
                     Id = Guid.Parse("af09b6cc-e3f0-4eae-bb89-ef36affd27d7"),
                     Name = "Action"
                 },
-                new ExpCategory()
+                new Category()
                 {
                     Id = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                     Name = "Kultur"
                 },
-                new ExpCategory()
+                new Category()
                 {
                     Id = Guid.Parse("037d26c3-66c4-4017-9c54-ca8e72ae56fa"),
                     Name = "Historie"
@@ -178,7 +185,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Apollo Bar er en simpel restaurant beliggende i baggården ved Charlottenborg Kunsthal. Apollo Bar tilbyder morgenmad, frokost og middag.",
                     City = "København",
                     Address = "Nyhavn 2",
-                    ExpCategoryId = Guid.Parse("199b5113-ae3b-47ce-adee-dcbac4935f88"),
+                    CategoryId = Guid.Parse("199b5113-ae3b-47ce-adee-dcbac4935f88"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -188,7 +195,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Akustikken er en guitarbutik, der både sælger og reparerer musikudstyr.",
                     City = "København",
                     Address = "Bagerstræde 7",
-                    ExpCategoryId = Guid.Parse("21015075-67a0-4f6e-8db7-b9eefd4361a8"),
+                    CategoryId = Guid.Parse("21015075-67a0-4f6e-8db7-b9eefd4361a8"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -198,7 +205,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Amager Bakke er en kunstig skibakke, der ligger på toppen af det nye forbrændingsanlæg, Amager Ressource Center (ARC).",
                     City = "København",
                     Address = "Vindmøllevej 6",
-                    ExpCategoryId = Guid.Parse("af09b6cc-e3f0-4eae-bb89-ef36affd27d7"),
+                    CategoryId = Guid.Parse("af09b6cc-e3f0-4eae-bb89-ef36affd27d7"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -208,7 +215,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Med sine godt 160 år på bagen er Zoologisk Have København en af Europas ældste zoologiske haver. Mere end 3000 dyr, fordelt på over 200 arter, har deres daglige gang i København Zoo.",
                     City = "Frederiksberg",
                     Address = "Roskildevej 32",
-                    ExpCategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
+                    CategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -218,7 +225,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Kronborg er et af Danmarks mest betydningsfulde slotte og fuld af Danmarkshistorie.",
                     City = "Helsingør",
                     Address = "Kronborg 2 C",
-                    ExpCategoryId = Guid.Parse("037d26c3-66c4-4017-9c54-ca8e72ae56fa"),
+                    CategoryId = Guid.Parse("037d26c3-66c4-4017-9c54-ca8e72ae56fa"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -228,7 +235,7 @@ namespace OplevOgDel.Api.Data
                     Description = "I Planetarium kan du opleve stjernehimlen, galakser og planeter helt tæt på - både i deres udstilling, på rumrejser i Kuppelsalen og til foredrag om astronomi og rumfart.",
                     City = "Gammel kongevej 10",
                     Address = "København",
-                    ExpCategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
+                    CategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 new Experience()
@@ -238,7 +245,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Louisiana Museum of Modern Art er et museum beliggende i en stor gammel park ved Nordsjællands kyst i Humlebæk.",
                     City = "Humlebæk",
                     Address = "Gl. Strandvej 13",
-                    ExpCategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
+                    CategoryId = Guid.Parse("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 },
                 new Experience()
@@ -248,7 +255,7 @@ namespace OplevOgDel.Api.Data
                     Description = "Dyrehaven er en stor naturpark, der ligger nord for København. Dyrehaven rummer skovområder, små søer og åbne sletter, hvor mere end 2000 vilde hjorte har deres daglige gang.",
                     City = "Klampenborg",
                     Address = "Dyrehaven",
-                    ExpCategoryId = Guid.Parse("45671c48-b7a2-4663-b826-044aeefd59ff"),
+                    CategoryId = Guid.Parse("45671c48-b7a2-4663-b826-044aeefd59ff"),
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 });
 
@@ -267,6 +274,13 @@ namespace OplevOgDel.Api.Data
                     Description = "Elsker maden",
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
+                },
+                new Review()
+                {
+                    Id = Guid.Parse("a67a1c3e-c487-4231-b5af-6da7bd11032f"),
+                    Description = "Hader dette sted, burde brændes ned!",
+                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
+                    ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
                 });
 
             // RATING SEED DATA
@@ -283,6 +297,33 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("959ec261-0361-405a-86ef-84a33092ae4a"),
                     RatingCount = 5,
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
+                    ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
+                });
+
+            // REVIEWREPORT SEED DATA
+            modelBuilder.Entity<ReviewReport>().HasData(
+                new ReviewReport()
+                {
+                    Id = Guid.Parse("d2a85423-db7b-4fe9-a9b1-b7cf1eedb82b"),
+                    Description = "Truende adfær",
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
+                    ReviewId = Guid.Parse("a67a1c3e-c487-4231-b5af-6da7bd11032f")
+                },
+                new ReviewReport()
+                {
+                    Id = Guid.Parse("a34578de-f10f-4ae8-9648-7319cd1d8533"),
+                    Description = "Upassende",
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
+                    ReviewId = Guid.Parse("a67a1c3e-c487-4231-b5af-6da7bd11032f")
+                });
+
+            // EXPERIENCEREPORT SEED DATA
+            modelBuilder.Entity<ExperienceReport>().HasData(
+                new ExperienceReport()
+                {
+                    Id = Guid.Parse("593f0428-4898-4b3f-add1-96ca682acf4c"),
+                    Description = "Brænd det!",
+                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
                 });
 

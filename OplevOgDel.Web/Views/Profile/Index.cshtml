@@ -6,6 +6,15 @@
 <div>
     <h1 class="text-center display-3">Velkommen @Model.Profile.FirstName</h1>
 
+    <div>
+        <h2>Information om dig</h2>
+        <h4>Navn</h4>
+        <p>@Model.Profile.FirstName @Model.Profile.LastName</p>
+
+        <h4>By</h4>
+        <p>@Model.Profile.City</p>
+    </div>
+
     <p>@Model.SelectedListOfExps.Name</p>
     <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>
 
@@ -15,25 +24,31 @@
         {
             @foreach (var list in Model.Profile.ListOfExps)
             {
-                <label><strong>Navn</strong></label>
+                <h3>Listens navn</h3>
                 <p>@list.Name</p>
-                <label><strong>Beskrivelse</strong></label>
+                <h4>Beskrivelse</h4>
                 <p>@list.Description</p>
 
 
-                <label><strong>Oplevelser i denne liste</strong></label>
+                <h4>Oplevelser i denne liste</h4>
                 <hr />
-                foreach (var leexp in list.ListOfExpsExperiences)
+                if (list.ListOfExpsExperiences.Count != 0)
                 {
-                    <label><strong>Id</strong></label>
-                    <p>@leexp.Experience.Id</p>
-                    <label><strong>Navn</strong></label>
-                    <p>@leexp.Experience.Name</p>
-                    <label><strong>Beskrivelse</strong></label>
-                    <p>@leexp.Experience.Description</p>
-                    <label><strong>Kategori</strong></label>
-                    <p>@leexp.Experience.Category.Name</p>
+                    foreach (var leexp in list.ListOfExpsExperiences)
+                    {
+                        <h5>Navn</h5>
+                        <p>@leexp.Experience.Name</p>
+                        <h5>Beskrivelse</h5>
+                        <p>@leexp.Experience.Description</p>
+                        <h5>Kategori</h5>
+                        <p>@leexp.Experience.Category.Name</p>
+                        <hr />
+                    }
+                } else
+                {
+                    <p>Denne liste er tom!</p>
                 }
+
 
             }
         }
