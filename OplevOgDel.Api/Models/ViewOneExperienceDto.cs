@@ -10,6 +10,6 @@ namespace OplevOgDel.Api.Models
         public string City { get; set; }
         public string Address { get; set; }
         public Guid ExpCategoryId { get; set; }
-        public ExpCategory Category { get; set; }
+        public Category Category { get; set; }
     }
 }

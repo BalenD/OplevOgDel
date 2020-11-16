@@ -4,7 +4,7 @@ using OplevOgDel.Api.Services.RepositoryBase;
 
 namespace OplevOgDel.Api.Services
 {
-    public class ReportRepository : RepositoryBase<Report>, IReportRepository
+    public class ReportRepository : RepositoryBase<ReviewReport>, IReportRepository
     {
         public ReportRepository(OplevOgDelDbContext context) : base (context)
         {

@@ -26,7 +26,7 @@ namespace OplevOgDel.Api.Services
             return await this._context.Experiences.Where(x => x.Id == id).Include(x => x.Category).FirstOrDefaultAsync();
         }
 
-        public async Task<ExpCategory> GetCategoryByName(string name)
+        public async Task<Category> GetCategoryByName(string name)
         {
             return await this._context.Categories.Where(x => x.Name == name).FirstOrDefaultAsync();
         }
