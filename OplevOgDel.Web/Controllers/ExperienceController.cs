@@ -27,17 +27,32 @@ namespace OplevOgDel.Web.Controllers
         [HttpGet("/experiences/{id}")]
         public async Task<IActionResult> ExperienceAsync([FromRoute] Guid id)
         {
-            string endPoint = APIAddress + "api/experiences/" + id;
+            string experiencesEndPoint = APIAddress + "api/experiences/" + id;
+            string experienceReviewsEndPoint = APIAddress + "api/experiences/" + id + "/reviews/";
+            string experienceRatingsEndPoint = APIAddress + "api/experiences/" + id + "/ratings/";
+
+            //TODO:
+            //Insert Rating in controller
 
             ExperienceViewModel viewModel = new ExperienceViewModel();
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(endPoint);
+                HttpResponseMessage response = await client.GetAsync(experiencesEndPoint);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDTO>(result);
+                }
+            }
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(experienceReviewsEndPoint);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    viewModel.Reviews = JsonConvert.DeserializeObject<List<ReviewDTO>>(result);
                 }
             }
             return View(viewModel);
@@ -58,16 +73,39 @@ namespace OplevOgDel.Web.Controllers
         [HttpDelete("/experiences/{id}")]
         public async Task<IActionResult> DeleteExperience([FromRoute] Guid id)
         {
-            //TODO: If delete belongs to user, can delete
+            //TODO:
+            //If delete belongs to user, can delete
 
-            string endPoint = APIAddress + "api/experiences" + id;
+            string experiencesEndPoint = APIAddress + "api/experiences/" + id;
+            string experienceReviewsEndPoint = APIAddress + "api/experiences/" + id + "/reviews/";
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(endPoint);
+                HttpResponseMessage response = await client.DeleteAsync(experiencesEndPoint);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
+                }
+            }
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(experienceReviewsEndPoint);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var experienceReviews = JsonConvert.DeserializeObject<List<ReviewDTO>>(result);
+                    if (experienceReviews.Count != 0)
+                    {
+                        foreach (var review in experienceReviews)
+                        {
+                            HttpResponseMessage deleteResponse = await client.GetAsync(experienceReviewsEndPoint + review.Id);
+                            if (deleteResponse.IsSuccessStatusCode)
+                            {
+                                var deleteResult = await deleteResponse.Content.ReadAsStringAsync();
+                            }
+                        }
+                    }
                 }
             }
             return View();
