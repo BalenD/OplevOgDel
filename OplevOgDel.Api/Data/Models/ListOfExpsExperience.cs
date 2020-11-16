@@ -1,11 +1,10 @@
 ﻿using OplevOgDel.Api.Data.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
+    [Table("ListOfExpsExperiences")]
     public class ListOfExpsExperience : IEntity
     {
         public Guid Id { get; set; }

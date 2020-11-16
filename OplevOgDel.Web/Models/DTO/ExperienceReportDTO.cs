@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.DTO
 {
-    public class ReportDTO
+    public class ExperienceReportDTO
     {
     }
 }

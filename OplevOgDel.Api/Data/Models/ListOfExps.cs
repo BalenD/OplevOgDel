@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    [Table("ListOfExperiences")]
+    [Table("ListOfExps")]
     public class ListOfExps : BaseModel
     {
         [Required(ErrorMessage = "Name must not be empty")]
