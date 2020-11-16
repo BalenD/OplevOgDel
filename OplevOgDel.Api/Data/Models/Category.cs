@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    public class ExpCategory : IEntity
+    public class Category : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

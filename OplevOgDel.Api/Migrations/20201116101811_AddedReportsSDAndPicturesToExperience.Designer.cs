@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OplevOgDel.Api.Data;
 
 namespace OplevOgDel.Api.Migrations
 {
     [DbContext(typeof(OplevOgDelDbContext))]
-    partial class OplevOgDelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201116101811_AddedReportsSDAndPicturesToExperience")]
+    partial class AddedReportsSDAndPicturesToExperience
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +64,7 @@ namespace OplevOgDel.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("OplevOgDel.Api.Data.Models.Category", b =>
+            modelBuilder.Entity("OplevOgDel.Api.Data.Models.ExpCategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,9 +121,6 @@ namespace OplevOgDel.Api.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -136,6 +135,9 @@ namespace OplevOgDel.Api.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ExpCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -156,7 +158,7 @@ namespace OplevOgDel.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ExpCategoryId");
 
                     b.HasIndex("ProfileId");
 
@@ -167,10 +169,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
                             Address = "Nyhavn 2",
-                            CategoryId = new Guid("199b5113-ae3b-47ce-adee-dcbac4935f88"),
                             City = "København",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Apollo Bar er en simpel restaurant beliggende i baggården ved Charlottenborg Kunsthal. Apollo Bar tilbyder morgenmad, frokost og middag.",
+                            ExpCategoryId = new Guid("199b5113-ae3b-47ce-adee-dcbac4935f88"),
                             IsDeleted = false,
                             Name = "Apollo Bar",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -179,10 +181,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
                             Address = "Bagerstræde 7",
-                            CategoryId = new Guid("21015075-67a0-4f6e-8db7-b9eefd4361a8"),
                             City = "København",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Akustikken er en guitarbutik, der både sælger og reparerer musikudstyr.",
+                            ExpCategoryId = new Guid("21015075-67a0-4f6e-8db7-b9eefd4361a8"),
                             IsDeleted = false,
                             Name = "Akustikken",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -191,10 +193,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
                             Address = "Vindmøllevej 6",
-                            CategoryId = new Guid("af09b6cc-e3f0-4eae-bb89-ef36affd27d7"),
                             City = "København",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Amager Bakke er en kunstig skibakke, der ligger på toppen af det nye forbrændingsanlæg, Amager Ressource Center (ARC).",
+                            ExpCategoryId = new Guid("af09b6cc-e3f0-4eae-bb89-ef36affd27d7"),
                             IsDeleted = false,
                             Name = "Amager Bakke",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -203,10 +205,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("c3965bec-3a76-40a9-b435-546d4cd2ad2f"),
                             Address = "Roskildevej 32",
-                            CategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             City = "Frederiksberg",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Med sine godt 160 år på bagen er Zoologisk Have København en af Europas ældste zoologiske haver. Mere end 3000 dyr, fordelt på over 200 arter, har deres daglige gang i København Zoo.",
+                            ExpCategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             IsDeleted = false,
                             Name = "Zoologisk Have",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -215,10 +217,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("a11d3b85-04d9-4665-bea8-91ac47f6a2d8"),
                             Address = "Kronborg 2 C",
-                            CategoryId = new Guid("037d26c3-66c4-4017-9c54-ca8e72ae56fa"),
                             City = "Helsingør",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Kronborg er et af Danmarks mest betydningsfulde slotte og fuld af Danmarkshistorie.",
+                            ExpCategoryId = new Guid("037d26c3-66c4-4017-9c54-ca8e72ae56fa"),
                             IsDeleted = false,
                             Name = "Kronborg Slot",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -227,10 +229,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("f574dea5-088b-4ecf-a0ba-439381cdfabf"),
                             Address = "København",
-                            CategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             City = "Gammel kongevej 10",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "I Planetarium kan du opleve stjernehimlen, galakser og planeter helt tæt på - både i deres udstilling, på rumrejser i Kuppelsalen og til foredrag om astronomi og rumfart.",
+                            ExpCategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             IsDeleted = false,
                             Name = "Planetarium",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
@@ -239,10 +241,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("ce9ba768-c6d0-4c1d-842e-2027eb3542d1"),
                             Address = "Gl. Strandvej 13",
-                            CategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             City = "Humlebæk",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Louisiana Museum of Modern Art er et museum beliggende i en stor gammel park ved Nordsjællands kyst i Humlebæk.",
+                            ExpCategoryId = new Guid("b6f3f639-1450-4334-a123-2b1fb8c68808"),
                             IsDeleted = false,
                             Name = "Louisiana",
                             ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
@@ -251,10 +253,10 @@ namespace OplevOgDel.Api.Migrations
                         {
                             Id = new Guid("173bf385-9aba-408a-a7ea-8bfe892e91b3"),
                             Address = "Dyrehaven",
-                            CategoryId = new Guid("45671c48-b7a2-4663-b826-044aeefd59ff"),
                             City = "Klampenborg",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Dyrehaven er en stor naturpark, der ligger nord for København. Dyrehaven rummer skovområder, små søer og åbne sletter, hvor mere end 2000 vilde hjorte har deres daglige gang.",
+                            ExpCategoryId = new Guid("45671c48-b7a2-4663-b826-044aeefd59ff"),
                             IsDeleted = false,
                             Name = "Dyrehaven",
                             ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
@@ -759,9 +761,9 @@ namespace OplevOgDel.Api.Migrations
 
             modelBuilder.Entity("OplevOgDel.Api.Data.Models.Experience", b =>
                 {
-                    b.HasOne("OplevOgDel.Api.Data.Models.Category", "Category")
+                    b.HasOne("OplevOgDel.Api.Data.Models.ExpCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("ExpCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

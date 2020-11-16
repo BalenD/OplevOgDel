@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,24 +27,26 @@ namespace OplevOgDel.Web.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
+            string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
+            string experiencesEndPoint = "https://localhost:44360/" + "api/experiences";
             //string endPoint = "https://localhost:44360/" + "api/experiences";
-            string endPoint = APIAddress + "api/experiences";
+            //string endPoint = APIAddress + "api/experiences";
 
             HomeViewModel viewModel = new HomeViewModel();
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(endPoint);
+                HttpResponseMessage response = await client.GetAsync(categoriesEndPoint);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDTO>>(result);
+                    viewModel.Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
                 }
             }
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(endPoint);
+                HttpResponseMessage response = await client.GetAsync(experiencesEndPoint);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();

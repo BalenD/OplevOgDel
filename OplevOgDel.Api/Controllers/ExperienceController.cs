@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OplevOgDel.Api.Data.Models;
-using OplevOgDel.Api.Models;
+using OplevOgDel.Api.Models.Dto.ExperienceDto;
 using OplevOgDel.Api.Services;
 using KissLog;
-using OplevOgDel.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 
 namespace OplevOgDel.Api.Controllers
@@ -34,7 +33,7 @@ namespace OplevOgDel.Api.Controllers
         /// <returns>Returns all the experiences</returns>
         /// <response code="200">Returns all the experiences</response>
         [HttpGet]
-        [Produces(typeof(IEnumerable<ViewExperienceDto>))]
+        [ProducesResponseType(typeof(IEnumerable<ViewExperienceDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllExperiences()
         {
             // get all experiences from the database
@@ -52,7 +51,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="200">Successfully returned the found experience</response>
         /// <response code="404">If no experience is found</response>     
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ViewExperienceDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ViewOneExperienceDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetOneExperience([FromRoute] Guid id)
         {
@@ -122,6 +121,7 @@ namespace OplevOgDel.Api.Controllers
         ///
         /// </remarks>
         /// <param name="id">Id of experience to update</param>
+        /// <param name="updatedExpr">new experience object to update</param>
         /// <response code="204">Successfully updated an experience</response>
         /// <response code="404">Can't find the experience to update</response>
         /// <response code="400">If you type in a non-existent category</response>
@@ -150,7 +150,7 @@ namespace OplevOgDel.Api.Controllers
                 {
                     return BadRequest();
                 }
-                exprFromDb.ExpCategoryId = categoryUpdated.Id;
+                exprFromDb.CategoryId = categoryUpdated.Id;
             }
 
             _context.Update(exprFromDb);
@@ -165,13 +165,13 @@ namespace OplevOgDel.Api.Controllers
         /// <summary>
         /// Deletes an experience by ID
         /// </summary>
-        /// <returns>Returns found experience</returns>
+        /// <returns>Returns the deleted experiencee</returns>
         /// <param name="id">Id of experience to delete</param>
         /// <response code="200">Successfully returned the deleted experience</response>
         /// <response code="404">If no experience is found</response>
         /// <response code="500">If a problem occurs during update</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ViewExperienceDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ViewOneExperienceDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteOneExperience([FromRoute] Guid id)

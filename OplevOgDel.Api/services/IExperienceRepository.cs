@@ -7,7 +7,7 @@ namespace OplevOgDel.Api.Services
 {
     public interface IExperienceRepository : IRepositoryBase<Experience>
     {
-        Task<ExpCategory> GetCategoryByName(string name);
+        Task<Category> GetCategoryByName(string name);
         Task<Experience> GetAnExperience(Guid id);
     }
 }

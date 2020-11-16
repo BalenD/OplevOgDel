@@ -8,12 +8,12 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<h2>Kategorier</h2>
 @if (Model.Categories.Count != 0)
 {
     @foreach (var category in Model.Categories)
     {
-        <p>@category.Name</p>
-
+        <span><strong>@category.Name</strong></span>
     }
 }
 else
@@ -21,7 +21,7 @@ else
     <p>Ingen kategorier fundet</p>
 }
 
-
+<h2>Oplevelser</h2>
 @if (Model.Experiences.Count != 0)
 {
     @foreach (var experience in Model.Experiences)
