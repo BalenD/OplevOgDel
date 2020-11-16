@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    public class Report : BaseModel
+    public class ReviewReport : BaseModel
     {
         [Required( ErrorMessage = "A report description is required")]
         public string Description { get; set; }

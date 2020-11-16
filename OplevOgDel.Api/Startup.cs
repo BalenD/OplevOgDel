@@ -78,6 +78,7 @@ namespace OplevOgDel.Api
             });
 
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
