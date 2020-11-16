@@ -26,6 +26,8 @@ namespace OplevOgDel.Api.Data.Models
         public Guid ProfileId { get; set; }
         public Profile Creator { get; set; }
         public ICollection<ListOfExpsExperience> ListOfExpsExperiences { get; set; }
-
+        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<ExperienceReport> ExperienceReports { get; set; }
     }
 }
