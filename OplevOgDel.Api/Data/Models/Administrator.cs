@@ -1,11 +1,9 @@
 ﻿using OplevOgDel.Api.Data.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
+    [Table("Administrators")]
     public class Administrator : BaseModel
     {
         public string Username { get; set; }

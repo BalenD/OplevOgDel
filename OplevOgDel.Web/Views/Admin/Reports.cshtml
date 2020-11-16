@@ -1,0 +1,28 @@
+﻿@model OplevOgDel.Web.Models.ViewModel.ReportsViewModel
+
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h1>Rapporter</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Antal reporter</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Experiences) {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                *W.I.P*
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -29,8 +29,6 @@ namespace OplevOgDel.Web.Controllers
         {
             string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
             string experiencesEndPoint = "https://localhost:44360/" + "api/experiences";
-            //string endPoint = "https://localhost:44360/" + "api/experiences";
-            //string endPoint = APIAddress + "api/experiences";
 
             HomeViewModel viewModel = new HomeViewModel();
 

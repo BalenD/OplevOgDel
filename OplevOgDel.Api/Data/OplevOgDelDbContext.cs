@@ -9,11 +9,11 @@ namespace OplevOgDel.Api.Data
         public DbSet<User>  Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Experience> Experiences { get; set; }
-        public DbSet<Rating> Rating { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ReviewReport> ReviewReports { get; set; }
-        public DbSet<ExperienceReport> ExperienceReport { get; set; }
-        public DbSet<ListOfExps> ListOfExperiences { get; set; }
+        public DbSet<ExperienceReport> ExperienceReports { get; set; }
+        public DbSet<ListOfExps> ListOfExps { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         public OplevOgDelDbContext(DbContextOptions<OplevOgDelDbContext> options) : base(options)
@@ -281,6 +281,13 @@ namespace OplevOgDel.Api.Data
                     Description = "Hader dette sted, burde brændes ned!",
                     ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
+                },
+                new Review()
+                {
+                    Id = Guid.Parse("4ede258a-d72d-4d97-83c9-58e801da3952"),
+                    Description = "Lorte sted!",
+                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
+                    ExperienceId = Guid.Parse("a030b459-a8b5-4bba-bcbd-b9a30176f7e4")
                 });
 
             // RATING SEED DATA
@@ -315,6 +322,13 @@ namespace OplevOgDel.Api.Data
                     Description = "Upassende",
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
                     ReviewId = Guid.Parse("a67a1c3e-c487-4231-b5af-6da7bd11032f")
+                },
+                new ReviewReport()
+                {
+                    Id = Guid.Parse("6f9a5b6b-a53b-4d97-8a74-06344b828aca"),
+                    Description = "Dårlig kritik",
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
+                    ReviewId = Guid.Parse("4ede258a-d72d-4d97-83c9-58e801da3952")
                 });
 
             // EXPERIENCEREPORT SEED DATA
@@ -325,6 +339,13 @@ namespace OplevOgDel.Api.Data
                     Description = "Brænd det!",
                     ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8")
+                },
+                new ExperienceReport()
+                {
+                    Id = Guid.Parse("f334abcc-8849-42f9-94cf-836e5aad5a18"),
+                    Description = "Brænd også det her!",
+                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
+                    ExperienceId = Guid.Parse("82a5a437-35b3-44b8-b10a-01d13577b7f1")
                 });
 
             // LISTOFEXPS SEED DATA

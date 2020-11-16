@@ -3,7 +3,7 @@ using OplevOgDel.Api.Services.RepositoryBase;
 
 namespace OplevOgDel.Api.Services
 {
-    interface IReportRepository : IRepositoryBase<ReviewReport>
+    public interface IReviewReportRepository : IRepositoryBase<ReviewReport>
     {
     }
 }
