@@ -27,10 +27,10 @@ namespace OplevOgDel.Web.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            //string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
-            //string experiencesEndPoint = "https://localhost:44360/" + "api/experiences";
-            string categoriesEndPoint = APIAddress + "api/categories";
-            string experiencesEndPoint = APIAddress + "api/experiences";
+            //string categoriesEndPoint = APIAddress + "api/categories";
+            //string experiencesEndPoint = APIAddress + "api/experiences";
+            string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
+            string experiencesEndPoint = "https://localhost:44360/" + "api/experiences";
 
             HomeViewModel viewModel = new HomeViewModel();
 

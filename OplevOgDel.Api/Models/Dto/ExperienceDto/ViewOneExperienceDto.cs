@@ -1,4 +1,4 @@
-﻿using OplevOgDel.Api.Data.Models;
+using OplevOgDel.Api.Data.Models;
 using System;
 
 namespace OplevOgDel.Api.Models.Dto.ExperienceDto

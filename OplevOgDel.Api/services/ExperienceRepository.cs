@@ -30,5 +30,10 @@ namespace OplevOgDel.Api.Services
         {
             return await this._context.Categories.Where(x => x.Name == name).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Experience>> GetExperiencesWithReports()
+        {
+            return await _context.Experiences.Where(e => e.ExperienceReports.Any() || e.Reviews.Any(r => r.ReviewReports.Any())).ToListAsync();
+        }
     }
 }

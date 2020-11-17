@@ -1,12 +1,11 @@
 ﻿using OplevOgDel.Api.Data.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
+    [Table("ExperienceReports")]
     public class ExperienceReport : BaseModel
     {
         [Required(ErrorMessage = "A report description is required")]
