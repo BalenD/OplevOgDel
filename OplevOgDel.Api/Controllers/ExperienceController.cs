@@ -82,21 +82,28 @@ namespace OplevOgDel.Api.Controllers
         ///
         /// </remarks>
         /// <response code="201">Successfully created an experience</response>
-        /// <response code="500">If a problem occurs during creation</response>     
+        /// <response code="400">If the category does not exist</response>
+        /// <response code="500">If a problem occurs during creation</response> 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateOneExperience([FromBody] NewExperienceDto createdExpr)
         {
 
+            var category = await _context.GetCategoryByName(createdExpr.Category);
+
+            if (category == null)
+            {
+                return BadRequest();
+            }
+
             var exprToAdd = _mapper.Map<Experience>(createdExpr);
             exprToAdd.Id = Guid.NewGuid();
 
-            var category = await _context.GetCategoryByName(createdExpr.Category);
-            
             exprToAdd.Category = category;
-            
-            // TODO: add creator to experience or it will crash
+
+            // TODO: add profile or it will crash
 
             _context.Create(exprToAdd);
 
@@ -143,7 +150,7 @@ namespace OplevOgDel.Api.Controllers
             _mapper.Map(updatedExpr, exprFromDb);
             exprFromDb.ModifiedOn = DateTime.UtcNow;
             
-                if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
+            if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
             {
                 var categoryUpdated = await _context.GetCategoryByName(updatedExpr.Category);
                 if (categoryUpdated == null)

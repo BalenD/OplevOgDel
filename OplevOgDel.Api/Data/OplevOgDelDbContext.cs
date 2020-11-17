@@ -15,6 +15,7 @@ namespace OplevOgDel.Api.Data
         public DbSet<ExperienceReport> ExperienceReports { get; set; }
         public DbSet<ListOfExps> ListOfExps { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
 
         public OplevOgDelDbContext(DbContextOptions<OplevOgDelDbContext> options) : base(options)
         {
@@ -65,7 +66,43 @@ namespace OplevOgDel.Api.Data
                 .WithMany(p => p.ExperienceReports)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Picture>()
+                .HasOne(p => p.Creator)
+                .WithMany(j => j.Pictures)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Picture>()
+                .HasOne(p => p.Experience)
+                .WithMany(j => j.Pictures)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // SEED DATA
+
+            // pICTURE SEED DATA
+            modelBuilder.Entity<Picture>().HasData(
+                new Picture() 
+                { 
+                    Id = Guid.Parse("93E4F688-D9A0-4F8A-BC69-1D7F5A46101D"),
+                    Path = "TestImage1",
+                    ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
+                    CreatorId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                },
+
+                new Picture()
+                {
+                    Id = Guid.Parse("B393E49A-4097-4629-B15F-75FD9EDD99C1"),
+                    Path = "TestImage2",
+                    ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
+                    CreatorId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                },
+
+                new Picture()
+                {
+                    Id = Guid.Parse("052C9135-C787-4FC5-8E1D-64C20AEDA9BC"),
+                    Path = "TestImage2",
+                    ExperienceId = Guid.Parse("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
+                    CreatorId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                });
 
             // ADMIN SEED DATA
             modelBuilder.Entity<Administrator>().HasData(

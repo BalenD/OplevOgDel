@@ -1,4 +1,4 @@
-﻿namespace OplevOgDel.Api.Models.configuration
+﻿namespace OplevOgDel.Api.Models.Configuration
 {
     public class SwaggerOptions
     {

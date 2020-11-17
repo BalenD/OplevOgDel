@@ -20,7 +20,7 @@ namespace OplevOgDel.Api.Data.Models
         [Required(ErrorMessage = "Address must not be empty")]
         [StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Address must be Less than 500 characters and more than 5 characters")]
         public string Address { get; set; }
-        public string Pictures { get; set; }
+        //public string Pictures { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
         public Guid ProfileId { get; set; }
@@ -29,5 +29,6 @@ namespace OplevOgDel.Api.Data.Models
         public ICollection<Rating> Ratings { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<ExperienceReport> ExperienceReports { get; set; }
+        public ICollection<Picture> Pictures { get; set; }
     }
 }
