@@ -35,5 +35,6 @@ namespace OplevOgDel.Api.Data.Models
         public ICollection<Review> Reviews { get; set; }
         public ICollection<ReviewReport> ReviewReports { get; set; }
         public ICollection<ExperienceReport> ExperienceReports { get; set; }
+        public ICollection<Picture> Pictures { get; set; }
     }
 }

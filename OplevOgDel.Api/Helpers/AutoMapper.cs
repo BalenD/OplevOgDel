@@ -1,5 +1,6 @@
 ﻿using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Models.Dto.ExperienceDto;
+using OplevOgDel.Api.Models.Dto.PictureDto;
 using OplevOgDel.Api.Models.Dto.ReviewDto;
 using Profile = AutoMapper.Profile;
 
@@ -18,6 +19,8 @@ namespace OplevOgDel.Api.Helpers
             CreateMap<Review, ViewOneReviewDto>();
             CreateMap<EditReviewDto, Review>();
             CreateMap<NewReviewDto, Review>();
+
+            CreateMap<Picture, ViewPictureDto>();
         }
     }
 }
