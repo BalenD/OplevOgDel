@@ -18,12 +18,12 @@ namespace OplevOgDel.Api.Services
 
         public async override Task<IEnumerable<Experience>> GetAllAsync()
         {
-            return await this._context.Experiences.Include(x => x.Category).ToListAsync();
+            return await this._context.Experiences.Include(x => x.Category).Include(x => x.Pictures).ToListAsync();
         }
 
         public async Task<Experience> GetAnExperience(Guid id)
         {
-            return await this._context.Experiences.Where(x => x.Id == id).Include(x => x.Category).FirstOrDefaultAsync();
+            return await this._context.Experiences.Where(x => x.Id == id).Include(x => x.Category).Include(x => x.Pictures).FirstOrDefaultAsync();
         }
 
         public async Task<Category> GetCategoryByName(string name)
