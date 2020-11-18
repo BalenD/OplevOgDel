@@ -1,0 +1,85 @@
+﻿@model OplevOgDel.Web.Models.ViewModel.ManageExperienceViewModel
+
+@{
+    ViewData["Title"] = "Rapport";
+}
+
+<h1>Oversigt for @Model.Experience.Name</h1>
+
+<div>
+    <h3>Navn</h3>
+    <p>@Model.Experience.Name</p>
+    <h3>Beskrivelse</h3>
+    <p>@Model.Experience.Description</p>
+    <h3>Kategori</h3>
+    <p>@Model.Experience.Category.Name</p>
+    <h3>By</h3>
+    <p>@Model.Experience.City</p>
+    <h3>Adresse</h3>
+    <p>@Model.Experience.Address</p>
+</div>
+
+<div>
+    <button class="btn btn-outline-success">Godkend oplevelse</button>
+    <button class="btn btn-outline-warning">Ændre oplevelse</button>
+    <button class="btn btn-outline-danger">Fjern oplevelse</button>
+</div>
+
+<h2>Rapporter for oplevelsen</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bruger</th>
+            <th>Rapport beskrivelse</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Experience.ExperienceReports)
+        {
+            <tr>
+                <td>
+                    @item.Creator.FirstName @item.Creator.LastName
+                </td>
+                <td>
+                    @item.Description
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Anmeldelser for oplevelsen med rapporter</h2>
+@foreach (var review in Model.Experience.Reviews)
+{
+    @if (review.ReviewReports.Count != 0)
+    {
+        <h4>Anmeldelses beskrivelse</h4>
+        <p>@review.Description</p>
+        <div>
+            <button class="btn btn-outline-success">Godkend anmeldelse</button>
+            <button class="btn btn-outline-danger">Fjern anmeldelse</button>
+        </div>
+        <h5>Rapporter for anmeldelsen</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bruger</th>
+                    <th>Rapport beskrivelse</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rapport in review.ReviewReports)
+                {
+                    <tr>
+                        <td>
+                            @rapport.Creator.FirstName @rapport.Creator.LastName
+                        </td>
+                        <td>
+                            @rapport.Description
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
