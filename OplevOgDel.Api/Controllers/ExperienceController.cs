@@ -176,7 +176,7 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="id">Id of experience to delete</param>
         /// <response code="200">Successfully returned the deleted experience</response>
         /// <response code="404">If no experience is found</response>
-        /// <response code="500">If a problem occurs during update</response>
+        /// <response code="500">If a problem occurs during deletion</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ViewOneExperienceDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

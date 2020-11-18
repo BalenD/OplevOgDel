@@ -1,5 +1,7 @@
 ﻿using OplevOgDel.Api.Data.Models;
+using OplevOgDel.Api.Models.Dto.PictureDto;
 using System;
+using System.Collections.Generic;
 
 namespace OplevOgDel.Api.Models.Dto.ExperienceDto
 {
@@ -11,5 +13,6 @@ namespace OplevOgDel.Api.Models.Dto.ExperienceDto
         public string Address { get; set; }
         public Guid ExpCategoryId { get; set; }
         public Category Category { get; set; }
+        public IEnumerable<ViewPictureDto> Pictures { get; set; }
     }
 }
