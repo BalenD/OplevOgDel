@@ -11,5 +11,7 @@ namespace OplevOgDel.Api.Services
         Task<Category> GetCategoryByName(string name);
         Task<Experience> GetAnExperience(Guid id);
         Task<IEnumerable<Experience>> GetExperiencesWithReports();
+        Task<Experience> GetAnExperienceAndReports(Guid id);
+
     }
 }

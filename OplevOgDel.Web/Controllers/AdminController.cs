@@ -30,5 +30,24 @@ namespace OplevOgDel.Web.Controllers
 
             return View(viewModel);
         }
+
+        public async Task<IActionResult> ManageExperienceAsync(Guid id)
+        {
+            string experienceEndPoint = "https://localhost:44360/" + "api/reports/" + id;
+
+            ManageExperienceViewModel viewModel = new ManageExperienceViewModel();
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(experienceEndPoint);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    viewModel.Experience = JsonConvert.DeserializeObject<ManageExperienceDTO>(result);
+                }
+            }
+
+            return View(viewModel);
+        }
     }
 }

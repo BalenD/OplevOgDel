@@ -35,5 +35,20 @@ namespace OplevOgDel.Api.Services
         {
             return await _context.Experiences.Where(e => e.ExperienceReports.Any() || e.Reviews.Any(r => r.ReviewReports.Any())).ToListAsync();
         }
+
+        public async Task<Experience> GetAnExperienceAndReports(Guid id)
+        {
+            return await _context.Experiences.Where(e => e.Id == id)
+                                                .Include(e => e.Creator)
+                                                .Include(e => e.Category)
+                                                .Include(e => e.ExperienceReports)
+                                                    .ThenInclude(er => er.Creator)
+                                                .Include(e => e.Reviews)
+                                                    .ThenInclude(r => r.Creator)
+                                                .Include(e => e.Reviews)
+                                                    .ThenInclude(r => r.ReviewReports)
+                                                        .ThenInclude(rr => rr.Creator)
+                                                .FirstOrDefaultAsync();
+        }
     }
 }

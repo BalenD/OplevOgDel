@@ -36,20 +36,17 @@ namespace OplevOgDel.Web.Controllers
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(categoriesEndPoint);
-                if (response.IsSuccessStatusCode)
+                HttpResponseMessage categoriesResponse = await client.GetAsync(categoriesEndPoint);
+                if (categoriesResponse.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsStringAsync();
+                    var result = await categoriesResponse.Content.ReadAsStringAsync();
                     viewModel.Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
                 }
-            }
-
-            using (HttpClient client = new HttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(experiencesEndPoint);
-                if (response.IsSuccessStatusCode)
+            
+                HttpResponseMessage experiencesResponse = await client.GetAsync(experiencesEndPoint);
+                if (experiencesResponse.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsStringAsync();
+                    var result = await experiencesResponse.Content.ReadAsStringAsync();
                     viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDTO>>(result);
                 }
             }
