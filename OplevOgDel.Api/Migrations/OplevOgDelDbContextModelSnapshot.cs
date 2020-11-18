@@ -148,9 +148,6 @@ namespace OplevOgDel.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("Pictures")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("ProfileId")
                         .HasColumnType("uniqueidentifier");
 
@@ -430,6 +427,72 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("aec784bc-e861-46a1-bf64-b76058a036de"),
                             ExperienceId = new Guid("f574dea5-088b-4ecf-a0ba-439381cdfabf"),
                             ListOfExpsId = new Guid("dadfd17a-7e46-4d8f-87af-abd32bd6c12d")
+                        });
+                });
+
+            modelBuilder.Entity("OplevOgDel.Api.Data.Models.Picture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("ExperienceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("ExperienceId");
+
+                    b.ToTable("pictures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("93e4f688-d9a0-4f8a-bc69-1d7f5a46101d"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatorId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
+                            ExperienceId = new Guid("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
+                            IsDeleted = false,
+                            Path = "TestImage1"
+                        },
+                        new
+                        {
+                            Id = new Guid("b393e49a-4097-4629-b15f-75fd9edd99c1"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatorId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
+                            ExperienceId = new Guid("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
+                            IsDeleted = false,
+                            Path = "TestImage2"
+                        },
+                        new
+                        {
+                            Id = new Guid("052c9135-c787-4fc5-8e1d-64c20aeda9bc"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatorId = new Guid("62357886-d888-44f2-a929-c015a4b31dad"),
+                            ExperienceId = new Guid("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
+                            IsDeleted = false,
+                            Path = "TestImage2"
                         });
                 });
 
@@ -852,6 +915,25 @@ namespace OplevOgDel.Api.Migrations
                     b.Navigation("ListOfExps");
                 });
 
+            modelBuilder.Entity("OplevOgDel.Api.Data.Models.Picture", b =>
+                {
+                    b.HasOne("OplevOgDel.Api.Data.Models.Profile", "Creator")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OplevOgDel.Api.Data.Models.Experience", "Experience")
+                        .WithMany("Pictures")
+                        .HasForeignKey("ExperienceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Experience");
+                });
+
             modelBuilder.Entity("OplevOgDel.Api.Data.Models.Profile", b =>
                 {
                     b.HasOne("OplevOgDel.Api.Data.Models.User", "User")
@@ -926,6 +1008,8 @@ namespace OplevOgDel.Api.Migrations
 
                     b.Navigation("ListOfExpsExperiences");
 
+                    b.Navigation("Pictures");
+
                     b.Navigation("Ratings");
 
                     b.Navigation("Reviews");
@@ -941,6 +1025,8 @@ namespace OplevOgDel.Api.Migrations
                     b.Navigation("ExperienceReports");
 
                     b.Navigation("ListOfExps");
+
+                    b.Navigation("Pictures");
 
                     b.Navigation("Ratings");
 

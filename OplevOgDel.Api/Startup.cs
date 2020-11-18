@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.OpenApi.Models;
-using OplevOgDel.Api.Models.configuration;
+using OplevOgDel.Api.Models.Configuration;
 using System.IO;
 
 namespace OplevOgDel.Api
@@ -84,6 +84,8 @@ namespace OplevOgDel.Api
             services.AddScoped<IExperienceReportRepository, ExperienceReportRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPictureRepository, PictureRepository>();
+            services.Configure<FileUploadOptions>(Configuration.GetSection(FileUploadOptions.FileUpload));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
