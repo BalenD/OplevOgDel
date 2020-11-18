@@ -3,7 +3,7 @@
     ViewData["Title"] = "Experience";
 }
 
-<h1>Experiences</h1>
+<h1>Oplevelse</h1>
 
 @if (Model.Experience != null)
 {
@@ -11,9 +11,29 @@
         <h4>@Model.Experience.Name</h4>
         <p>@Model.Experience.Description</p>
         <p>@Model.Experience.Category.Name</p>
+        <p>@Model.Experience.City</p>
+        <p>@Model.Experience.Address</p>
     </div>
 }
 else
 {
     <p>Oplevelse eksiterer ikke</p>
+}
+
+<h2>Anmeldelser</h2>
+@if (Model.Reviews.Count != 0)
+{
+    @foreach (var review in Model.Reviews)
+    {
+<div class="text-center">
+    @*<h4>@review.CreatorName</h4> TODO:Whenever profile is done *@
+    <h4>@review.ProfileId</h4>
+    <p>@review.Description</p>
+    <p>@review.Id</p>
+</div>
+    }
+}
+else
+{
+    <p>Ingen Anmeldelser eksiterer til denne oplevelse!</p>
 }
