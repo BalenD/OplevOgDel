@@ -2,6 +2,7 @@
 using OplevOgDel.Api.Models.Dto.ExperienceDto;
 using OplevOgDel.Api.Models.Dto.PictureDto;
 using OplevOgDel.Api.Models.Dto.ReviewDto;
+using System.Linq;
 using Profile = AutoMapper.Profile;
 
 namespace OplevOgDel.Api.Helpers
@@ -10,8 +11,8 @@ namespace OplevOgDel.Api.Helpers
     {
         public AutoMapper()
         {
-            CreateMap<Experience, ViewExperienceDto>();
-            CreateMap<Experience, ViewOneExperienceDto>();
+            CreateMap<Experience, ViewExperienceDto>().ForMember(x => x.Pictures, opt => opt.MapFrom(y => y.Pictures));
+            CreateMap<Experience, ViewOneExperienceDto>().ForMember(x => x.Pictures, opt => opt.MapFrom(y => y.Pictures));
             CreateMap<EditExperienceDto, Experience>().ForMember(x => x.Category, opt => opt.Ignore()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<NewExperienceDto, Experience>().ForMember(x => x.Category, opt => opt.Ignore());
 

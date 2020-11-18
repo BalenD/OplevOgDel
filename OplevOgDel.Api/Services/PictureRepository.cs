@@ -21,6 +21,5 @@ namespace OplevOgDel.Api.Services
             return await this._context.Pictures.Where(x => x.ExperienceId == id).ToListAsync();
         }
 
-
     }
 }
