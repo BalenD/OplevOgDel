@@ -18,7 +18,7 @@ namespace OplevOgDel.Api.Services
 
         public async Task<IEnumerable<Review>> GetAllReviews(Guid experienceId)
         {
-            return await this._context.Reviews.Include(x => x.Creator).Where(x => x.ExperienceId == experienceId).ToListAsync();
+            return await this._context.Reviews.Include(x => x.Creator).Where(x => x.ExperienceId == experienceId).AsNoTracking().ToListAsync();
         }
 
         public async Task<Review> GetAReview(Guid id)

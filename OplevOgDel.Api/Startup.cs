@@ -36,7 +36,7 @@ namespace OplevOgDel.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("OplevOgDelDb");
-            services.AddDbContext<OplevOgDelDbContext>(x => x.UseSqlServer(connectionString));
+            services.AddDbContext<OplevOgDelDbContext>(x => x.UseSqlServer(connectionString, opt => opt.EnableRetryOnFailure()));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

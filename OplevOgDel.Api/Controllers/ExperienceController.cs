@@ -8,6 +8,7 @@ using OplevOgDel.Api.Models.Dto.ExperienceDto;
 using OplevOgDel.Api.Services;
 using KissLog;
 using Microsoft.AspNetCore.Http;
+using OplevOgDel.Api.Models.Dto.RequestDto;
 
 namespace OplevOgDel.Api.Controllers
 {
@@ -34,10 +35,11 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="200">Returns all the experiences</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ViewExperienceDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllExperiences()
+        public async Task<IActionResult> GetAllExperiences([FromQuery] RequestParametersDto req)
         {
             // get all experiences from the database
-            var allExperiences = await _context.GetAllAsync();
+            //var allExperiences = await _context.GetAllAsync();
+            var allExperiences = await _context.GetAllAsync(req);
             // map it to the DTO and return
             var listToReturn = _mapper.Map<IEnumerable<ViewExperienceDto>>(allExperiences);
             return Ok(listToReturn);

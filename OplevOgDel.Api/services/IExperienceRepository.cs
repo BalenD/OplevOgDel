@@ -1,4 +1,5 @@
 ﻿using OplevOgDel.Api.Data.Models;
+using OplevOgDel.Api.Models.Dto.RequestDto;
 using OplevOgDel.Api.Services.RepositoryBase;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace OplevOgDel.Api.Services
         Task<Category> GetCategoryByName(string name);
         Task<Experience> GetAnExperience(Guid id);
         Task<IEnumerable<Experience>> GetExperiencesWithReports();
+        Task<IEnumerable<Experience>> GetAllAsync(RequestParametersDto req);
         Task<Experience> GetAnExperienceAndReports(Guid id);
-
     }
 }

@@ -76,6 +76,11 @@ namespace OplevOgDel.Api.Data
                 .WithMany(j => j.Pictures)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Adding indexes and cluster
+            modelBuilder.Entity<Experience>()
+                .HasIndex(x => new { x.City, x.Name });
+
+
             // SEED DATA
 
             // pICTURE SEED DATA
