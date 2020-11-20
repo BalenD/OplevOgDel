@@ -18,7 +18,7 @@ namespace OplevOgDel.Api.Services
 
         public async Task<IEnumerable<Picture>> GetAllByExperienceAsync(Guid id)
         {
-            return await this._context.Pictures.Where(x => x.ExperienceId == id).ToListAsync();
+            return await this._context.Pictures.Where(x => x.ExperienceId == id).AsNoTracking().ToListAsync();
         }
 
     }

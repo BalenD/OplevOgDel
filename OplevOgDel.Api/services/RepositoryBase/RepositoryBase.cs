@@ -19,7 +19,7 @@ namespace OplevOgDel.Api.Services.RepositoryBase
         }
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public void Create(T entity)
