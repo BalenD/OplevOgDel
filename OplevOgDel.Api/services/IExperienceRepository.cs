@@ -13,5 +13,6 @@ namespace OplevOgDel.Api.Services
         Task<Experience> GetAnExperience(Guid id);
         Task<IEnumerable<Experience>> GetExperiencesWithReports();
         Task<IEnumerable<Experience>> GetAllAsync(RequestParametersDto req);
+        Task<Experience> GetAnExperienceAndReports(Guid id);
     }
 }

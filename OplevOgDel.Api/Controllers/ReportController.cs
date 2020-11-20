@@ -45,5 +45,18 @@ namespace OplevOgDel.Api.Controllers
 
             return Ok(allExpsWithReports);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneExperienceWithReports(Guid id)
+        {
+            var expAndReports = await _experienceRepository.GetAnExperienceAndReports(id);
+
+            if (expAndReports == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(expAndReports);
+        }
     }
 }

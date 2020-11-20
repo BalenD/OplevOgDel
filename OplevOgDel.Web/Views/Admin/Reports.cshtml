@@ -17,8 +17,12 @@
 @foreach (var item in Model.Experiences) {
         <tr>
             <td>
-                @item.Name
+                @Html.ActionLink(@item.Name, "ManageExperience", new { id = item.Id  })
+                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
+
+                
             <td>
                 *W.I.P*
             </td>
