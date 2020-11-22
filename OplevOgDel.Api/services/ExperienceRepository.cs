@@ -42,22 +42,22 @@ namespace OplevOgDel.Api.Services
             return await PaginatedList<Experience>.CreateAsync(query, req.Page, req.PageSize);
         }
 
-        public async Task<Experience> GetAnExperience(Guid id)
+        public async Task<Experience> GetAnExperienceAsync(Guid id)
         {
             return await this._context.Experiences.Where(x => x.Id == id).Include(x => x.Category).Include(x => x.Pictures).FirstOrDefaultAsync();
         }
 
-        public async Task<Category> GetCategoryByName(string name)
+        public async Task<Category> GetCategoryByNameAsync(string name)
         {
             return await this._context.Categories.Where(x => x.Name == name).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Experience>> GetExperiencesWithReports()
+        public async Task<IEnumerable<Experience>> GetExperiencesWithReportsAsync()
         {
             return await _context.Experiences.Where(e => e.ExperienceReports.Any() || e.Reviews.Any(r => r.ReviewReports.Any())).ToListAsync();
         }
 
-        public async Task<Experience> GetAnExperienceAndReports(Guid id)
+        public async Task<Experience> GetAnExperienceAndReportsAsync(Guid id)
         {
             return await _context.Experiences.Where(e => e.Id == id)
                                                 .Include(e => e.Creator)
