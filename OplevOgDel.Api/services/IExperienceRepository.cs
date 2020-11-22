@@ -9,10 +9,10 @@ namespace OplevOgDel.Api.Services
 {
     public interface IExperienceRepository : IRepositoryBase<Experience>
     {
-        Task<Category> GetCategoryByName(string name);
-        Task<Experience> GetAnExperience(Guid id);
-        Task<IEnumerable<Experience>> GetExperiencesWithReports();
+        Task<Category> GetCategoryByNameAsync(string name);
+        Task<Experience> GetAnExperienceAsync(Guid id);
+        Task<IEnumerable<Experience>> GetExperiencesWithReportsAsync();
         Task<IEnumerable<Experience>> GetAllAsync(RequestParametersDto req);
-        Task<Experience> GetAnExperienceAndReports(Guid id);
+        Task<Experience> GetAnExperienceAndReportsAsync(Guid id);
     }
 }

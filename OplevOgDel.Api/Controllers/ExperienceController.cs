@@ -9,6 +9,7 @@ using OplevOgDel.Api.Services;
 using KissLog;
 using Microsoft.AspNetCore.Http;
 using OplevOgDel.Api.Models.Dto.RequestDto;
+using OplevOgDel.Api.Helpers;
 
 namespace OplevOgDel.Api.Controllers
 {
@@ -57,11 +58,19 @@ namespace OplevOgDel.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetOneExperience([FromRoute] Guid id)
         {
-            var foundExp = await _context.GetAnExperience(id);
+            var foundExp = await _context.GetAnExperienceAsync(id);
             
             if (foundExp == null)
             {
-                return NotFound();
+                var err = new ErrorObject()
+                {
+                    Method = "GET",
+                    At = $"/Experiences/{id}",
+                    StatusCode = 404,
+                    Error = "Could not find experience"
+
+                };
+                return NotFound(err);
             }
 
             return Ok(_mapper.Map<ViewOneExperienceDto>(foundExp));
@@ -93,11 +102,18 @@ namespace OplevOgDel.Api.Controllers
         public async Task<IActionResult> CreateOneExperience([FromBody] NewExperienceDto createdExpr)
         {
 
-            var category = await _context.GetCategoryByName(createdExpr.Category);
+            var category = await _context.GetCategoryByNameAsync(createdExpr.Category);
 
             if (category == null)
             {
-                return BadRequest();
+                var err = new ErrorObject()
+                {
+                    Method = "POST",
+                    At = "/Experiences",
+                    StatusCode = 400,
+                    Error = "Category is invalid"
+                };
+                return BadRequest(err);
             }
 
             var exprToAdd = _mapper.Map<Experience>(createdExpr);
@@ -111,9 +127,19 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-                _logger.Error("Failed to create experience");
-                return Problem();
+                var errMsg = "Error createing an experience";
+                _logger.Error(errMsg);
+                var err = new ErrorObject()
+                {
+                    Method = "POST",
+                    At = "/Experiences",
+                    StatusCode = 500,
+                    Error = errMsg
+
+                };
+                return StatusCode(500, err);
             }
+            // TODO: consider mapping before sending back or send back the DB object
             return CreatedAtAction(nameof(GetOneExperience), new { id =  exprToAdd.Id }, createdExpr);
         }
 
@@ -146,18 +172,34 @@ namespace OplevOgDel.Api.Controllers
             var exprFromDb = await _context.GetFirstByExpressionAsync(x => x.Id == id);
             if (exprFromDb == null)
             {
-                return NotFound();
+                var err = new ErrorObject()
+                {
+                    Method = "PUT",
+                    At = $"/Experiences/{id}",
+                    StatusCode = 404,
+                    Error = "Could not find experience to edit"
+
+                };
+                return NotFound(err);
             }
 
             _mapper.Map(updatedExpr, exprFromDb);
-            exprFromDb.ModifiedOn = DateTime.UtcNow;
+            exprFromDb.ModifiedOn = DateTime.Now;
             
             if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
             {
-                var categoryUpdated = await _context.GetCategoryByName(updatedExpr.Category);
+                var categoryUpdated = await _context.GetCategoryByNameAsync(updatedExpr.Category);
                 if (categoryUpdated == null)
                 {
-                    return BadRequest();
+                    var err = new ErrorObject()
+                    {
+                        Method = "PUT",
+                        At = $"/Experiences/{id}",
+                        StatusCode = 400,
+                        Error = "Category is invalid"
+
+                    };
+                    return BadRequest(err);
                 }
                 exprFromDb.CategoryId = categoryUpdated.Id;
             }
@@ -166,8 +208,17 @@ namespace OplevOgDel.Api.Controllers
 
             if (!await _context.Saveasync())
             {
-               _logger.Error("Failed to update experience");
-                return Problem();
+                var errMsg = "Error updating an experience";
+               _logger.Error(errMsg);
+                var err = new ErrorObject()
+                {
+                    Method = "PUT",
+                    At = $"/Experiences/{id}",
+                    StatusCode = 500,
+                    Error = errMsg
+
+                };
+                return StatusCode(500, err);
             }
             return NoContent();
         }
@@ -189,15 +240,32 @@ namespace OplevOgDel.Api.Controllers
             
             if (exprToDelete == null)
             {
-                return NotFound();
+                var err = new ErrorObject()
+                {
+                    Method = "DELETE",
+                    At = $"/Experiences/{id}",
+                    StatusCode = 404,
+                    Error = "Could not find experience to delete"
+
+                };
+                return NotFound(err);
             }
 
             _context.Delete(exprToDelete);
 
             if (!await _context.Saveasync())
             {
-                _logger.Error("Failed to delete experience");
-                return Problem();
+                var errMsg = "Error deleting an experience";
+                _logger.Error(errMsg);
+                var err = new ErrorObject()
+                {
+                    Method = "DELETE",
+                    At = $"/Experiences/{id}",
+                    StatusCode = 500,
+                    Error = errMsg
+
+                };
+                return StatusCode(500, err);
             }
             return Ok(_mapper.Map<ViewOneExperienceDto>(exprToDelete));
         }
