@@ -4,24 +4,24 @@
     ViewData["Title"] = "Rapport";
 }
 
-<h1>Oversigt for @Model.Experience.Name</h1>
+<h1>Oversigt for @Model.Name</h1>
 
 <div>
     <h3>Navn</h3>
-    <p>@Model.Experience.Name</p>
+    <p>@Model.Name</p>
     <h3>Beskrivelse</h3>
-    <p>@Model.Experience.Description</p>
+    <p>@Model.Description</p>
     <h3>Kategori</h3>
-    <p>@Model.Experience.Category.Name</p>
+    <p>@Model.Category.Name</p>
     <h3>By</h3>
-    <p>@Model.Experience.City</p>
+    <p>@Model.City</p>
     <h3>Adresse</h3>
-    <p>@Model.Experience.Address</p>
+    <p>@Model.Address</p>
 </div>
 
 <div>
     <button class="btn btn-outline-success">Godkend oplevelse</button>
-    <button class="btn btn-outline-warning">Ændre oplevelse</button>
+    <a class="btn btn-outline-warning" asp-action="EditExperience" asp-route-id="@Model.Id">Ændre oplevelse</a>
     <button class="btn btn-outline-danger">Fjern oplevelse</button>
 </div>
 
@@ -34,7 +34,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Experience.ExperienceReports)
+        @foreach (var item in Model.ExperienceReports)
         {
             <tr>
                 <td>
@@ -49,7 +49,7 @@
 </table>
 
 <h2>Anmeldelser for oplevelsen med rapporter</h2>
-@foreach (var review in Model.Experience.Reviews)
+@foreach (var review in Model.Reviews)
 {
     @if (review.ReviewReports.Count != 0)
     {

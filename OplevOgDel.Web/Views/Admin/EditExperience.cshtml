@@ -1,0 +1,58 @@
+﻿@model OplevOgDel.Web.Models.ViewModel.EditExperienceViewModel
+
+@{
+    ViewData["Title"] = "Ændre oplevelse";
+}
+
+<h1>Ændre oplevelse</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditExperience">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Experience.Id" class="control-label"></label>
+                <input asp-for="Experience.Id" class="form-control" />
+                <span asp-validation-for="Experience.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience.Name" class="control-label"></label>
+                <input asp-for="Experience.Name" class="form-control" />
+                <span asp-validation-for="Experience.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience.Description" class="control-label"></label>
+                <input asp-for="Experience.Description" class="form-control" />
+                <span asp-validation-for="Experience.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience.Address" class="control-label"></label>
+                <input asp-for="Experience.Address" class="form-control" />
+                <span asp-validation-for="Experience.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience.City" class="control-label"></label>
+                <input asp-for="Experience.City" class="form-control" />
+                <span asp-validation-for="Experience.City" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Experience.Category"></label>
+                <select class="form-control" asp-for="Experience.Category.Id"
+                        asp-items="Model.Categories"></select>
+                <span asp-validation-for="Experience.Category.Id" class="text-danger" ></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-outline-primary" asp-action="ManageExperience" asp-route-id="@Model.Experience.Id">Annullér</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
