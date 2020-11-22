@@ -10,6 +10,7 @@ namespace OplevOgDel.Web.Models.ViewModel
     {
         public ExperienceDTO Experience { get; set; }
         public RatingDTO Rating { get; set; }
+        public ReviewDTO Review { get; set; }
         public List<ReviewDTO> Reviews { get; set; }
         public List<ReviewReportDTO> Reports { get; set; }
     }
