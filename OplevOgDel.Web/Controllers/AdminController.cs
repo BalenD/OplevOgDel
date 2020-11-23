@@ -87,20 +87,18 @@ namespace OplevOgDel.Web.Controllers
 
             var content = new StringContent(JsonConvert.SerializeObject(experience), System.Text.Encoding.UTF8, "application/json");
 
-            //ExperienceDTO viewModel = new ExperienceDTO();
 
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage response = await client.PutAsync(experienceEndPoint, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    //var result = await response.Content.ReadAsStringAsync();
-                    //viewModel = JsonConvert.DeserializeObject<ExperienceDTO>(result);
-                    return View();
+                    return RedirectToAction("ManageExperience", new { id });
                 }
             }
 
-            return View();
+            return RedirectToAction("EditExperience", new { id });
+
         }
     }
 }

@@ -152,15 +152,15 @@ namespace OplevOgDel.Api.Controllers
             _mapper.Map(updatedExpr, exprFromDb);
             exprFromDb.ModifiedOn = DateTime.UtcNow;
             
-            if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
-            {
-                var categoryUpdated = await _context.GetCategoryByName(updatedExpr.Category);
-                if (categoryUpdated == null)
-                {
-                    return BadRequest();
-                }
-                exprFromDb.CategoryId = categoryUpdated.Id;
-            }
+            //if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
+            //{
+            //    var categoryUpdated = await _context.GetCategoryByName(updatedExpr.Category);
+            //    if (categoryUpdated == null)
+            //    {
+            //        return BadRequest();
+            //    }
+            //    exprFromDb.CategoryId = categoryUpdated.Id;
+            //}
 
             _context.Update(exprFromDb);
 
