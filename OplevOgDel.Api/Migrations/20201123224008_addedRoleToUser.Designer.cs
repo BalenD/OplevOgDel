@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OplevOgDel.Api.Data;
 
 namespace OplevOgDel.Api.Migrations
 {
     [DbContext(typeof(OplevOgDelDbContext))]
-    partial class OplevOgDelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201123224008_addedRoleToUser")]
+    partial class addedRoleToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -807,7 +809,7 @@ namespace OplevOgDel.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProfileId")
+                    b.Property<Guid>("ProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Role")
@@ -831,7 +833,7 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user1@user.dk",
                             IsDeleted = false,
-                            Password = "$2a$11$lR8KHHTUwwgGA3sC0kEmdulUV8EqCfdlZUMDDaX3JB0nvnXxy0jJa",
+                            Password = "$2a$11$bYRoGBBDHzuxzdUMkvQ7peQvRUxr8UBHwa23PYNDhgLKcXYdubJh6",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
                             Role = "Admin",
                             Username = "user1"
@@ -842,7 +844,7 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user2@user.dk",
                             IsDeleted = false,
-                            Password = "$2a$11$SWG9ShlyIH1bhGCmdoaqqeUpCQnze08pnMt.9hQkJ5PrXS9k/0qvu",
+                            Password = "$2a$11$l3s3bdeCmqeVWTBV5qwlNeSjIabLtfuO/PviuhU6Qht9DWYjy4PIq",
                             ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad"),
                             Role = "User",
                             Username = "user2"
@@ -853,7 +855,7 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user3@user.dk",
                             IsDeleted = false,
-                            Password = "$2a$11$6xYb0RPj7HWp7Wc1frTIA.5XQd7nUwqouQwMgrZz43e/ko95ibm.S",
+                            Password = "$2a$11$rDo3264c.pNHvExuQHPnFO.Sk8K2pVcm32sba2BsAXqfM8/FAbcS2",
                             ProfileId = new Guid("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
                             Role = "User",
                             Username = "user3"
@@ -1008,7 +1010,9 @@ namespace OplevOgDel.Api.Migrations
                 {
                     b.HasOne("OplevOgDel.Api.Data.Models.Profile", "Profile")
                         .WithMany()
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Profile");
                 });
