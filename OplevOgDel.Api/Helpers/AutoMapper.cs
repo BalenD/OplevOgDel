@@ -2,7 +2,7 @@
 using OplevOgDel.Api.Models.Dto.ExperienceDto;
 using OplevOgDel.Api.Models.Dto.PictureDto;
 using OplevOgDel.Api.Models.Dto.ReviewDto;
-using System.Linq;
+using OplevOgDel.Api.Models.Dto.UserDto;
 using Profile = AutoMapper.Profile;
 
 namespace OplevOgDel.Api.Helpers
@@ -22,6 +22,12 @@ namespace OplevOgDel.Api.Helpers
             CreateMap<NewReviewDto, Review>();
 
             CreateMap<Picture, ViewPictureDto>();
+
+            
+            CreateMap<User, ViewUserDto>();
+            CreateMap<UpdateUserDto, User>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<CreateUserDto, User>();
+            CreateMap<UserRegisterDto, User>();
         }
     }
 }

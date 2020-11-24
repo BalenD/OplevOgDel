@@ -3,7 +3,7 @@ using OplevOgDel.Api.Services.RepositoryBase;
 
 namespace OplevOgDel.Api.Services
 {
-    interface IUserRepository : IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<User>
     {
     }
 }
