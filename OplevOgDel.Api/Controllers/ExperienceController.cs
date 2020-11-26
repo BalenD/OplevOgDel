@@ -185,7 +185,7 @@ namespace OplevOgDel.Api.Controllers
 
             _mapper.Map(updatedExpr, exprFromDb);
             exprFromDb.ModifiedOn = DateTime.Now;
-            
+          
             if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
             {
                 var categoryUpdated = await _context.GetCategoryByNameAsync(updatedExpr.Category);
@@ -203,6 +203,7 @@ namespace OplevOgDel.Api.Controllers
                 }
                 exprFromDb.CategoryId = categoryUpdated.Id;
             }
+
 
             _context.Update(exprFromDb);
 

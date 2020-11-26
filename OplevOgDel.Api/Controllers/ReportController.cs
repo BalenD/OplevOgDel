@@ -18,18 +18,21 @@ namespace OplevOgDel.Api.Controllers
         private readonly IExperienceReportRepository _experienceReportRepository;
         private readonly IReviewReportRepository _reviewReportRepository;
         private readonly IExperienceRepository _experienceRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
         public ReportController(ILogger logger, 
             IExperienceReportRepository experienceReportRepository, 
             IReviewReportRepository reviewReportRepository, 
             IExperienceRepository experienceRepository, 
+            IReviewRepository reviewRepository,
             IMapper mapper)
         {
             _logger = logger;
             _experienceReportRepository = experienceReportRepository;
             _reviewReportRepository = reviewReportRepository;
             _experienceRepository = experienceRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
@@ -57,6 +60,36 @@ namespace OplevOgDel.Api.Controllers
             }
 
             return Ok(expAndReports);
+        }
+
+        [HttpDelete("experience/{id}")]
+        public async Task<IActionResult> DeleteReportsForExperience(Guid id)
+        {
+            var exp = await _experienceRepository.GetFirstByExpressionAsync(r => r.Id == id);
+
+            if (exp == null)
+            {
+                return NotFound();
+            }
+
+            //await _experienceReportRepository.
+
+            return NoContent();
+        }
+
+        [HttpDelete("review/{id}")]
+        public async Task<IActionResult> DeleteReportsForReview(Guid id)
+        {
+            var review = await _reviewRepository.GetFirstByExpressionAsync(r => r.Id == id);
+
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            //await _reviewReportRepository.
+
+            return NoContent();
         }
     }
 }

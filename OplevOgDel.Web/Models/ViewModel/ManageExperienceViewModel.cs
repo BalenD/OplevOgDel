@@ -8,9 +8,13 @@ namespace OplevOgDel.Web.Models.ViewModel
 {
     public class ManageExperienceViewModel
     {
-        public ManageExperienceDTO Experience { get; set; }
-        public List<ExperienceReportDTO> ExperienceReports { get; set; } = new List<ExperienceReportDTO>();
-        public List<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
-        public List<ReviewReportDTO> ReviewReports { get; set; } = new List<ReviewReportDTO>();
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public CategoryDTO Category { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public List<ExperienceReportDTO> ExperienceReports { get; set; }
+        public List<NewReviewDTO> Reviews { get; set; }
     }
 }

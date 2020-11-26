@@ -64,9 +64,9 @@ namespace OplevOgDel.Api.Services
                                                 .Include(e => e.Category)
                                                 .Include(e => e.ExperienceReports)
                                                     .ThenInclude(er => er.Creator)
-                                                .Include(e => e.Reviews)
+                                                .Include(e => e.Reviews.Where(r => r.ReviewReports.Any()))
                                                     .ThenInclude(r => r.Creator)
-                                                .Include(e => e.Reviews)
+                                                .Include(e => e.Reviews.Where(r => r.ReviewReports.Any()))
                                                     .ThenInclude(r => r.ReviewReports)
                                                         .ThenInclude(rr => rr.Creator)
                                                 .FirstOrDefaultAsync();
