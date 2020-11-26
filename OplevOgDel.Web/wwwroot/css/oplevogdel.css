@@ -35,6 +35,7 @@
 
 .navbar .form-inline {
     display: inline-block;
+    margin-right: 10px;
 }
 
 .navbar .navbar-nav {
@@ -251,6 +252,7 @@ label {
     padding-right: 25px;
     width: 220px !important;
     font-size: 14px;
+    margin-right: 10px;
 }
 
 .select-box__current {
