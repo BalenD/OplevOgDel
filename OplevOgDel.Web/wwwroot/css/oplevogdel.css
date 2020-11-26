@@ -177,7 +177,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #e70072 0%, #e7002d 100%);
+        background: #ee6d6d;
         opacity: 0.2;
     }
 
@@ -188,7 +188,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #80c300 0%, #0bc300 100%);
+        background: #6db4a3;
         opacity: 0.2;
     }
 
@@ -199,7 +199,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #6a00ed 0%, #6d00a7 100%);
+        background: #a36db6;
         opacity: 0.2;
     }
 
@@ -210,7 +210,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #ff9200 0%, #ec6700 100%);
+        background: #f1b76d;
         opacity: 0.2;
     }
 
@@ -221,7 +221,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #0089ff 0%, #006ecc 100%);
+        background: #6db7f4;
         opacity: 0.2;
     }
 
@@ -232,7 +232,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: brown;
+        background: #b6866d;
         opacity: 0.2;
     }
 
@@ -328,6 +328,7 @@ label {
     -webkit-animation-timing-function: step-start;
     animation-timing-function: step-start;
     border: 1px solid #dfe3e8;
+    z-index: 99;
 }
 
 .select-box__option {
