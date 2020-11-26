@@ -186,23 +186,23 @@ namespace OplevOgDel.Api.Controllers
             _mapper.Map(updatedExpr, exprFromDb);
             exprFromDb.ModifiedOn = DateTime.Now;
           
-            if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
-            {
-                var categoryUpdated = await _context.GetCategoryByNameAsync(updatedExpr.Category);
-                if (categoryUpdated == null)
-                {
-                    var err = new ErrorObject()
-                    {
-                        Method = "PUT",
-                        At = $"/Experiences/{id}",
-                        StatusCode = 400,
-                        Error = "Category is invalid"
+            //if (updatedExpr.Category != null && updatedExpr.Category != string.Empty)
+            //{
+            //    var categoryUpdated = await _context.GetCategoryByNameAsync(updatedExpr.Category);
+            //    if (categoryUpdated == null)
+            //    {
+            //        var err = new ErrorObject()
+            //        {
+            //            Method = "PUT",
+            //            At = $"/Experiences/{id}",
+            //            StatusCode = 400,
+            //            Error = "Category is invalid"
 
-                    };
-                    return BadRequest(err);
-                }
-                exprFromDb.CategoryId = categoryUpdated.Id;
-            }
+            //        };
+            //        return BadRequest(err);
+            //    }
+            //    exprFromDb.CategoryId = categoryUpdated.Id;
+            //}
 
 
             _context.Update(exprFromDb);
