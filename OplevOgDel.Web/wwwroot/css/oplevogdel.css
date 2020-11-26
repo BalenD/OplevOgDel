@@ -9,6 +9,10 @@
 }
 
 .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background: #fff;
     padding-left: 16px;
     padding-right: 16px;
@@ -417,6 +421,7 @@ label {
 
 .grid {
     position: absolute;
+    top: 100px;
     left: 0;
     width: 100%;
     display: grid;
