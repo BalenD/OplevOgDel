@@ -39,7 +39,7 @@ namespace OplevOgDel.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetExperiencesWithReports()
         {
-            var allExpsWithReports = await _experienceRepository.GetExperiencesWithReports();
+            var allExpsWithReports = await _experienceRepository.GetExperiencesWithReportsAsync();
 
             if (allExpsWithReports == null)
             {
@@ -52,7 +52,7 @@ namespace OplevOgDel.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneExperienceWithReports(Guid id)
         {
-            var expAndReports = await _experienceRepository.GetAnExperienceAndReports(id);
+            var expAndReports = await _experienceRepository.GetAnExperienceAndReportsAsync(id);
 
             if (expAndReports == null)
             {

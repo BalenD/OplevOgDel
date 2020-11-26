@@ -19,6 +19,8 @@ using System.Diagnostics;
 using Microsoft.OpenApi.Models;
 using OplevOgDel.Api.Models.Configuration;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace OplevOgDel.Api
 {
@@ -31,6 +33,7 @@ namespace OplevOgDel.Api
 
         public IConfiguration Configuration { get; }
         private SwaggerOptions swaggerOptions { get; set; }
+        private SecretOptions secretsOptions { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,6 +53,7 @@ namespace OplevOgDel.Api
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             swaggerOptions = Configuration.GetSection(SwaggerOptions.Swagger).Get<SwaggerOptions>();
+            secretsOptions = Configuration.GetSection(SecretOptions.Secret).Get<SecretOptions>();
 
             services.AddSwaggerGen(c => 
             {
@@ -75,6 +79,7 @@ namespace OplevOgDel.Api
 
                 var filepath = Path.Combine(AppContext.BaseDirectory, "OplevOgDel.Api.xml");
                 c.IncludeXmlComments(filepath);
+
             });
 
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
@@ -86,6 +91,28 @@ namespace OplevOgDel.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPictureRepository, PictureRepository>();
             services.Configure<FileUploadOptions>(Configuration.GetSection(FileUploadOptions.FileUpload));
+            services.Configure<SecretOptions>(Configuration.GetSection(SecretOptions.Secret));
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x => 
+            {
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretsOptions.Signature)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime  = true,
+                    ValidIssuer = secretsOptions.Issuer,
+                    ValidAudience = secretsOptions.Audience,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +138,7 @@ namespace OplevOgDel.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseKissLogMiddleware(options => {
