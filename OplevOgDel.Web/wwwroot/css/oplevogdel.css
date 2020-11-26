@@ -29,9 +29,9 @@
     padding-right: 50px;
 }
 
-    .navbar .logo img {
-        width: 60px;
-    }
+.navbar .logo img {
+    width: 60px;
+}
 
 .navbar .form-inline {
     display: inline-block;
@@ -367,3 +367,122 @@ label {
         transform: scaleY(0);
     }
 }
+
+
+
+
+
+
+
+
+
+.pos-1 {
+    background-color: #1c35cf;
+    grid-column-end: span 1;
+    grid-row-end: span 8;
+}
+
+.pos-2 {
+    background-color: #8a33fa;
+    grid-column-end: span 2;
+    grid-row-end: span 4;
+}
+
+.pos-3 {
+    background-color: #bd43c0;
+    grid-column-end: span 2;
+    grid-row-end: span 8;
+}
+
+.pos-4 {
+    background-color: #dd375b;
+    grid-column-end: span 1;
+    grid-row-end: span 4;
+}
+
+.pos-5 {
+    background-color: #1a9541;
+    grid-column-end: span 1;
+    grid-row-end: span 8;
+}
+
+.pos-6 {
+    background-color: #d44024;
+    grid-column-end: span 1;
+    grid-row-end: span 4;
+}
+
+.grid {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 10px;
+    grid-auto-rows: minmax(40px, auto);
+    grid-auto-flow: dense;
+}
+
+.j {
+    color: red !important;
+}
+
+.grid-item {
+    position: relative;
+    color: black;
+    padding: 20px;
+}
+
+    .grid-item .red {
+        position: absolute;
+        background: #ee6d6d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .green {
+        position: absolute;
+        background: #6db4a3;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .purple {
+        position: absolute;
+        background: #a36db6;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .orange {
+        position: absolute;
+        background: #f1b76d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .blue {
+        position: absolute;
+        background: #6db7f4;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .brown {
+        position: absolute;
+        background: #b6866d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }

@@ -24,15 +24,61 @@ else
 <h2>Oplevelser</h2>
 @if (Model.Experiences.Count != 0)
 {
-    @foreach (var experience in Model.Experiences)
-    {
-        <div class="text-center">
-            <h4>@experience.Name</h4>
-            <p>@experience.Description</p>
+    var count = 1;
+    <div class="grid">
+        @foreach (var experience in Model.Experiences)
+        {
+        <div class="grid-item pos-@count" style="background: url(https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png) no-repeat center center; background-size: cover;">
+            @if (@experience.Category.Name == "Mad")
+            {
+            <div class="red">
+                @experience.Name
+            </div>
+            }
+            @if (@experience.Category.Name == "Natur")
+            {
+        <div class="green">
+            @experience.Name
         </div>
-    }
+            }
+            @if (@experience.Category.Name == "Musik")
+            {
+        <div class="purple">
+            @experience.Name
+        </div>
+            }
+            @if (@experience.Category.Name == "Action")
+            {
+        <div class="orange">
+            @experience.Name
+        </div>
+            }
+            @if (@experience.Category.Name == "Kultur")
+            {
+        <div class="blue">
+            @experience.Name
+        </div>
+            }
+            @if (@experience.Category.Name == "Historie")
+            {
+        <div class="brown">
+            @experience.Name
+        </div>
+            }
+        </div>
+
+            if (count >= 6)
+            {
+                count = 1;
+            }
+            else
+            {
+                count++;
+            }
+        }
+    </div>
 }
 else
 {
-    <p>Ingen oplevelser fundet</p>
+<p>Ingen oplevelser fundet</p>
 }
