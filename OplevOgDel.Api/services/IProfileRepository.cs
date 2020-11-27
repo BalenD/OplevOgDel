@@ -7,6 +7,6 @@ namespace OplevOgDel.Api.Services
 {
     public interface IProfileRepository : IRepositoryBase<Profile>
     {
-        Task<Profile> GetAProfile(Guid id);
+        Task<Profile> GetAProfileAsync(Guid id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using OplevOgDel.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OplevOgDel.Api.Data;
 using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Services.RepositoryBase;
 using System;
@@ -13,6 +14,11 @@ namespace OplevOgDel.Api.Services
         public ExperienceReportRepository(OplevOgDelDbContext context) : base(context)
         {
 
+        }
+
+        public async Task<IEnumerable<ExperienceReport>> GetReportsForExperience(Guid experienceId)
+        {
+            return await _context.ExperienceReports.Where(x => x.ExperienceId == experienceId).ToListAsync();
         }
     }
 }

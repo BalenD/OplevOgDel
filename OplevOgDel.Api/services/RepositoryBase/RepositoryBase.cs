@@ -37,7 +37,7 @@ namespace OplevOgDel.Api.Services.RepositoryBase
             return await _context.Set<T>().Where(expr).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> Saveasync()
+        public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;
         }
@@ -45,6 +45,11 @@ namespace OplevOgDel.Api.Services.RepositoryBase
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+        }
+
+        public void DeleteMany(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
         }
     }
 }
