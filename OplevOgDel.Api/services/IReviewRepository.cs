@@ -8,7 +8,7 @@ namespace OplevOgDel.Api.Services
 {
     public interface IReviewRepository : IRepositoryBase<Review>
     {
-        Task<IEnumerable<Review>> GetAllReviews(Guid experienceId);
-        Task<Review> GetAReview(Guid id);
+        Task<IEnumerable<Review>> GetAllReviewsAsync(Guid experienceId);
+        Task<Review> GetAReviewAsync(Guid id);
     }
 }

@@ -16,7 +16,7 @@ namespace OplevOgDel.Api.Services
 
         }
 
-        public async Task<Profile> GetAProfile(Guid id)
+        public async Task<Profile> GetAProfileAsync(Guid id)
         {
             return await _context.Profiles.Where(p => p.Id == id)
                                             .Include(p => p.ListOfExps)

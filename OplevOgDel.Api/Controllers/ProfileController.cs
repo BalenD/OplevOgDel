@@ -28,7 +28,7 @@ namespace OplevOgDel.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneProfile([FromRoute] Guid id)
         {
-            var foundProfile = await _profileRepository.GetAProfile(id);
+            var foundProfile = await _profileRepository.GetAProfileAsync(id);
 
             if (foundProfile == null)
             {

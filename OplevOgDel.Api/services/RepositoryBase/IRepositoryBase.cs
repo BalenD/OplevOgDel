@@ -12,6 +12,7 @@ namespace OplevOgDel.Api.Services.RepositoryBase
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<bool> Saveasync();
+        void DeleteMany(IEnumerable<T> entities);
+        Task<bool> SaveAsync();
     }
 }
