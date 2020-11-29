@@ -24,8 +24,9 @@ namespace OplevOgDel.Api.Controllers
     /// The controller that handles all API calls to /api/account
     /// </summary>
     [Route("api/account")]
-    [ApiController]
+    [Produces("application/json")]
     [AllowAnonymous]
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IUserRepository _context;
@@ -118,11 +119,12 @@ namespace OplevOgDel.Api.Controllers
         /// <summary>
         /// Registers a new user
         /// </summary>
-        /// <param name="newUser"></param>
-        /// <returns></returns>
+        /// <param name="newUser">User to register</param>
+        /// <response code="204">Successfully registered</response>
+        /// <response code="500">Problem occured during registration</response>   
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto newUser)
         {
             // hash the password using bcrypt

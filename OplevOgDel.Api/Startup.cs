@@ -38,23 +38,31 @@ namespace OplevOgDel.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // add DB connection string
             var connectionString = Configuration.GetConnectionString("OplevOgDelDb");
+            // create a db connection for EF to use using the connection string
             services.AddDbContext<OplevOgDelDbContext>(x => x.UseSqlServer(connectionString, opt => opt.EnableRetryOnFailure()));
 
+            // initialize auto mapper library
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // initialize kisslogger library
             services.AddScoped((context) =>
             {
                 return Logger.Factory.Get();
             });
 
+            // configured our controllers to ignore reference loops when converting object to json
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            // get options from appsettings.json initialized into options classes
             swaggerOptions = Configuration.GetSection(SwaggerOptions.Swagger).Get<SwaggerOptions>();
             secretsOptions = Configuration.GetSection(SecretOptions.Secret).Get<SecretOptions>();
 
+            // configure and set up swagger documentation generation
             services.AddSwaggerGen(c => 
             {
                 c.SwaggerDoc(swaggerOptions.Version, new OpenApiInfo
@@ -77,11 +85,13 @@ namespace OplevOgDel.Api
 
                 });
 
+                // tell it to use our XML documentation on the code files
                 var filepath = Path.Combine(AppContext.BaseDirectory, "OplevOgDel.Api.xml");
                 c.IncludeXmlComments(filepath);
 
             });
 
+            // add our repository and configuration options classes to the dependency injection container
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
@@ -93,8 +103,10 @@ namespace OplevOgDel.Api
             services.Configure<FileUploadOptions>(Configuration.GetSection(FileUploadOptions.FileUpload));
             services.Configure<SecretOptions>(Configuration.GetSection(SecretOptions.Secret));
 
+            // configure authentication
             services.AddAuthentication(x =>
             {
+                // we want to use the bearer authentication scheme
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -125,9 +137,11 @@ namespace OplevOgDel.Api
             }
             else
             {
+                // if an error happens in production, return /error result
                 app.UseExceptionHandler("/error");
             }
 
+            // use swagger and swagger auto generated UI
             app.UseSwagger();
             app.UseSwaggerUI(options => 
             {
