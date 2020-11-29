@@ -10,8 +10,8 @@ namespace OplevOgDel.Api.Data.Models
     {
         [Required]
         public string Path { get; set; }
-        public Guid CreatorId { get; set; }
-        public Profile Creator { get; set; }
+        public Guid ProfileId { get; set; }
+        public Profile Profile { get; set; }
         public Guid ExperienceId { get; set; }
         public Experience Experience { get; set; }
     }

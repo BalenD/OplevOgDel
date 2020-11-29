@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OplevOgDel.Api.Data.Models;
 using System;
+using BC = BCrypt.Net.BCrypt;
 
 namespace OplevOgDel.Api.Data
 {
@@ -66,6 +67,15 @@ namespace OplevOgDel.Api.Data
                 .WithMany(p => p.ExperienceReports)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //modelBuilder.Entity<User>()
+            //    .HasOne(x => x.Profile)
+            //    .WithOne(x => x.User);
+
+            // Configure Enums
+            modelBuilder.Entity<Profile>()
+                .Property(x => x.Gender)
+                .HasConversion<string>();
+
             modelBuilder.Entity<Picture>()
                 .HasOne(p => p.Creator)
                 .WithMany(j => j.Pictures)
@@ -75,6 +85,11 @@ namespace OplevOgDel.Api.Data
                 .HasOne(p => p.Experience)
                 .WithMany(j => j.Pictures)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Adding indexes and cluster
+            modelBuilder.Entity<Experience>()
+                .HasIndex(x => new { x.City, x.Name });
+
 
             // SEED DATA
 
@@ -111,7 +126,7 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("85416f64-0f0e-4b8d-8687-4f3b9cc6b40f"),
                     Username = "admin",
                     Password = "password",
-                    Email = "admin@admin.dk"
+                    Email = "admin@admin.dk",
                 });
 
             // USER SEED DATA
@@ -121,24 +136,30 @@ namespace OplevOgDel.Api.Data
                 {
                     Id = Guid.Parse("5376bf6f-3b8c-443c-8c17-28071e8fd1ed"),
                     Username = "user1",
-                    Password = "password",
-                    Email = "user1@user.dk"
+                    Password = BC.HashPassword("password"),
+                    Email = "user1@user.dk",
+                    Role = "Admin",
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 // USER 2
                 new User()
                 {
                     Id = Guid.Parse("fa303d07-af85-41c7-8455-29fd9ae6bc9e"),
                     Username = "user2",
-                    Password = "password",
-                    Email = "user2@user.dk"
+                    Password = BC.HashPassword("password"),
+                    Email = "user2@user.dk",
+                    Role = "User",
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 },
                 // USER 3
                 new User()
                 {
                     Id = Guid.Parse("53e881e9-1b7a-461f-a286-48476deb343d"),
                     Username = "user3",
-                    Password = "password",
-                    Email = "user3@user.dk"
+                    Password = BC.HashPassword("password"),
+                    Email = "user3@user.dk",
+                    Role = "User",
+                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43")
                 });
 
             // PROFILE SEED DATA
@@ -153,7 +174,6 @@ namespace OplevOgDel.Api.Data
                     Birthday = DateTime.Parse("15/06/1992"),
                     Age = 28,
                     City = "København",
-                    UserId = Guid.Parse("5376bf6f-3b8c-443c-8c17-28071e8fd1ed")
                 },
                 // USER 2
                 new Profile()
@@ -165,7 +185,6 @@ namespace OplevOgDel.Api.Data
                     Birthday = DateTime.Parse("21/08/1998"),
                     Age = 22,
                     City = "Humlebæk",
-                    UserId = Guid.Parse("fa303d07-af85-41c7-8455-29fd9ae6bc9e")
                 },
                 // USER 3
                 new Profile()
@@ -177,7 +196,6 @@ namespace OplevOgDel.Api.Data
                     Birthday = DateTime.Parse("02/08/1995"),
                     Age = 25,
                     City = "Ballerup",
-                    UserId = Guid.Parse("53e881e9-1b7a-461f-a286-48476deb343d")
                 });
 
             // EXPCATEGORY SEED DATA

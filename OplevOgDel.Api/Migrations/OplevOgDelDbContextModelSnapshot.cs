@@ -157,6 +157,8 @@ namespace OplevOgDel.Api.Migrations
 
                     b.HasIndex("ProfileId");
 
+                    b.HasIndex("City", "Name");
+
                     b.ToTable("Experiences");
 
                     b.HasData(
@@ -524,8 +526,9 @@ namespace OplevOgDel.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -538,12 +541,7 @@ namespace OplevOgDel.Api.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Profiles");
 
@@ -556,10 +554,9 @@ namespace OplevOgDel.Api.Migrations
                             City = "København",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Jens",
-                            Gender = 0,
+                            Gender = "Male",
                             IsDeleted = false,
-                            LastName = "Olesen",
-                            UserId = new Guid("5376bf6f-3b8c-443c-8c17-28071e8fd1ed")
+                            LastName = "Olesen"
                         },
                         new
                         {
@@ -569,10 +566,9 @@ namespace OplevOgDel.Api.Migrations
                             City = "Humlebæk",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Annita",
-                            Gender = 1,
+                            Gender = "Female",
                             IsDeleted = false,
-                            LastName = "Bech Jensen",
-                            UserId = new Guid("fa303d07-af85-41c7-8455-29fd9ae6bc9e")
+                            LastName = "Bech Jensen"
                         },
                         new
                         {
@@ -582,10 +578,9 @@ namespace OplevOgDel.Api.Migrations
                             City = "Ballerup",
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Frederik",
-                            Gender = 0,
+                            Gender = "Male",
                             IsDeleted = false,
-                            LastName = "Skov Laursen",
-                            UserId = new Guid("53e881e9-1b7a-461f-a286-48476deb343d")
+                            LastName = "Skov Laursen"
                         });
                 });
 
@@ -799,6 +794,7 @@ namespace OplevOgDel.Api.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -808,12 +804,23 @@ namespace OplevOgDel.Api.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("AdminUsers");
 
@@ -824,7 +831,9 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user1@user.dk",
                             IsDeleted = false,
-                            Password = "password",
+                            Password = "$2a$11$lR8KHHTUwwgGA3sC0kEmdulUV8EqCfdlZUMDDaX3JB0nvnXxy0jJa",
+                            ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
+                            Role = "Admin",
                             Username = "user1"
                         },
                         new
@@ -833,7 +842,9 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user2@user.dk",
                             IsDeleted = false,
-                            Password = "password",
+                            Password = "$2a$11$SWG9ShlyIH1bhGCmdoaqqeUpCQnze08pnMt.9hQkJ5PrXS9k/0qvu",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad"),
+                            Role = "User",
                             Username = "user2"
                         },
                         new
@@ -842,7 +853,9 @@ namespace OplevOgDel.Api.Migrations
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user3@user.dk",
                             IsDeleted = false,
-                            Password = "password",
+                            Password = "$2a$11$6xYb0RPj7HWp7Wc1frTIA.5XQd7nUwqouQwMgrZz43e/ko95ibm.S",
+                            ProfileId = new Guid("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
+                            Role = "User",
                             Username = "user3"
                         });
                 });
@@ -934,17 +947,6 @@ namespace OplevOgDel.Api.Migrations
                     b.Navigation("Experience");
                 });
 
-            modelBuilder.Entity("OplevOgDel.Api.Data.Models.Profile", b =>
-                {
-                    b.HasOne("OplevOgDel.Api.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("OplevOgDel.Api.Data.Models.Rating", b =>
                 {
                     b.HasOne("OplevOgDel.Api.Data.Models.Experience", "Experience")
@@ -1000,6 +1002,15 @@ namespace OplevOgDel.Api.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("OplevOgDel.Api.Data.Models.User", b =>
+                {
+                    b.HasOne("OplevOgDel.Api.Data.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId");
+
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("OplevOgDel.Api.Data.Models.Experience", b =>

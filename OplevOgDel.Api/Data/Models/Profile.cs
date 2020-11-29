@@ -28,8 +28,6 @@ namespace OplevOgDel.Api.Data.Models
         //[Required]
         //[StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Address Must be Less than 500 characters and more than 5 characters")]
         //public string Address { get; set; }
-        public Guid UserId { get; set; }
-        public User User { get; set; }
         public ICollection<ListOfExps> ListOfExps { get; set; }
         public ICollection<Rating> Ratings { get; set; }
         public ICollection<Review> Reviews { get; set; }
