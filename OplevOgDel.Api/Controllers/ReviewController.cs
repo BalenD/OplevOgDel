@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using OplevOgDel.Api.Models.Dto;
 using OplevOgDel.Api.Helpers;
 using System.Linq;
+using OplevOgDel.Api.Models.Dto.RequestDto;
 
 namespace OplevOgDel.Api.Controllers
 {
@@ -20,7 +21,7 @@ namespace OplevOgDel.Api.Controllers
     /// </summary>
     [Route("api/experiences/{experienceId}/reviews")]
     [Produces("application/json")]
-    [Authorize(Roles = Roles.User)]
+    [Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class ReviewController : ControllerBase
     {
@@ -36,15 +37,17 @@ namespace OplevOgDel.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the reviews that belong to an experience
+        /// 
         /// </summary>
+        /// <param name="req">Query to perform sorting, filtering, searching and pagination</param>
+        /// <param name="experienceId">Id of experience to return reviews of</param>
         /// <response code="200">Returns all reviews that belong to an experience</response>
         [HttpGet]
-        //[ProducesResponseType(typeof(IEnumerable<>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllReviews([FromRoute] Guid experienceId)
+        [ProducesResponseType(typeof(IEnumerable<ViewReviewDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllReviews([FromQuery] ReviewRequestParametersDto req, [FromRoute] Guid experienceId)
         {
             // get all the reviews that belong to an experience
-            var allReviews = await _reviewRepository.GetAllReviewsAsync(experienceId);
+            var allReviews = await _reviewRepository.GetAllReviewsAsync(req, experienceId);
             // map it to the view DTO and return
             var listToReturn = _mapper.Map<IEnumerable<ViewReviewDto>>(allReviews);
             return Ok(listToReturn);
@@ -126,7 +129,7 @@ namespace OplevOgDel.Api.Controllers
                 return StatusCode(500, err);
             }
 
-            return CreatedAtAction(nameof(GetOneReview), new { experienceId, id = reviewToAdd.Id }, _mapper.Map<ViewReviewDto>(reviewToAdd));
+            return CreatedAtAction(nameof(GetOneReview), new { experienceId, id = reviewToAdd.Id }, _mapper.Map<ViewOneReviewDto>(reviewToAdd));
         }
 
         /// <summary>
@@ -145,16 +148,21 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="id">Id of experience to update</param>
         /// <param name="updatedReview">new review object to update</param>
         /// <response code="204">Successfully updated an experience</response>
+        /// <response code="401">Unauthorized to perform this action</response>
         /// <response code="404">No review was founde</response>
         /// <response code="500">Problem occured during update</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateOneReview([FromRoute] Guid experienceId,[FromRoute] Guid id, [FromBody] EditReviewDto updatedReview)
         {
-            // find the review to update, if review does not exist return error
+
+            // find the review to update
             var reviewFromDb = await _reviewRepository.GetAReviewAsync(id);
+
+            // if review does not exist return error
             if (reviewFromDb == null)
             {
                 var err = new ErrorObject()
@@ -167,6 +175,24 @@ namespace OplevOgDel.Api.Controllers
                 };
                 return NotFound(err);
             }
+
+            // if you are a user, you can only update your own review
+            if (User.IsInRole(Roles.User))
+            {
+                var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+                if (Guid.Parse(profileId) != reviewFromDb.ProfileId)
+                {
+                    var err = new ErrorObject()
+                    {
+                        Method = "PUT",
+                        At = $"/api/experiences/{experienceId}/reviews/{id}",
+                        StatusCode = 401,
+                        Error = "Unauthorized to perform this action"
+                    };
+                    return Unauthorized(err);
+                }
+            }
+            
             // map the changes to the found review object
             _mapper.Map(updatedReview, reviewFromDb);
 
@@ -196,22 +222,25 @@ namespace OplevOgDel.Api.Controllers
         /// </summary>
         /// <param name="experienceId">Id of the experience which the review belongs to</param>
         /// <param name="id">Id of review to delete</param>
-        /// <response code="200">Successfully returned the deleted experience</response>
+        /// <response code="204">Successfully returned the deleted experience</response>
+        /// <response code="401">Unauthorized to perform this action</response>
         /// <response code="404">No review was found</response>
         /// <response code="500">Problem occured during update</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ViewOneReviewDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteOneReview([FromRoute] Guid experienceId,[FromRoute] Guid id)
         {
 
-            // f ind the review to delete, if no review is found return error
+            // find the review to delete
             var reviewToDelete = await _reviewRepository.GetFirstByExpressionAsync(x => x.Id == id);
-            
+
+            // if no review is found return error
             if (reviewToDelete == null)
             {
-                var err = new ErrorObject() 
+                var err = new ErrorObject()
                 {
                     Method = "DELETE",
                     At = $"*/api/experiences/{experienceId}/reviews/{id}",
@@ -220,6 +249,25 @@ namespace OplevOgDel.Api.Controllers
                 };
                 return NotFound(err);
             }
+
+            // if you are a user, you can only delete your own review
+            if (User.IsInRole(Roles.User))
+            {
+                var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+                if (Guid.Parse(profileId) != reviewToDelete.ProfileId)
+                {
+                    var err = new ErrorObject()
+                    {
+                        Method = "DELETE",
+                        At = $"/api/experiences/{experienceId}/reviews/{id}",
+                        StatusCode = 401,
+                        Error = "Unauthorized to perform this action"
+                    };
+                    return Unauthorized(err);
+                }
+            }
+
+           
 
             // delete the found review
             _reviewRepository.Delete(reviewToDelete);
@@ -238,8 +286,7 @@ namespace OplevOgDel.Api.Controllers
                 return StatusCode(500, err);
             }
 
-            // map the deleted review and return it
-            return Ok(_mapper.Map<ViewOneReviewDto>(reviewToDelete));
+            return NoContent();
         }
     }
 }

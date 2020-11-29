@@ -1,5 +1,8 @@
 ﻿namespace OplevOgDel.Api.Models.Configuration
 {
+    /// <summary>
+    /// a DTO (Data transfer object) for swagger options from appsettings.json
+    /// </summary>
     public class SwaggerOptions
     {
         public const string Swagger = "SwaggerOptions";
