@@ -29,16 +29,7 @@
         </div>
     </div>
 
-    @*<h4>Navn</h4>
-        <p>@Model.Profile.FirstName @Model.Profile.LastName</p>
-
-        <h4>By</h4>
-        <p>@Model.Profile.City</p>*@
-
-    @*<p>@Model.SelectedListOfExps.Name</p>
-        <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>*@
-
-    <div class="row">
+    <div class="divrow">
         @if (Model.Profile.ListOfExps.Count != 0)
         {
             @foreach (var list in Model.Profile.ListOfExps)
