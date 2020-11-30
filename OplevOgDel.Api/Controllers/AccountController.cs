@@ -93,9 +93,8 @@ namespace OplevOgDel.Api.Controllers
                 // add claims (strings of information along with token)
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    
                     new Claim("userId", foundUser.Id.ToString()),
-                    new Claim("profileId", foundUser.Profile.Id.ToString()),
+                    new Claim("username", foundUser.Username),
                     new Claim(ClaimTypes.Role, foundUser.Role),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
@@ -108,6 +107,15 @@ namespace OplevOgDel.Api.Controllers
                 Audience = _secretsOptions.Audience,
 
             };
+            
+            if (foundUser.Role == Roles.User)
+            {
+                tokenDescriptor.Subject.AddClaims(new Claim[]
+                {
+                    new Claim("profileId", foundUser.Profile.Id.ToString()),
+                    new Claim("firstName", foundUser.Profile.FirstName),
+                });
+            }
 
             // create the token, turn it into a string and return it
             var token = tokenHandler.CreateToken(tokenDescriptor);
