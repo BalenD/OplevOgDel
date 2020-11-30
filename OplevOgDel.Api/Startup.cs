@@ -91,6 +91,11 @@ namespace OplevOgDel.Api
 
             });
 
+            services.ConfigureSwaggerGen(c =>
+            {
+                c.CustomSchemaIds(x => x.FullName);
+            });
+
             // add our repository and configuration options classes to the dependency injection container
             services.AddScoped<IExperienceRepository, ExperienceRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
