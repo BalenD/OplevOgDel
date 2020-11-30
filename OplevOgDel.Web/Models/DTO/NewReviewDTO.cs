@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OplevOgDel.Web.Models.DTO
+namespace OplevOgDel.Web.Models.Dto
 {
-    public class NewReviewDTO
+    public class NewReviewDto
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Guid ProfileId { get; set; }
-        public ProfileDTO Profile { get; set; }
-        public List<ReviewReportDTO> ReviewReports { get; set; }
+        public ProfileDto Profile { get; set; }
+        public List<ReviewReportDto> ReviewReports { get; set; }
     }
 }

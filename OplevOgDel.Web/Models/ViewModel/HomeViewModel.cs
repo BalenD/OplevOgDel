@@ -1,4 +1,4 @@
-﻿using OplevOgDel.Web.Models.DTO;
+﻿using OplevOgDel.Web.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace OplevOgDel.Web.Models.ViewModel
 {
     public class HomeViewModel
     {
-        public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
-        public List<ExperienceDTO> Experiences { get; set; } = new List<ExperienceDTO>();
+        public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
+        public List<ExperienceDto> Experiences { get; set; } = new List<ExperienceDto>();
     }
 }

@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OplevOgDel.Web.Models.DTO
+namespace OplevOgDel.Web.Models.Dto
 {
-    public class ListOfExpsExperienceDTO
+    public class ListOfExpsExperienceDto
     {
         public Guid Id { get; set; }
         public Guid ListOfExpsId { get; set; }
-        public ListOfExpsDTO ListOfExps { get; set; }
+        public ListOfExpsDto ListOfExps { get; set; }
         public Guid ExperienceId { get; set; }
-        public ExperienceDTO Experience { get; set; }
+        public ExperienceDto Experience { get; set; }
     }
 }

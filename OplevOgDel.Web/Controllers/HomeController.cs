@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 
 namespace OplevOgDel.Web.Controllers
@@ -40,14 +40,14 @@ namespace OplevOgDel.Web.Controllers
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
                     var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    viewModel.Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
+                    viewModel.Categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
                 }
             
                 HttpResponseMessage experiencesResponse = await client.GetAsync(experiencesEndPoint);
                 if (experiencesResponse.IsSuccessStatusCode)
                 {
                     var result = await experiencesResponse.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDTO>>(result);
+                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDto>>(result);
                 }
             }
             return View(viewModel);

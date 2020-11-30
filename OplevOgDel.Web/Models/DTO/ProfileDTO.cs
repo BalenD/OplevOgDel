@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace OplevOgDel.Web.Models.DTO
+namespace OplevOgDel.Web.Models.Dto
 {
-    public class ProfileDTO
+    public class ProfileDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string City { get; set; }
-        public List<ListOfExpsDTO> ListOfExps { get; set; } = new List<ListOfExpsDTO>();
+        public List<ListOfExpsDto> ListOfExps { get; set; } = new List<ListOfExpsDto>();
     }
 }

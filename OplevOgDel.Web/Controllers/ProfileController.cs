@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Controllers.Base;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Profile = JsonConvert.DeserializeObject<ProfileDTO>(result);
+                    viewModel.Profile = JsonConvert.DeserializeObject<ProfileDto>(result);
                 }
             }
 
