@@ -98,11 +98,11 @@ namespace OplevOgDel.Api.Controllers
         /// Delete experience reports by experience id
         /// </summary>
         /// <param name="id">Id of the experience</param>
-        /// <response code="200">Successfully deleted reports</response>
+        /// <response code="204">Successfully deleted reports</response>
         /// <response code="404">No expereince was found</response>
         /// <response code="500">Problem occured during deletion</response>
         [HttpDelete("experience/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteReportsForExperience(Guid id)
@@ -144,11 +144,11 @@ namespace OplevOgDel.Api.Controllers
         /// Delete review reports by review id
         /// </summary>
         /// <param name="id">Id of the experience</param>
-        /// <response code="200">Successfully deleted reports</response>
+        /// <response code="204">Successfully deleted reports</response>
         /// <response code="404">No review was found</response>
         /// <response code="500">Problem occured during deletion</response>
         [HttpDelete("review/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteReportsForReview(Guid id)

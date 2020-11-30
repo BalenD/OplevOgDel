@@ -6,11 +6,24 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Helpers
 {
+    /// <summary>
+    /// Class that creates a paged list
+    /// </summary>
+    /// <typeparam name="T">Type of paged list</typeparam>
     public class PaginatedList<T> : List<T>
     {
+        /// <summary>
+        /// Which page you are on
+        /// </summary>
         public int PageIndex { get; set; }
+        /// <summary>
+        /// Total amount of pages
+        /// </summary>
         public int TotalPages { get; set; }
 
+        /// <summary>
+        /// Whether the page has a previous page
+        /// </summary>
         public bool HasPreviousPage
         {
             get
@@ -19,6 +32,9 @@ namespace OplevOgDel.Api.Helpers
             }
         }
 
+        /// <summary>
+        /// Whether the page has a next page
+        /// </summary>
         public bool HasNextPage
         {
             get
@@ -30,6 +46,7 @@ namespace OplevOgDel.Api.Helpers
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
+            // calculated the total pages
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             this.AddRange(items);
         }

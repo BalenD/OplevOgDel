@@ -21,8 +21,9 @@ namespace OplevOgDel.Api.Controllers
     /// <summary>
     /// The controller that handles all aPI calls to /api/experiences/:experienceId/pictures
     /// </summary>
-    [Authorize(Roles = Roles.User)]
     [Route("api/experiences/{experienceId}/pictures/")]
+    [Produces("application/json")]
+    [Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class PictureController : ControllerBase
     {
@@ -41,13 +42,11 @@ namespace OplevOgDel.Api.Controllers
             _mapper = mapper;
         }
         /// <summary>
-        /// Gets a JSON list of all the images with the name of the picture on local disk
+        /// Gets a JSON list of all the pictures with the name of the picture on local disk
         /// </summary>
-        /// <param name="experienceId">The id of the experience attached to the pictures</param>
-        /// <returns>A  JSON list of picture names</returns>
+        /// <param name="experienceId">Id of the experience to get the pictures of</param>
         /// <response code="200">Returns all the picture objects</response>
         [HttpGet]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<ViewPictureDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPictures([FromRoute] Guid experienceId)
         {
@@ -60,7 +59,7 @@ namespace OplevOgDel.Api.Controllers
         /// Gets the actual picture on the disk
         /// </summary>
         /// <param name="experienceId">Id of the experience which the picture belongs to</param>
-        /// <param name="name">name of the picture on disk to get</param>
+        /// <param name="name">Name of the picture on disk to get</param>
         /// <response code="200">Returns the picture</response>
         /// <response code="500">Problem occured during retrieval</response>
         [HttpGet("{name}")]
@@ -97,8 +96,8 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="experienceId">Id of the experience to add it to</param>
         /// <param name="files">One or more pictures to add</param>
         /// <response code="204">Successfully added the picture(s)</response>
-        /// <response code="400">If there is less than 1 or more than 3 files</response>
-        /// <response code="404">If the experience does not exist</response>
+        /// <response code="400">There is less than 1 or more than 3 files</response>
+        /// <response code="404">The experience does not exist</response>
         /// <response code="500">Problem occured during creation</response> 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -141,9 +140,6 @@ namespace OplevOgDel.Api.Controllers
                 return BadRequest(err);
             }
 
-            // retrieve the id of the user adding the pictures
-            var profileId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
-
             foreach (var file in files)
             {
                 var path = Path.Combine(_fileOptions.Path, $"{Guid.NewGuid()}_{DateTime.UtcNow.Ticks}.jpg");
@@ -154,7 +150,6 @@ namespace OplevOgDel.Api.Controllers
                     Path = path,
                     CreatedOn = DateTime.UtcNow,
                     ExperienceId = experienceId,
-                    ProfileId = Guid.Parse(profileId)
                     
                 });
 
@@ -186,29 +181,37 @@ namespace OplevOgDel.Api.Controllers
         }
 
         /// <summary>
-        /// Deletes an image
+        /// Delete a picture
         /// </summary>
-        /// <param name="id">ID of the image to delete</param>
-        /// <returns>the deleted images DB object</returns>'
-        /// <response code="200">Successfully returned the deleted picture object</response>
-        /// <response code="404">If no picture object is found</response>
-        /// <response code="500">If a problem occurs during deletion</response>
+        /// <param name="experienceId">Id of the experience which the picture belongs to</param>
+        /// <param name="id">Id of the picture to delete</param>
+        /// <response code="204">Successfully deleted picture</response>
+        /// <response code="404">No picture object is found</response>
+        /// <response code="500">Problem occured during deletion</response>
         [HttpDelete("{id}")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(ViewPictureDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteOnePicture([FromRoute] Guid id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteOnePicture([FromRoute] Guid experienceId,[FromRoute] Guid id)
         {
+
             var pictureToDelete = await _pictureRepository.GetFirstByExpressionAsync(x => x.Id == id);
             
             if (pictureToDelete == null)
             {
-                return NotFound();
+                var err = new ErrorObject()
+                {
+                    Method = "DELETE",
+                    At = $"/api/experiences/{experienceId}/pictures/{id}",
+                    StatusCode = 404,
+                    Error = "Could not find picture to delete"
+                };
+                return NotFound(err);
             }
 
             var path = Path.Combine(_fileOptions.Path, pictureToDelete.Path);
 
+            // if the file exists, then delete it from disk
             if (System.IO.File.Exists(path))
             {
                 try
@@ -217,20 +220,37 @@ namespace OplevOgDel.Api.Controllers
                 }
                 catch (Exception)
                 {
-                    _logger.Error("Exception thrown when trying to delete a picture");
-                    return Problem("Failed deleting image");
+                    var errMsg = "Error on deleton";
+                    var err = new ErrorObject()
+                    {
+                        Method = "DELETE",
+                        At = $"/api/experiences/{experienceId}/pictures/{id}",
+                        StatusCode = 500,
+                        Error = errMsg
+                    };
+                    _logger.Error(errMsg);
+                    return StatusCode(500, err);
                 }
                 
             }
 
+            // delete the picture object from DB too
             _pictureRepository.Delete(pictureToDelete);
 
             if (!await _pictureRepository.SaveAsync())
             {
-                _logger.Error("Failed to delete picture");
-                return Problem();
+                var errMsg = "Error on deleton";
+                var err = new ErrorObject()
+                {
+                    Method = "DELETE",
+                    At = $"/api/experiences/{experienceId}/pictures/{id}",
+                    StatusCode = 500,
+                    Error = errMsg
+                };
+                _logger.Error(errMsg);
+                return StatusCode(500, err);
             }
-            return Ok(pictureToDelete);
+            return NoContent();
         }
     }
 }

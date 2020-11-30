@@ -21,7 +21,7 @@ namespace OplevOgDel.Api.Controllers
     /// </summary>
     [Route("api/experiences")]
     [Produces("application/json")]
-    [Authorize(Roles = Roles.User)]
+    [Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class ExperienceController : ControllerBase
     {
@@ -39,11 +39,12 @@ namespace OplevOgDel.Api.Controllers
         /// <summary>
         /// Get all the experiences
         /// </summary>
+        /// <param name="req">Query to perform sorting, filtering, searching and pagination</param>
         /// <response code="200">Returns all the experiences</response>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<ViewExperienceDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllExperiences([FromQuery] RequestParametersDto req)
+        public async Task<IActionResult> GetAllExperiences([FromQuery] ExperienceRequestParametersDto req)
         {
             // get all experiences from the database
             var allExperiences = await _experienceRepository.GetAllAsync(req);
@@ -132,7 +133,7 @@ namespace OplevOgDel.Api.Controllers
             // add the necessary relations for creation
             exprToAdd.Id = Guid.NewGuid();
             exprToAdd.Category = category;
-            var profileId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+            var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
             exprToAdd.ProfileId = Guid.Parse(profileId);
             exprToAdd.CreatedOn = DateTime.Now;
 
@@ -172,28 +173,49 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="id">Id of experience to update</param>
         /// <param name="updatedExpr">new experience object to update</param>
         /// <response code="204">Successfully updated an experience</response>
+        /// <response code="401">Unauthorized to perform this action</response>
         /// <response code="404">Can't find the experience to update</response>
         /// <response code="500">problem occuured during update</response>
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateOneExperience([FromRoute] Guid id, [FromBody] EditExperienceDto updatedExpr)
         {
             
-            // retrieve user to update, if user does not exist return error
+            // retrieve user to update, 
             var exprFromDb = await _experienceRepository.GetFirstByExpressionAsync(x => x.Id == id);
+
+            // if user does not exist return error
             if (exprFromDb == null)
             {
                 var err = new ErrorObject()
                 {
                     Method = "PUT",
-                    At = $"/api/Experiences/{id}",
+                    At = $"/api/experiences/{id}",
                     StatusCode = 404,
                     Error = "Could not find experience to edit"
 
                 };
                 return NotFound(err);
+            }
+
+            // if you are a user, you can only update your own experience
+            if (User.IsInRole(Roles.User))
+            {
+                var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+                if (Guid.Parse(profileId) != exprFromDb.ProfileId)
+                {
+                    var err = new ErrorObject()
+                    {
+                        Method = "PUT",
+                        At = $"/api/experiences/{id}",
+                        StatusCode = 401,
+                        Error = "Unauthorized to perform this action"
+                    };
+                    return Unauthorized(err);
+                }
             }
 
             // map the changes to the entity from the database
@@ -228,6 +250,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="404">No experience is found</response>
         /// <response code="500">Problem occured during deletion</response>
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]

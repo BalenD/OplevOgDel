@@ -1,35 +1,39 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-using KissLog;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OplevOgDel.Api.Data.Models;
+using OplevOgDel.Api.Models.Dto;
 using OplevOgDel.Api.Services;
 
 namespace OplevOgDel.Api.Controllers
 {
+    /// <summary>
+    /// The controller that handles all aPI calls to /api/categories
+    /// </summary>
     [Route("api/categories")]
+    [Produces("application/json")]
+    [Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ILogger _logger;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper;
 
-        public CategoryController(ILogger logger, ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _logger = logger;
             _categoryRepository = categoryRepository;
-            _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all the categories
+        /// </summary>
+        /// <response code="200">Returns all the categories</response>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Category>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()
         {
             var allCategories = await _categoryRepository.GetAllAsync();
-
-            if (allCategories == null)
-            {
-                return NotFound();
-            }
             return Ok(allCategories);
         }
     }

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Api.Services
 {
+    /// <summary>
+    /// Implementation for the repository handling "reviewreport" table calls
+    /// </summary>
     public class ReviewReportRepository : RepositoryBase<ReviewReport>, IReviewReportRepository
     {
         public ReviewReportRepository(OplevOgDelDbContext context) : base (context)
@@ -16,6 +19,10 @@ namespace OplevOgDel.Api.Services
 
         }
 
+        /// <summary>
+        /// Get the reports of a review by id
+        /// </summary>
+        /// <param name="reviewId">Id of the review to get reports for</param>
         public async Task<IEnumerable<ReviewReport>> GetReportsForReview(Guid reviewId)
         {
             return await _context.ReviewReports.Where(x => x.ReviewId == reviewId).ToListAsync();
