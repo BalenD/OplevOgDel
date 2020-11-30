@@ -435,10 +435,6 @@ label {
     grid-auto-flow: dense;
 }
 
-.j {
-    color: red !important;
-}
-
 .grid-item {
     position: relative;
     color: black;
@@ -502,7 +498,7 @@ label {
 
 .page {
     position: relative;
-    top: 100px;
+    top: 200px;
 }
 
 .info {
@@ -515,6 +511,8 @@ label {
 }
 
 .userInfo {
+    position: relative;
+    left: 20px;
     float: left;
 }
 
@@ -528,4 +526,21 @@ label {
 
 .user {
     width: 200px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 20px;
+}
+
+.row {
+    position: absolute;
+    top: 300px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
