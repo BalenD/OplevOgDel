@@ -4,6 +4,32 @@
     ViewData["Title"] = "Reports";
 }
 
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Logget ind</p>
+    <p>@User.Identity.Name</p>
+}
+else
+{
+    <p>Ikke logget ind</p>
+}
+
+
+@if (User.IsInRole("User"))
+{
+    <p>User rolle</p>
+
+}
+else if (User.IsInRole("Admin"))
+{
+    <p>Admin rolle</p>
+
+}
+else
+{
+    <p>Ingen rolle</p>
+}
+
 <h1>Rapporter</h1>
 
 <table class="table">
@@ -14,19 +40,20 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Experiences) {
-        <tr>
-            <td>
-                @Html.ActionLink(@item.Name, "ManageExperience", new { id = item.Id  })
-                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
+        @foreach (var item in Model.Experiences)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(@item.Name, "ManageExperience", new { id = item.Id })
+                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
 
-                
-            <td>
-                *W.I.P*
-            </td>
-        </tr>
-}
+
+                <td>
+                    *W.I.P*
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

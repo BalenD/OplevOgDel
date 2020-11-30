@@ -6,6 +6,7 @@
         public string API { get; set; }
         public string Experiences { get; set; }
         public string Reviews { get; set; }
+        public string Reports { get; set; }
         public string Categories { get; set; }
         public string Pictures { get; set; }
         public string Profiles { get; set; }
