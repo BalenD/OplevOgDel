@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OplevOgDel.Api.Data.Models;
+using OplevOgDel.Api.Data.Models.Enums;
+using OplevOgDel.Api.Models.Dto;
 using System;
 using BC = BCrypt.Net.BCrypt;
 
@@ -7,7 +9,7 @@ namespace OplevOgDel.Api.Data
 {
     public class OplevOgDelDbContext : DbContext
     {
-        public DbSet<User>  Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Rating> Ratings { get; set; }
@@ -37,54 +39,23 @@ namespace OplevOgDel.Api.Data
                 .WithMany(l => l.ListOfExpsExperiences)
                 .HasForeignKey(le => le.ExperienceId);
 
-            // One-to-many between Profile and ListOfExp
-            modelBuilder.Entity<ListOfExps>()
-                .HasOne(l => l.Creator)
-                .WithMany(p => p.ListOfExps)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // One-to-many between Profile and Rating
-            modelBuilder.Entity<Rating>()
-                .HasOne(r => r.Creator)
-                .WithMany(p => p.Ratings)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // One-to-many between Profile and Review
+            // Delete behavior between Profile and Review,
+            // to prevent cycles or multiple cascade paths.
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Creator)
                 .WithMany(p => p.Reviews)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // One-to-many between Profile and ReviewReport
-            modelBuilder.Entity<ReviewReport>()
+            // Set creator to null if creator is deleted
+            modelBuilder.Entity<Experience>()
                 .HasOne(r => r.Creator)
-                .WithMany(p => p.ReviewReports)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // One-to-many between Profile and ExperienceReport
-            modelBuilder.Entity<ExperienceReport>()
-                .HasOne(r => r.Creator)
-                .WithMany(p => p.ExperienceReports)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<User>()
-            //    .HasOne(x => x.Profile)
-            //    .WithOne(x => x.User);
+                .WithMany(p => p.Experiences)
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Configure Enums
             modelBuilder.Entity<Profile>()
                 .Property(x => x.Gender)
                 .HasConversion<string>();
-
-            modelBuilder.Entity<Picture>()
-                .HasOne(p => p.Creator)
-                .WithMany(j => j.Pictures)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Picture>()
-                .HasOne(p => p.Experience)
-                .WithMany(j => j.Pictures)
-                .OnDelete(DeleteBehavior.Restrict);
 
             // Adding indexes and cluster
             modelBuilder.Entity<Experience>()
@@ -93,14 +64,14 @@ namespace OplevOgDel.Api.Data
 
             // SEED DATA
 
-            // pICTURE SEED DATA
+            // PICTURE SEED DATA
             modelBuilder.Entity<Picture>().HasData(
                 new Picture() 
                 { 
                     Id = Guid.Parse("93E4F688-D9A0-4F8A-BC69-1D7F5A46101D"),
                     Path = "TestImage1",
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
-                    CreatorId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
 
                 new Picture()
@@ -108,7 +79,7 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("B393E49A-4097-4629-B15F-75FD9EDD99C1"),
                     Path = "TestImage2",
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
-                    CreatorId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
 
                 new Picture()
@@ -116,21 +87,21 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("052C9135-C787-4FC5-8E1D-64C20AEDA9BC"),
                     Path = "TestImage2",
                     ExperienceId = Guid.Parse("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
-                    CreatorId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
-                });
-
-            // ADMIN SEED DATA
-            modelBuilder.Entity<Administrator>().HasData(
-                new Administrator()
-                {
-                    Id = Guid.Parse("85416f64-0f0e-4b8d-8687-4f3b9cc6b40f"),
-                    Username = "admin",
-                    Password = "password",
-                    Email = "admin@admin.dk",
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 });
 
             // USER SEED DATA
             modelBuilder.Entity<User>().HasData(
+                // ADMIN 1
+                new User()
+                {
+                    Id = Guid.Parse("79539d93-2a2d-4600-abce-3f727e5cae7d"),
+                    Username = "admin1",
+                    Password = BC.HashPassword("password"),
+                    Email = "admin1@admin.dk",
+                    Role = Roles.Admin,
+                },
+
                 // USER 1
                 new User()
                 {
@@ -138,8 +109,8 @@ namespace OplevOgDel.Api.Data
                     Username = "user1",
                     Password = BC.HashPassword("password"),
                     Email = "user1@user.dk",
-                    Role = "Admin",
-                    ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
+                    Role = Roles.User,
+                    //ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
                 // USER 2
                 new User()
@@ -148,8 +119,8 @@ namespace OplevOgDel.Api.Data
                     Username = "user2",
                     Password = BC.HashPassword("password"),
                     Email = "user2@user.dk",
-                    Role = "User",
-                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                    Role = Roles.User,
+                    //ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 },
                 // USER 3
                 new User()
@@ -158,8 +129,8 @@ namespace OplevOgDel.Api.Data
                     Username = "user3",
                     Password = BC.HashPassword("password"),
                     Email = "user3@user.dk",
-                    Role = "User",
-                    ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43")
+                    Role = Roles.User,
+                    //ProfileId = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43")
                 });
 
             // PROFILE SEED DATA
@@ -170,10 +141,11 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205"),
                     FirstName = "Jens",
                     LastName = "Olesen",
-                    Gender = Models.Enums.Gender.Male,
+                    Gender = Gender.Male,
                     Birthday = DateTime.Parse("15/06/1992"),
                     Age = 28,
                     City = "København",
+                    UserId = Guid.Parse("5376bf6f-3b8c-443c-8c17-28071e8fd1ed")
                 },
                 // USER 2
                 new Profile()
@@ -181,10 +153,11 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad"),
                     FirstName = "Annita",
                     LastName = "Bech Jensen",
-                    Gender = Models.Enums.Gender.Female,
+                    Gender = Gender.Female,
                     Birthday = DateTime.Parse("21/08/1998"),
                     Age = 22,
                     City = "Humlebæk",
+                    UserId = Guid.Parse("fa303d07-af85-41c7-8455-29fd9ae6bc9e")
                 },
                 // USER 3
                 new Profile()
@@ -192,10 +165,11 @@ namespace OplevOgDel.Api.Data
                     Id = Guid.Parse("229f7d4f-ffcc-437d-b3ab-82a0096f9c43"),
                     FirstName = "Frederik",
                     LastName = "Skov Laursen",
-                    Gender = Models.Enums.Gender.Male,
+                    Gender = Gender.Male,
                     Birthday = DateTime.Parse("02/08/1995"),
                     Age = 25,
                     City = "Ballerup",
+                    UserId = Guid.Parse("53e881e9-1b7a-461f-a286-48476deb343d")
                 });
 
             // EXPCATEGORY SEED DATA

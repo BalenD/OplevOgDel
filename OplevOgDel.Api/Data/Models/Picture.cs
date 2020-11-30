@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    [Table("pictures")]
+    [Table("Pictures")]
     public class Picture : BaseModel
     {
         [Required]
