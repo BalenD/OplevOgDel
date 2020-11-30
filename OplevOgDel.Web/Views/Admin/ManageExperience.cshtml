@@ -1,0 +1,147 @@
+﻿@model OplevOgDel.Web.Models.ViewModel.ManageExperienceViewModel
+
+@{
+    ViewData["Title"] = "Rapport";
+}
+
+<h1>Oversigt for @Model.Name</h1>
+
+<div>
+    <h3>Navn</h3>
+    <p>@Model.Name</p>
+    <h3>Beskrivelse</h3>
+    <p>@Model.Description</p>
+    <h3>Kategori</h3>
+    <p>@Model.Category.Name</p>
+    <h3>By</h3>
+    <p>@Model.City</p>
+    <h3>Adresse</h3>
+    <p>@Model.Address</p>
+</div>
+
+<div>
+    <a class="btn btn-outline-success" asp-controller="Report" asp-action="DeleteReportsForExperience" asp-route-id="@Model.Id">Godkend oplevelse</a>
+    <a class="btn btn-outline-warning" asp-action="EditExperience" asp-route-id="@Model.Id">Ændre oplevelse</a>
+    <button class="btn btn-outline-danger">Fjern oplevelse</button>
+</div>
+
+<h2>Rapporter for oplevelsen</h2>
+@if (Model.ExperienceReports.Count == 0)
+{
+    <p>Ingen rapporter</p>
+}
+else
+{
+    <div class="accordion" id="accordionExperienceRapports">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne">
+                        Vis rapporter
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse" data-parent="#accordionExperienceRapports">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Bruger</th>
+                                <th>Rapport beskrivelse</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var report in Model.ExperienceReports)
+                            {
+                                <tr>
+                                    <td>
+                                        @report.Creator.FirstName @report.Creator.LastName
+                                    </td>
+                                    <td>
+                                        @report.Description
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<h2>Anmeldelser for oplevelsen med rapporter</h2>
+@if (Model.Reviews.Count == 0)
+{
+    <p>Ingen rapporter</p>
+}
+else
+{
+    <div class="accordion" id="accordionReviewsReports">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTwo">
+                        Vis rapporter
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordionReviewsReports">
+                <div>
+                    @foreach (var review in Model.Reviews)
+                    {
+                        // bruges kun hvis alle reviews bliver hentet, nuværende løsning henter kun reviews hvor count er over 0
+                        @if (review.ReviewReports.Count != 0)
+                        {
+                            <div>
+                                <div class="card-header">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#@review.Id">
+                                            Anmeldelse: "@review.Description"
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="@review.Id" class="collapse" data-parent="#collapseTwo">
+                                    <div>
+                                        <h4>Anmeldelses beskrivelse</h4>
+                                        <p>@review.Description</p>
+                                        <div>
+                                            <button class="btn btn-outline-success">Godkend anmeldelse</button>
+                                            <a class="btn btn-outline-danger" asp-controller="Review" asp-action="DeleteReview" 
+                                               asp-route-eId="@Model.Id" asp-route-rId="@review.Id">Fjern anmeldelse</a>
+                                        </div>
+                                        <h5>Rapporter for anmeldelsen</h5>
+                                        <div>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Bruger</th>
+                                                        <th>Rapport beskrivelse</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var report in review.ReviewReports)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @report.Creator.FirstName @report.Creator.LastName
+                                                            </td>
+                                                            <td>
+                                                                @report.Description
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

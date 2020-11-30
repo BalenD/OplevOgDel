@@ -8,6 +8,6 @@ namespace OplevOgDel.Web.Models.ViewModel
 {
     public class ReportsViewModel
     {
-        public List<ExperienceDTO> Experiences { get; set; }
+        public List<ExperienceDTO> Experiences { get; set; } = new List<ExperienceDTO>();
     }
 }

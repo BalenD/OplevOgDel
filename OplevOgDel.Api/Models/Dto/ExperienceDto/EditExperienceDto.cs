@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OplevOgDel.Api.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OplevOgDel.Api.Models.Dto.ExperienceDto
 {
@@ -11,7 +12,6 @@ namespace OplevOgDel.Api.Models.Dto.ExperienceDto
         public string City { get; set; }
         [StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Address must be Less than 500 characters and more than 5 characters")]
         public string Address { get; set; }
-        [StringLength(maximumLength: 500, MinimumLength = 5, ErrorMessage = "Category must be Less than 500 characters and more than 5 characters")]
-        public string Category { get; set; }
+        public Category Category { get; set; }
     }
 }
