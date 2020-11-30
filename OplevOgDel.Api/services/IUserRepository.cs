@@ -1,6 +1,7 @@
 ﻿using OplevOgDel.Api.Data.Models;
 using OplevOgDel.Api.Models.Dto.RequestDto;
 using OplevOgDel.Api.Services.RepositoryBase;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,5 +17,7 @@ namespace OplevOgDel.Api.Services
         /// </summary>
         /// <param name="req">Filtering and searching parameters</param>
         Task<IEnumerable<User>> GetAllAsync(UserRequestParametersDto req);
+        
+        Task<User> GetUserByUsername(string username);
     }
 }

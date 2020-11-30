@@ -3,12 +3,20 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.container {
+    margin-top: 10px;
+}
+
 .form-control {
     box-shadow: none;
     border-radius: 4px;
 }
 
 .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background: #fff;
     padding-left: 16px;
     padding-right: 16px;
@@ -29,12 +37,13 @@
     padding-right: 50px;
 }
 
-    .navbar .logo img {
-        width: 60px;
-    }
+.navbar .logo img {
+    width: 60px;
+}
 
 .navbar .form-inline {
     display: inline-block;
+    margin-right: 10px;
 }
 
 .navbar .navbar-nav {
@@ -177,7 +186,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #e70072 0%, #e7002d 100%);
+        background: #ee6d6d;
         opacity: 0.2;
     }
 
@@ -188,7 +197,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #80c300 0%, #0bc300 100%);
+        background: #6db4a3;
         opacity: 0.2;
     }
 
@@ -199,7 +208,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #6a00ed 0%, #6d00a7 100%);
+        background: #a36db6;
         opacity: 0.2;
     }
 
@@ -210,7 +219,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #ff9200 0%, #ec6700 100%);
+        background: #f1b76d;
         opacity: 0.2;
     }
 
@@ -221,7 +230,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: linear-gradient(-37deg, #0089ff 0%, #006ecc 100%);
+        background: #6db7f4;
         opacity: 0.2;
     }
 
@@ -232,7 +241,7 @@ label {
         border-radius: 50%;
         display: inline-block;
         position: relative;
-        background: brown;
+        background: #b6866d;
         opacity: 0.2;
     }
 
@@ -251,6 +260,7 @@ label {
     padding-right: 25px;
     width: 220px !important;
     font-size: 14px;
+    margin-right: 10px;
 }
 
 .select-box__current {
@@ -328,6 +338,7 @@ label {
     -webkit-animation-timing-function: step-start;
     animation-timing-function: step-start;
     border: 1px solid #dfe3e8;
+    z-index: 99;
 }
 
 .select-box__option {
@@ -366,4 +377,155 @@ label {
         -webkit-transform: scaleY(0);
         transform: scaleY(0);
     }
+}
+
+
+
+
+
+
+
+
+
+.pos-1 {
+    background-color: #1c35cf;
+    grid-column-end: span 1;
+    grid-row-end: span 8;
+}
+
+.pos-2 {
+    background-color: #8a33fa;
+    grid-column-end: span 2;
+    grid-row-end: span 4;
+}
+
+.pos-3 {
+    background-color: #bd43c0;
+    grid-column-end: span 2;
+    grid-row-end: span 8;
+}
+
+.pos-4 {
+    background-color: #dd375b;
+    grid-column-end: span 1;
+    grid-row-end: span 4;
+}
+
+.pos-5 {
+    background-color: #1a9541;
+    grid-column-end: span 1;
+    grid-row-end: span 8;
+}
+
+.pos-6 {
+    background-color: #d44024;
+    grid-column-end: span 1;
+    grid-row-end: span 4;
+}
+
+.grid {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 10px;
+    grid-auto-rows: minmax(40px, auto);
+    grid-auto-flow: dense;
+}
+
+.j {
+    color: red !important;
+}
+
+.grid-item {
+    position: relative;
+    color: black;
+    padding: 20px;
+}
+
+    .grid-item .red {
+        position: absolute;
+        background: #ee6d6d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .green {
+        position: absolute;
+        background: #6db4a3;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .purple {
+        position: absolute;
+        background: #a36db6;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .orange {
+        position: absolute;
+        background: #f1b76d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .blue {
+        position: absolute;
+        background: #6db7f4;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+    .grid-item .brown {
+        position: absolute;
+        background: #b6866d;
+        top: 0px;
+        left: 0px;
+        padding: 20px;
+        color: white;
+    }
+
+
+.page {
+    position: relative;
+    top: 100px;
+}
+
+.info {
+    display: block;
+}
+
+.userImage {
+    display: inline-block;
+    float: left;
+}
+
+.userInfo {
+    float: left;
+}
+
+.userInfo .name {
+    font-size: 32px;
+}
+
+    .userInfo .city {
+        font-size: 18px;
+    }
+
+.user {
+    width: 200px;
 }
