@@ -3,17 +3,49 @@
     ViewData["Title"] = "Profile Page";
 }
 
-<div>
+<nav class="navbar navbar-expand-lg" style="top: 0px">
+    <a href="#" class="logo"><img src="~/images/logo.png" /></a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+
+        <div class="navbar-nav action-buttons ml-auto">
+            <a href="#" class="nav-item nav-link">Log ind</a>
+            <a href="#" class="btn btn-primary">Tilmeld</a>
+        </div>
+    </div>
+</nav>
+
+<div class="page">
     <h1 class="text-center display-3">Velkommen @Model.Profile.FirstName</h1>
 
-    <div>
-        <h2>Information om dig</h2>
-        <h4>Navn</h4>
+    <div class="info">
+        <div class="userImage">
+            <img class="user" src="https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" />
+        </div>
+        <div class="userInfo">
+            <div class="name">@Model.Profile.FirstName @Model.Profile.LastName</div>
+            <div class="city">@Model.Profile.City</div>
+        </div>
+    </div>
+
+    @*<h4>Navn</h4>
         <p>@Model.Profile.FirstName @Model.Profile.LastName</p>
 
         <h4>By</h4>
-        <p>@Model.Profile.City</p>
-    </div>
+        <p>@Model.Profile.City</p>*@
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
     <p>@Model.SelectedListOfExps.Name</p>
     <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>
@@ -44,7 +76,8 @@
                         <p>@leexp.Experience.Category.Name</p>
                         <hr />
                     }
-                } else
+                }
+                else
                 {
                     <p>Denne liste er tom!</p>
                 }
@@ -57,4 +90,5 @@
             <p>Ingen lister fundet</p>
         }
     </div>
+
 </div>
