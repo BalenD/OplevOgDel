@@ -105,7 +105,8 @@ namespace OplevOgDel.Api.Controllers
             var profileToAdd = _mapper.Map<Data.Models.Profile>(createdProfile);
 
             profileToAdd.Id = Guid.NewGuid();
-            // TODO: add profile to user
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "userId").Value;
+            profileToAdd.UserId = Guid.Parse(userId);
             profileToAdd.CreatedOn = DateTime.Now;
 
             _profileRepository.Create(profileToAdd);
