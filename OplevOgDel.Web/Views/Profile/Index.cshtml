@@ -19,8 +19,6 @@
 </nav>
 
 <div class="page">
-    <h1 class="text-center display-3">Velkommen @Model.Profile.FirstName</h1>
-
     <div class="info">
         <div class="userImage">
             <img class="user" src="https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" />
@@ -37,58 +35,69 @@
         <h4>By</h4>
         <p>@Model.Profile.City</p>*@
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+    @*<p>@Model.SelectedListOfExps.Name</p>
+        <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>*@
 
-    <p>@Model.SelectedListOfExps.Name</p>
-    <select asp-for="SelectedListOfExps" asp-items="Model.ListOfListOfExps"></select>
-
-    <h2>Her er dine lister</h2>
-    <div>
+    <div class="row">
         @if (Model.Profile.ListOfExps.Count != 0)
         {
             @foreach (var list in Model.Profile.ListOfExps)
             {
-                <h3>Listens navn</h3>
-                <p>@list.Name</p>
-                <h4>Beskrivelse</h4>
-                <p>@list.Description</p>
+                <div class="column">
+                    <h2>@list.Name</h2>
+                    <hr />
 
-
-                <h4>Oplevelser i denne liste</h4>
-                <hr />
-                if (list.ListOfExpsExperiences.Count != 0)
-                {
-                    foreach (var leexp in list.ListOfExpsExperiences)
+                    @if (list.ListOfExpsExperiences.Count != 0)
                     {
-                        <h5>Navn</h5>
-                        <p>@leexp.Experience.Name</p>
-                        <h5>Beskrivelse</h5>
-                        <p>@leexp.Experience.Description</p>
-                        <h5>Kategori</h5>
-                        <p>@leexp.Experience.Category.Name</p>
-                        <hr />
+                        foreach (var leexp in list.ListOfExpsExperiences)
+                        {
+                            @if (leexp.Experience.Category.Name == "Mad")
+                            {
+                                <div style="width: 100%; background: #ee6d6d; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            @if (leexp.Experience.Category.Name == "Natur")
+                            {
+                                <div style="width: 100%; background: #6db4a3; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            @if (leexp.Experience.Category.Name == "Musik")
+                            {
+                                <div style="width: 100%; background: #a36db6; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            @if (leexp.Experience.Category.Name == "Action")
+                            {
+                                <div style="width: 100%; background: #f1b76d; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            @if (leexp.Experience.Category.Name == "Kultur")
+                            {
+                                <div style="width: 100%; background: #6db7f4; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            @if (leexp.Experience.Category.Name == "Historie")
+                            {
+                                <div style="width: 100%; background: #b6866d; padding: 20px; color: white;">
+                                    @leexp.Experience.Name
+                                </div>
+                            }
+                            <div style="background: #f6f6f6; padding: 20px; margin-bottom: 30px;">
+                                <p>@leexp.Experience.Description</p>
+                            </div>
+                        }
                     }
-                }
-                else
-                {
-                    <p>Denne liste er tom!</p>
-                }
-
-
+                    else
+                    {
+                        <p>Denne liste er tom!</p>
+                    }
+                </div>
             }
         }
-        else
-        {
-            <p>Ingen lister fundet</p>
-        }
     </div>
-
 </div>
