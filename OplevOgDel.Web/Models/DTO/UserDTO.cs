@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.DTO
 {
-    public class UserDTO
+    public class UserDto
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
