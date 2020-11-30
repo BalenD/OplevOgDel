@@ -1,4 +1,4 @@
-﻿namespace OplevOgDel.Web.Models.DTO
+﻿namespace OplevOgDel.Web.Models.Dto
 {
     public class TokenDto
     {

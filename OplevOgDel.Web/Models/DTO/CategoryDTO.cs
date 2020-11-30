@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OplevOgDel.Web.Models.DTO
+namespace OplevOgDel.Web.Models.Dto
 {
-    public class CategoryDTO
+    public class CategoryDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

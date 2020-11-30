@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models;
 using OplevOgDel.Web.Models.Configuration;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

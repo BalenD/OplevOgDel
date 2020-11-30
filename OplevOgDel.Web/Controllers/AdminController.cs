@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Models;
 using OplevOgDel.Web.Models.Configuration;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 
 namespace OplevOgDel.Web.Controllers
@@ -34,7 +34,7 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDTO>>(result);
+                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDto>>(result);
                 }
             }
 
@@ -69,14 +69,14 @@ namespace OplevOgDel.Web.Controllers
                 if (experienceResponse.IsSuccessStatusCode)
                 {
                     var result = await experienceResponse.Content.ReadAsStringAsync();
-                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDTO>(result);
+                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDto>(result);
                 }
 
                 HttpResponseMessage categoriesResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Categories);
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
                     var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
+                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
                     viewModel.Categories = categoriesTest.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
                 }
             }
@@ -85,7 +85,7 @@ namespace OplevOgDel.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExperienceAsync(Guid id, ExperienceDTO experience)
+        public async Task<IActionResult> EditExperienceAsync(Guid id, ExperienceDto experience)
         {
             var content = new StringContent(JsonConvert.SerializeObject(experience), System.Text.Encoding.UTF8, "application/json");
 
