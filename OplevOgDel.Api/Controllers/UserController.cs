@@ -102,7 +102,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="500">Problem occured during creation</response> 
         [HttpPost]
         [Authorize(Roles = Roles.Admin)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ViewUserDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateOneUser([FromBody] User user)
         {

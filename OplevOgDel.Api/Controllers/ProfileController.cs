@@ -57,7 +57,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="200">Successfully returned the found profile</response>
         /// <response code="404">No profile was found with that id</response>  
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Profile), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Data.Models.Profile), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetOneProfile([FromRoute] Guid id)
         {
@@ -98,7 +98,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="201">Successfully created the profile</response>
         /// <response code="500">Problem occured during creation</response> 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Data.Models.Profile), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateOneProfile([FromBody] NewProfileDto createdProfile)
         {
