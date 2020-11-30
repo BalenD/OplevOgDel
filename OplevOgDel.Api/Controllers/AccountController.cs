@@ -55,7 +55,7 @@ namespace OplevOgDel.Api.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDto user)
         {
             // check if the user(name) exists, if they don't return an error
-            var foundUser = await _context.GetFirstByExpressionAsync(x => x.Username == user.Username);
+            var foundUser = await _context.GetUserByUsername(user.Username);
 
             if (foundUser == null)
             {
@@ -95,7 +95,7 @@ namespace OplevOgDel.Api.Controllers
                 {
                     
                     new Claim("userId", foundUser.Id.ToString()),
-                    new Claim("profileId", foundUser.ProfileId.ToString()),
+                    new Claim("profileId", foundUser.Profile.Id.ToString()),
                     new Claim(ClaimTypes.Role, foundUser.Role),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),

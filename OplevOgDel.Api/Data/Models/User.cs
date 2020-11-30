@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OplevOgDel.Api.Data.Models
 {
-    [Table("AdminUsers")]
+    [Table("Users")]
     public class User : BaseModel
     {
         [Required]
@@ -16,7 +16,6 @@ namespace OplevOgDel.Api.Data.Models
         public string Email { get; set; }
         [Required]
         public string Role { get; set; }
-        public Guid? ProfileId { get; set; }
-        public Profile Profile{ get; set; }
+        public Profile Profile { get; set; }
     }
 }

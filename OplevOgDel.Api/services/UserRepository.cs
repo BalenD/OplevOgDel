@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OplevOgDel.Api.Data;
 using OplevOgDel.Api.Data.Models;
+using System;
 using OplevOgDel.Api.Helpers;
 using OplevOgDel.Api.Models.Dto.RequestDto;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace OplevOgDel.Api.Services.RepositoryBase
         {
 
         }
+
         /// <summary>
         /// Gets all users in the database in a paged order
         /// </summary>
@@ -38,6 +40,11 @@ namespace OplevOgDel.Api.Services.RepositoryBase
                 query = query.Where(x => x.Username.ToLower().Contains(req.SearchByUsername.ToLower()));
             }
             return await PaginatedList<User>.CreateAsync(query, req.Page, req.PageSize);
+        }
+        
+        public async Task<User> GetUserByUsername(string username)
+        {
+            return await _context.Users.Where(x => x.Username == username).Include(x => x.Profile).FirstOrDefaultAsync();
         }
     }
 }

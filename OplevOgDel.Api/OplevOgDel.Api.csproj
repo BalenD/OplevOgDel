@@ -10,23 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201109153634_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109153634_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109154921_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109154921_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109155630_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109155630_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109155919_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109155919_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109160006_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109160006_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109160653_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109160653_AddedSeedDataWChanges.Designer.cs" />
-    <Compile Remove="Migrations\20201109160914_AddedSeedDataWChanges.cs" />
-    <Compile Remove="Migrations\20201109160914_AddedSeedDataWChanges.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
     <PackageReference Include="KissLog.AspNetCore" Version="4.0.0" />

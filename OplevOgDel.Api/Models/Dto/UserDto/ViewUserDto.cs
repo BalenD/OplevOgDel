@@ -8,6 +8,5 @@ namespace OplevOgDel.Api.Models.Dto.UserDto
         public string Username { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
-        public Guid ProfileId { get; set; }
     }
 }
