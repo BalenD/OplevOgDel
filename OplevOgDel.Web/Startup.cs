@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OplevOgDel.Web.Models.Configuration;
+using OplevOgDel.Web.Services;
 
 namespace OplevOgDel.Web
 {
@@ -27,7 +28,7 @@ namespace OplevOgDel.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -48,6 +49,8 @@ namespace OplevOgDel.Web
             });
 
             services.Configure<ApiUrls>(Configuration.GetSection(ApiUrls.ApiUrl));
+            services.AddHttpContextAccessor();
+            services.AddHttpClient<OplevOgDelService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
