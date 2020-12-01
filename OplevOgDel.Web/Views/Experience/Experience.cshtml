@@ -28,9 +28,9 @@ else
             <form asp-action="ExperienceAsync" asp-controller="experiences">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="Review.Description" class="control-label"></label>
+                    @*<label asp-for="Review.Description" class="control-label"></label>
                     <input asp-for="Review.Description" class="form-control" />
-                    <span asp-validation-for="Review.Description" class="text-danger"></span>
+                    <span asp-validation-for="Review.Description" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" formaction="/experiences/@ViewData["ExperienceId"]" class="btn btn-primary" />

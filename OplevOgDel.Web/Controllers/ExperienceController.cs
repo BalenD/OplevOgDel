@@ -74,9 +74,9 @@ namespace OplevOgDel.Web.Controllers
             //review.ProfileId = Guid.Parse();
             //review.CreatorName = 
 
-            vm.Review.Description.ToString();
+            //vm.Review.Description.ToString();
 
-            var content = new StringContent(JsonConvert.SerializeObject(vm.Review), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(vm), Encoding.UTF8, "application/json");
 
             using (HttpClient client = new HttpClient())
             {

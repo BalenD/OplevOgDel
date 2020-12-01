@@ -1,36 +1,34 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models;
+using OplevOgDel.Web.Models.Configuration;
 using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 
 namespace OplevOgDel.Web.Controllers
 {
-    public class HomeController : BaseService
+    public class HomeController : Controller
     {
+        private readonly ApiUrls _apiUrls;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger,
-                                    IConfiguration confirguration) : base(confirguration)
+        public HomeController(ILogger<HomeController> logger, IOptions<ApiUrls> apiUrls)
         {
+            _apiUrls = apiUrls.Value;
             _logger = logger;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index([FromQuery] string category, [FromQuery] string city)
         {
-            //string categoriesEndPoint = APIAddress + "api/categories";
-            //string experiencesEndPoint = APIAddress + "api/experiences";
-            string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
-            string experiencesEndPoint = "https://localhost:44360/" + "api/experiences";
+            string categoriesEndPoint = _apiUrls.API + _apiUrls.Categories;
+            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences;
 
             HomeViewModel viewModel = new HomeViewModel();
 
@@ -39,16 +37,19 @@ namespace OplevOgDel.Web.Controllers
                 HttpResponseMessage categoriesResponse = await client.GetAsync(categoriesEndPoint);
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
-                    var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    viewModel.Categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
+                    viewModel.Categories = await categoriesResponse.Content.ReadAsAsync<List<CategoryDto>>();
                 }
             
                 HttpResponseMessage experiencesResponse = await client.GetAsync(experiencesEndPoint);
                 if (experiencesResponse.IsSuccessStatusCode)
                 {
-                    var result = await experiencesResponse.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDto>>(result);
+                    viewModel.Experiences = await experiencesResponse.Content.ReadAsAsync<List<ExperienceDto>>();
+                    
                 }
+            }
+            if (category != null)
+            {
+                viewModel.Categories.Where(x => x.Name == category).FirstOrDefault().Clicked = true;
             }
             return View(viewModel);
         }

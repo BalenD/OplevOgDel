@@ -6,5 +6,6 @@ namespace OplevOgDel.Web.Models.Dto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public bool Clicked { get; set; }
     }
 }
