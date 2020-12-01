@@ -14,7 +14,7 @@ namespace OplevOgDel.Api.Controllers
     /// </summary>
     [Route("api/categories")]
     [Produces("application/json")]
-    [Authorize(Roles = Roles.AdminAndUser)]
+    //[Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class CategoryController : ControllerBase
     {

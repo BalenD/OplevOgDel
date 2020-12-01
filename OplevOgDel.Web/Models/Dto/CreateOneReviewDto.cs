@@ -9,5 +9,7 @@ namespace OplevOgDel.Web.Models.Dto
     public class CreateOneReviewDto
     {
         public string Description { get; set; }
+        public Guid ProfileId { get; set; }
+        public Guid ExperienceId { get; set; }
     }
 }

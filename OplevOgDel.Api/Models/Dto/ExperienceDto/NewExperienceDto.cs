@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace OplevOgDel.Api.Models.Dto.ExperienceDto
 {
     public class NewExperienceDto
     {
-
+        public Guid ProfileId { get; set; }
         [Required(ErrorMessage = "Name must not be empty")]
         [StringLength(maximumLength: 150, MinimumLength = 5, ErrorMessage = "Name must be Less than 150 characters and more than 5 characters")]
         public string Name { get; set; }
