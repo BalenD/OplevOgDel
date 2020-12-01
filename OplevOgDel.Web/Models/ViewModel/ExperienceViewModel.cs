@@ -1,4 +1,4 @@
-﻿using OplevOgDel.Web.Models.Dto;
+using OplevOgDel.Web.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
