@@ -8,31 +8,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 using System.Text;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
+using OplevOgDel.Web.Models;
+using Microsoft.Extensions.Options;
+using OplevOgDel.Web.Models.Configuration;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OplevOgDel.Web.Controllers
 {
-    public class ExperienceController : BaseService
+    public class ExperienceController : Controller
     {
         private readonly ILogger<ExperienceController> _logger;
+        private ApiUrls _apiUrls;
 
-        public ExperienceController(ILogger<ExperienceController> logger,
-                                    IConfiguration confirguration) : base(confirguration)
+        public ExperienceController(IOptions<ApiUrls> apiUrls,
+                                    ILogger<ExperienceController> logger,
+                                    IConfiguration confirguration)
         {
+            _apiUrls = apiUrls.Value;
             _logger = logger;
         }
-
 
         [HttpGet("/experiences/{id}")]
         public async Task<IActionResult> ExperienceAsync([FromRoute] Guid id)
         {
-            string experiencesEndPoint = APIAddress + $"api/experiences/{id}"; 
-            string experienceReviewsEndPoint = APIAddress + $"api/experiences/{id}/reviews/";
+            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
+            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
             //string experienceRatingsEndPoint = APIAddress + $"api/experiences/{id}/ratings/";
 
             ViewData["ExperienceId"] = RouteData.Values["id"].ToString();
@@ -45,7 +50,6 @@ namespace OplevOgDel.Web.Controllers
             using (HttpClient client = new HttpClient())
             {
                 //string accessToken = await HttpContext.GetTokenAsync("access_token");
-
                 //var request = new HttpRequestMessage(HttpMethod.Get, experiencesEndPoint);
                 //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -69,13 +73,63 @@ namespace OplevOgDel.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("/experiences/{id}")]
-        public async Task<IActionResult> ExperienceAsync([FromRoute] Guid id, ExperienceViewModel vm)
+        [HttpGet("/experiences/createexperience")]
+        public async Task<IActionResult> CreateExperience()
         {
-            string experiencesEndPoint = APIAddress + $"api/experiences/{id}";
-            string experienceReviewsEndPoint = APIAddress + $"api/experiences/{id}/reviews/";
+            CreateOneExperienceViewModel viewModel = new CreateOneExperienceViewModel();
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage categoriesResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Categories);
+                if (categoriesResponse.IsSuccessStatusCode)
+                {
+                    var result = await categoriesResponse.Content.ReadAsStringAsync();
+                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
+                    viewModel.Categories = categoriesTest.Select(c => new SelectListItem() { Value = c.Name, Text = c.Name });
+                }
+            }
+            return View(viewModel);
+        }
+
+        [HttpPost("/experiences/createexperience")]
+        public async Task<IActionResult> CreateExperience(CreateOneExperienceDto experience)
+        {
+            //if (experience == null || experience == null)
+            //{
+            //    ViewBag.Message = "Udfyld venligst begge felter!";
+            //    return View();
+            //}
+
+            var profileId = User.Claims.First(x => x.Type == UserClaims.ProfileId).Value;
+
+            experience.ProfileId = Guid.Parse(profileId);
+            
+
+            using (HttpClient client = new HttpClient())
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(experience), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(_apiUrls.API + _apiUrls.Experiences, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var getId = JsonConvert.DeserializeObject<ExperienceDto>(result);
+                    return Redirect(_apiUrls.Experiences + $"/{getId.Id}");
+                }
+            }
+            return View();
+        }
+
+        [HttpPost("/experiences/{id}")]
+        public async Task<IActionResult> ExperienceReviewAsync([FromRoute] Guid id, ExperienceViewModel vm)
+        {
+            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
+            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
+
+            var profileId = User.Claims.First(x => x.Type == UserClaims.ProfileId).Value;
 
             vm.CreateOneReview.Description.ToString();
+            vm.CreateOneReview.ProfileId = Guid.Parse(profileId);
+            vm.CreateOneReview.ExperienceId = id;
 
             using (HttpClient client = new HttpClient())
             {
@@ -84,10 +138,10 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    return Redirect($"/experiences/{id}");
+                    return Redirect(_apiUrls.Experiences + $"/{id}");
                 }
             }
-            return Redirect($"/experiences/{id}");
+            return Redirect(_apiUrls.Experiences + $"/{id}");
         }
 
         //[HttpPut("/experiences/{id}")]
@@ -102,8 +156,8 @@ namespace OplevOgDel.Web.Controllers
             //TODO:
             //If delete belongs to user, can delete
 
-            string experiencesEndPoint = APIAddress + $"api/experiences/{id}";
-            string experienceReviewsEndPoint = APIAddress + $"api/experiences/{id}/reviews/";
+            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
+            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
 
             using (HttpClient client = new HttpClient())
             {
