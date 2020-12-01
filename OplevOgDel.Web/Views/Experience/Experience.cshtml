@@ -21,16 +21,35 @@ else
 }
 
 <h2>Anmeldelser</h2>
+@Html.HiddenFor(m => m.Experience.Id)
+<section class="col-md-6">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="ExperienceAsync" asp-controller="experiences">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Review.Description" class="control-label"></label>
+                    <input asp-for="Review.Description" class="form-control" />
+                    <span asp-validation-for="Review.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" formaction="/experiences/@ViewData["ExperienceId"]" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
 @if (Model.Reviews.Count != 0)
 {
     @foreach (var review in Model.Reviews)
     {
-<div class="text-center">
-    @*<h4>@review.CreatorName</h4> TODO:Whenever profile is done *@
-    <h4>@review.ProfileId</h4>
-    <p>@review.Description</p>
-    <p>@review.Id</p>
-</div>
+        <div class="text-center">
+            @*<h4>@review.CreatorName</h4> TODO:Whenever profile is done *@
+            <h4>@review.ProfileId</h4>
+            <p>@review.Description</p>
+            <p>@review.Id</p>
+        </div>
     }
 }
 else

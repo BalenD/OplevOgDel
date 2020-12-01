@@ -36,7 +36,7 @@ namespace OplevOgDel.Web
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.Name = "OplevOgDel";
                 options.LoginPath = "/User/Login";
-                options.LogoutPath = "/User/Login";
+                options.LogoutPath = "/User/Logout";
                 options.AccessDeniedPath = "/";
             });
 
