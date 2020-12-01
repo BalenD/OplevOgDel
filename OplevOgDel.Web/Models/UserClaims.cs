@@ -9,7 +9,6 @@ namespace OplevOgDel.Web.Models
     {
         public const string FirstName = "firstName";
         public const string ProfileId = "profileId";
-        public const string UserId = "userId";
-        public const string Role = "role";
+        public const string AccessToken = "access_token";
     }
 }
