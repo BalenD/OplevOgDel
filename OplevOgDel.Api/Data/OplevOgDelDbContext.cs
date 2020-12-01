@@ -69,23 +69,23 @@ namespace OplevOgDel.Api.Data
                 new Picture() 
                 { 
                     Id = Guid.Parse("93E4F688-D9A0-4F8A-BC69-1D7F5A46101D"),
-                    Path = "TestImage1",
+                    Path = "TestImage1.jpg",
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
 
                 new Picture()
                 {
-                    Id = Guid.Parse("B393E49A-4097-4629-B15F-75FD9EDD99C1"),
-                    Path = "TestImage2",
-                    ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
+                    Id = Guid.Parse("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
+                    Path = "TestImage2.jpg",
+                    ExperienceId = Guid.Parse("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
 
                 new Picture()
                 {
                     Id = Guid.Parse("052C9135-C787-4FC5-8E1D-64C20AEDA9BC"),
-                    Path = "TestImage2",
+                    Path = "TestImage2.jpg",
                     ExperienceId = Guid.Parse("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 });

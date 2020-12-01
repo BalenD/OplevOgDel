@@ -72,7 +72,7 @@
                 @if (Model.Categories.Count != 0)
                 {
                     var count = 0;
-                    @foreach (var category in Model.Categories)
+                    @foreach (var category in Model.Categories.OrderBy(o => o.Name).ToList())
                     {
                 <label>
                     <input name="category" value="@category.Name" type="submit">
@@ -150,46 +150,56 @@ else
 
 @if (Model.Experiences.Count != 0)
 {
+   
     var count = 1;
     <div class="grid">
         @foreach (var experience in Model.Experiences)
         {
-        <div class="grid-item pos-@count" style="background: url(https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png) no-repeat center center; background-size: cover;">
+            string url;
+            if (experience.Pictures.Count() > 0)
+            {
+                url = $"https://localhost:44360/api/images/{ experience.Pictures.First().Path}";
+            }
+            else
+            {
+                url = "https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png";
+            }
+        <div class="grid-item pos-@count" style="background: url(@url) no-repeat center center; background-size: cover;">
             @if (@experience.Category.Name == "Mad")
             {
-            <div class="red">
-                @experience.Name
-            </div>
+                <div class="red">
+                    @experience.Name
+                </div>
             }
             @if (@experience.Category.Name == "Natur")
             {
-        <div class="green">
-            @experience.Name
-        </div>
+                <div class="green">
+                    @experience.Name
+                </div>
             }
             @if (@experience.Category.Name == "Musik")
             {
-        <div class="purple">
-            @experience.Name
-        </div>
+                <div class="purple">
+                    @experience.Name
+                </div>
             }
             @if (@experience.Category.Name == "Action")
             {
-        <div class="orange">
-            @experience.Name
-        </div>
+                <div class="orange">
+                    @experience.Name
+                </div>
             }
             @if (@experience.Category.Name == "Kultur")
             {
-        <div class="blue">
-            @experience.Name
-        </div>
+                <div class="blue">
+                    @experience.Name
+                </div>
             }
             @if (@experience.Category.Name == "Historie")
             {
-        <div class="brown">
-            @experience.Name
-        </div>
+                <div class="brown">
+                    @experience.Name
+                </div>
             }
         </div>
 

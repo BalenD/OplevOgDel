@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OplevOgDel.Web.Models.Dto
 {
@@ -10,5 +11,6 @@ namespace OplevOgDel.Web.Models.Dto
         public CategoryDto Category { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public IEnumerable<PictureDto> Pictures { get; set; }
     }
 }

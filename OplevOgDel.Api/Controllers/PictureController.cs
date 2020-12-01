@@ -19,7 +19,7 @@ using OplevOgDel.Api.Services;
 namespace OplevOgDel.Api.Controllers
 {
     /// <summary>
-    /// The controller that handles all aPI calls to /api/experiences/:experienceId/pictures
+    /// The controller that handles all API calls to /api/experiences/:experienceId/pictures
     /// </summary>
     [Route("api/experiences/{experienceId}/pictures/")]
     [Produces("application/json")]
@@ -53,41 +53,6 @@ namespace OplevOgDel.Api.Controllers
             var allPictures = await _pictureRepository.GetAllByExperienceAsync(experienceId);
             var listToReturn = _mapper.Map<IEnumerable<ViewPictureDto>>(allPictures);
             return Ok(listToReturn);
-        }
-
-        /// <summary>
-        /// Gets the actual picture on the disk
-        /// </summary>
-        /// <param name="experienceId">Id of the experience which the picture belongs to</param>
-        /// <param name="name">Name of the picture on disk to get</param>
-        /// <response code="200">Returns the picture</response>
-        /// <response code="500">Problem occured during retrieval</response>
-        [HttpGet("{name}")]
-        [AllowAnonymous]
-        [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
-        public IActionResult GetOnePicture([FromRoute] Guid experienceId, [FromRoute] string name)
-        {
-            try
-            {
-                // find the image file on disk and return it
-                var image = System.IO.File.OpenRead(Path.Combine(_fileOptions.Path, name));
-                return File(image, "image/jpeg");
-            }
-            catch (Exception)
-            {
-                var errMsg = "Error getting picture";
-                var err = new ErrorObject()
-                {
-                    Method = "GET",
-                    At = $"/api/experiences/{experienceId}/pictures/{name}",
-                    StatusCode = 500,
-                    Error = errMsg
-                };
-                _logger.Error(errMsg);
-                return StatusCode(500, err);
-                
-            }
         }
 
         /// <summary>
