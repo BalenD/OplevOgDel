@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Models;
 using OplevOgDel.Web.Models.Configuration;
@@ -26,10 +30,16 @@ namespace OplevOgDel.Web.Controllers
         }
         public async Task<IActionResult> ReportsAsync()
         {
+            var roleAdmin = User.FindFirst(ClaimTypes.Role).Value;
+            var profileId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var role = User.Claims.First(x => x.Type == ClaimTypes.Role).Value;
+            var token = User.FindFirst("access_token").Value;
+
             ReportsViewModel viewModel = new ReportsViewModel();
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Reports);
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,8 +86,8 @@ namespace OplevOgDel.Web.Controllers
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
                     var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
-                    viewModel.Categories = categoriesTest.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
+                    var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
+                    viewModel.Categories = categories.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
                 }
             }
 

@@ -20,44 +20,46 @@
         </form>
 
         <div class="select-box">
-            <div class="select-box__current" tabindex="1">
-                @if (Model.Experiences.Count != 0)
-                {
-                    var count = 0;
-                    var countVal = 1;
+                <div class="select-box__current" tabindex="1">
+                    @if (Model.Experiences.Count != 0)
+                    {
+                        var count = 0;
+                        var countVal = 1;
 
-    @foreach (var experience in Model.Experiences.GroupBy(x => x.City).Select(y => y.First()).ToList())
-    {
-@if (count == 0)
-{
-<div class="select-box__value">
-    <input class="select-box__input" type="radio" id="@count" value="@countVal" name="location" checked="checked" />
-    <p class="select-box__input-text">@experience.City</p>
-</div> }
-else
-{
-<div class="select-box__value">
-    <input class="select-box__input" type="radio" id="@count" value="@countVal" name="location" />
-    <p class="select-box__input-text">@experience.City</p>
-</div>}count++;
-countVal++;
-}}
+                        @foreach (var city in Model.Experiences.Select(x => x.City).Distinct())
+                        {
+                            @if (count == 0)
+                            {
+                                <div class="select-box__value">
+                                    <input class="select-box__input" type="radio" id="@count" value="@city" name="city" checked="checked" />
+                                    <p class="select-box__input-text">@city</p>
+                                </div> }
+                            else
+                            {
+                                <div class="select-box__value">
+                                    <input class="select-box__input" type="radio" id="@count" value="@city" name="city" />
+                                    <p class="select-box__input-text">@city</p>
+                                </div>}count++;
+                            countVal++;
+                        }}
 
-                <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true" />
-            </div>
+                    <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon" aria-hidden="true" />
+                </div>
+           
             <ul class="select-box__list">
 
                 @if (Model.Experiences.Count != 0)
                 {
                     var countFor = 0;
 
-    @foreach (var experience in Model.Experiences.GroupBy(x => x.City).Select(y => y.First()).ToList())
-    {
-<li>
-    <label class="select-box__option" for="@countFor" aria-hidden="aria-hidden">@experience.City</label>
-</li>countFor++;
+                    @foreach (var city in Model.Experiences.Select(x => x.City).Distinct())
+                    {
+                        <li>
+                            <label class="select-box__option" for="@countFor" aria-hidden="true">@city</label>
+                        </li>
+                        countFor++;
 
-                }}
+                    }}
 
 
             </ul>
@@ -65,33 +67,54 @@ countVal++;
 
 
         <a href="#" class="btn btn-primary">Søg</a>
-
-        <div class="navbar-nav">
-            <label>
-                <input type="checkbox">
-                <span class="red"><i class="fal fa-utensils"></i></span>
-            </label>
-            <label>
-                <input type="checkbox">
-                <span class="green"><i class="fal fa-tree-alt"></i></span>
-            </label>
-            <label>
-                <input type="checkbox">
-                <span class="purple"><i class="fal fa-guitar"></i></span>
-            </label>
-            <label>
-                <input type="checkbox">
-                <span class="orange"><i class="fal fa-running"></i></span>
-            </label>
-            <label>
-                <input type="checkbox">
-                <span class="blue"><i class="fal fa-globe-europe"></i></span>
-            </label>
-            <label>
-                <input type="checkbox">
-                <span class="brown"><i class="fal fa-landmark"></i></span>
-            </label>
-        </div>
+        <form method="get" asp-action="Index">
+            <div class="navbar-nav">
+                @if (Model.Categories.Count != 0)
+                {
+                    var count = 0;
+                    @foreach (var category in Model.Categories)
+                    {
+                <label>
+                    <input name="category" value="@category.Name" type="submit">
+                    @if (category.Clicked)
+                    {
+                        <span style="opacity: 1;" class="@Model.ButtonColors[count]"><i class="fal @Model.ButtonIcons[count]"></i></span>
+                    }
+                    else
+                    {
+                        <span class="@Model.ButtonColors[count]"><i class="fal @Model.ButtonIcons[count]"></i></span>
+                    }
+                </label>
+                        count++;
+                    }}
+                @*
+                    <label>
+                    <input name="category" value="restaurant" type="submit">
+                    <span class="red"><i class="fal fa-utensils"></i></span>
+                </label>
+                <label>
+                    <input name="category" value="Natur" type="submit">
+                    <span class="green"><i class="fal fa-tree-alt"></i></span>
+                </label>
+                <label>
+                    <input name="category" value="Musik" type="submit">
+                    <span class="purple"><i class="fal fa-guitar"></i></span>
+                </label>
+                <label>
+                    <input name="category" value="Aktion" type="submit">
+                    <span class="orange"><i class="fal fa-running"></i></span>
+                </label>
+                <label>
+                    <input type="checkbox">
+                    <span class="blue"><i class="fal fa-globe-europe"></i></span>
+                </label>
+                <label>
+                    <input type="checkbox">
+                    <span class="brown"><i class="fal fa-landmark"></i></span>
+                </label>*@
+            </div>
+        </form>
+        
 
         <div class="navbar-nav action-buttons ml-auto">
             <a asp-controller="User" asp-action="Login" class="nav-item nav-link">Log ind</a>

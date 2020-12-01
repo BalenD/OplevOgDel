@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +14,6 @@ namespace OplevOgDel.Api.Controllers
     /// </summary>
     [Route("api/categories")]
     [Produces("application/json")]
-    //[Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class CategoryController : ControllerBase
     {
