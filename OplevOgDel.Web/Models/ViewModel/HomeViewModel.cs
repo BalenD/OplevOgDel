@@ -1,8 +1,5 @@
 ﻿using OplevOgDel.Web.Models.Dto;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.ViewModel
 {
@@ -10,5 +7,7 @@ namespace OplevOgDel.Web.Models.ViewModel
     {
         public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
         public List<ExperienceDto> Experiences { get; set; } = new List<ExperienceDto>();
+        public string[] ButtonColors { get; set; } = { "red", "green", "purple", "orange", "blue", "brown" };
+        public string[] ButtonIcons { get; set; } = { "fa-utensils", "fa-tree-alt", "fa-guitar", "fa-running", "fa-globe-europe", "fa-landmark" };
     }
 }

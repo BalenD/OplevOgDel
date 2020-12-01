@@ -245,10 +245,9 @@ label {
         opacity: 0.2;
     }
 
-[type=checkbox]:checked + span {
+[type=submit]:checked + span {
     opacity: 1;
 }
-
 
 .select-box {
     position: relative;
