@@ -129,12 +129,30 @@ namespace OplevOgDel.Api.Controllers
         /// </summary>
         /// <param name="newUser">User to register</param>
         /// <response code="204">Successfully registered</response>
+        /// <response code="400">Username already exists</response>
         /// <response code="500">Problem occured during registration</response>   
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto newUser)
         {
+            var userExists = await _context.GetFirstByExpressionAsync(x => x.Username.ToLower() == newUser.Username.ToLower());
+
+            if (userExists != null)
+            {
+                var errMsg = "Error registering user, username already exists.";
+                _logger.Error(errMsg);
+                var err = new ErrorObject()
+                {
+                    Method = "POST",
+                    At = "/users/register",
+                    StatusCode = 400,
+                    Error = errMsg
+                };
+                return StatusCode(400, err);
+            }
+
             // hash the password using bcrypt
             newUser.Password = BC.HashPassword(newUser.Password);
 

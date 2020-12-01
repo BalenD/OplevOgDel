@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -58,11 +59,11 @@ namespace OplevOgDel.Web.Controllers
                     TokenDto token = JsonConvert.DeserializeObject<TokenDto>(result);
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var securityToken = tokenHandler.ReadToken(token.jwt) as JwtSecurityToken;
-                    var role = securityToken.Claims.First(c => c.Type == UserClaims.Role).Value;
+                    var role = securityToken.Claims.First(c => c.Type == "role").Value;
                     var claims = new List<Claim>()
                     {
                         new Claim("access_token", token.jwt),
-                        new Claim(ClaimTypes.NameIdentifier, securityToken.Claims.First(c => c.Type == UserClaims.UserId).Value),
+                        new Claim(ClaimTypes.NameIdentifier, securityToken.Claims.First(c => c.Type == "userId").Value),
                         new Claim(ClaimTypes.Role, role)
                     };
 
@@ -94,24 +95,22 @@ namespace OplevOgDel.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserDto user)
         {
-            if (user.Username == null || user.Password == null)
-            {
-                ViewBag.Message = "Udfyld venligst begge felter!";
-                return View();
-            }
-
+            var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Login);
+                HttpResponseMessage response = await client.PostAsync(_apiUrls.API + _apiUrls.Register, content);
                 if (response.IsSuccessStatusCode)
                 {
-
                     return Redirect("/User/Login");
-                }
+                } 
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    ViewBag.Message = "Brugernavn eksisterer allerede";
+                    return View();
+                } 
+                ViewBag.Message = "Fejl med server, kontakt sidens administrator";
+                return View();
             }
-
-            ViewBag.Message = "Forkert brugernavn eller kodeord";
-            return View();
         }
     }
 }
