@@ -29,7 +29,7 @@ namespace OplevOgDel.Api.Services
         /// <param name="experienceId">Id of the experience to get reviews for</param>
         public async Task<IEnumerable<Review>> GetAllReviewsAsync(ReviewRequestParametersDto req, Guid experienceId)
         {
-            var query = this._context.Reviews.AsQueryable().AsNoTracking();
+            var query = this._context.Reviews.Where(x => x.ExperienceId == experienceId).AsQueryable().AsNoTracking();
             if (!(req.FilterByDate == DateTime.MinValue))
             {
                 query = query.Where(x => x.CreatedOn.Date.Equals(req.FilterByDate));
