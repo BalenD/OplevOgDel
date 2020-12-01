@@ -62,7 +62,7 @@ namespace OplevOgDel.Web.Controllers
                     var role = securityToken.Claims.First(c => c.Type == "role").Value;
                     var claims = new List<Claim>()
                     {
-                        new Claim("access_token", token.jwt),
+                        new Claim(UserClaims.AccessToken, token.jwt),
                         new Claim(ClaimTypes.NameIdentifier, securityToken.Claims.First(c => c.Type == "userId").Value),
                         new Claim(ClaimTypes.Role, role)
                     };
