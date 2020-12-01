@@ -3,29 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models;
+using OplevOgDel.Web.Models.Configuration;
+using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 
 namespace OplevOgDel.Web.Controllers
 {
+    [Authorize(Roles = Roles.Admin)]
     public class AdminController : Controller
     {
+        private ApiUrls _apiUrls;
+
+        public AdminController(IOptions<ApiUrls> apiUrls)
+        {
+            _apiUrls = apiUrls.Value;
+        }
         public async Task<IActionResult> ReportsAsync()
         {
-            string reportsEndPoint = "https://localhost:44360/" + "api/reports";
-
             ReportsViewModel viewModel = new ReportsViewModel();
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(reportsEndPoint);
+                HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Reports);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDTO>>(result);
+                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDto>>(result);
                 }
             }
 
@@ -34,13 +43,11 @@ namespace OplevOgDel.Web.Controllers
 
         public async Task<IActionResult> ManageExperienceAsync(Guid id)
         {
-            string experienceEndPoint = "https://localhost:44360/" + "api/reports/" + id;
-
             ManageExperienceViewModel viewModel = new ManageExperienceViewModel();
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(experienceEndPoint);
+                HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Reports + $"/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
@@ -54,25 +61,22 @@ namespace OplevOgDel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> EditExperienceAsync(Guid id)
         {
-            string experienceEndPoint = "https://localhost:44360/" + "api/experiences/" + id;
-            string categoriesEndPoint = "https://localhost:44360/" + "api/categories";
-
             EditExperienceViewModel viewModel = new EditExperienceViewModel();
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage experienceResponse = await client.GetAsync(experienceEndPoint);
+                HttpResponseMessage experienceResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Experiences + $"/{id}");
                 if (experienceResponse.IsSuccessStatusCode)
                 {
                     var result = await experienceResponse.Content.ReadAsStringAsync();
-                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDTO>(result);
+                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDto>(result);
                 }
 
-                HttpResponseMessage categoriesResponse = await client.GetAsync(categoriesEndPoint);
+                HttpResponseMessage categoriesResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Categories);
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
                     var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
+                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
                     viewModel.Categories = categoriesTest.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
                 }
             }
@@ -81,16 +85,13 @@ namespace OplevOgDel.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditExperienceAsync(Guid id, ExperienceDTO experience)
+        public async Task<IActionResult> EditExperienceAsync(Guid id, ExperienceDto experience)
         {
-            string experienceEndPoint = "https://localhost:44360/" + "api/experiences/" + id;
-
             var content = new StringContent(JsonConvert.SerializeObject(experience), System.Text.Encoding.UTF8, "application/json");
-
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.PutAsync(experienceEndPoint, content);
+                HttpResponseMessage response = await client.PutAsync(_apiUrls.API + _apiUrls.Experiences + $"/{id}", content);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("ManageExperience", new { id });

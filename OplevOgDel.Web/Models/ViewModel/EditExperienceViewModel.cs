@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace OplevOgDel.Web.Models.ViewModel
 {
     public class EditExperienceViewModel
     {
-        public ExperienceDTO Experience { get; set; }
+        public ExperienceDto Experience { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
     }
 }

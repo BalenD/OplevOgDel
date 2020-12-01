@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OplevOgDel.Web.Controllers.Base;
-using OplevOgDel.Web.Models.DTO;
+using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 using System.Text;
 
@@ -46,7 +46,7 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDTO>(result);
+                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDto>(result);
                 }
             }
 
@@ -56,7 +56,7 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode) 
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Reviews = JsonConvert.DeserializeObject<List<ReviewDTO>>(result);
+                    viewModel.Reviews = JsonConvert.DeserializeObject<List<ReviewDto>>(result);
                 }
             }
             return View(viewModel);
@@ -121,7 +121,7 @@ namespace OplevOgDel.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
-                    var experienceReviews = JsonConvert.DeserializeObject<List<ReviewDTO>>(result);
+                    var experienceReviews = JsonConvert.DeserializeObject<List<ReviewDto>>(result);
                     if (experienceReviews.Count != 0)
                     {
                         foreach (var review in experienceReviews)
