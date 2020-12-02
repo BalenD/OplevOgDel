@@ -1,0 +1,25 @@
+﻿<div class="navbar-nav action-buttons ml-auto">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @if (User.IsInRole(Roles.Admin))
+        {
+            <span class="nav-link">ADMIN</span>
+            <a asp-controller="Admin" asp-action="Reports" class="nav-link nav-item btn btn-primary">Rapporter</a>
+        }
+        else
+        {
+            <span class=" nav-link">Velkommen @User.Identity.Name</span>
+            <a asp-controller="User" asp-action="Profile" class="nav-link nav-item btn btn-primary">Din profil</a>
+        }
+
+        <form asp-controller="User" asp-action="Logout">
+            <button type="submit" class="nav-link btn btn-outline-danger">Log ud</button>
+        </form>
+    }
+    else
+    {
+        <a asp-controller="User" asp-action="Login" class="nav-item nav-link">Log ind</a>
+        <a asp-controller="User" asp-action="Register" class="btn btn-primary">Tilmeld</a>
+    }
+
+</div>
