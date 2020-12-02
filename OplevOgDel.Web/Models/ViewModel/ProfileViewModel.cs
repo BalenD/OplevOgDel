@@ -10,7 +10,5 @@ namespace OplevOgDel.Web.Models.ViewModel
     public class ProfileViewModel
     {
         public ProfileDto Profile { get; set; }
-        public ListOfExpsDto SelectedListOfExps { get; set; }
-        public SelectList ListOfListOfExps { get; set; }
     }
 }
