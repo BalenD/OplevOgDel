@@ -119,22 +119,17 @@ namespace OplevOgDel.Web.Controllers
             }
         }
 
-        //[Authorize(Roles = Roles.User)]
+        [Authorize(Roles = Roles.User)]
         public async Task<IActionResult> Profile()
         {
-            string endPoint = _apiUrls.Profiles + "/9600bf95-bf37-4e6d-aeed-53d84a96a205";
+            string profileId = User.FindFirstValue(UserClaims.ProfileId);
 
             ProfileViewModel viewModel = new ProfileViewModel();
 
-            HttpResponseMessage response = await _oplevOgDelService.Client.GetAsync(endPoint);
+            HttpResponseMessage response = await _oplevOgDelService.Client.GetAsync(_apiUrls.Profiles + $"/{profileId}");
             if (response.IsSuccessStatusCode)
             {
                 viewModel.Profile = await response.Content.ReadAsAsync<ProfileDto>();
-                if (viewModel.Profile.ListOfExps.Count != 0)
-                {
-                    viewModel.SelectedListOfExps = viewModel.Profile.ListOfExps[0];
-                    viewModel.ListOfListOfExps = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(viewModel.Profile.ListOfExps, "Id", "Name");
-                }
 
                 return View(viewModel);
             }
