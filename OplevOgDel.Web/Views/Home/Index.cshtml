@@ -160,8 +160,50 @@
             }
             else
             {
+
                 <p>Ingen kategorier fundet</p>
             }*@
+
+                url = "https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png";
+            }
+        <a href="/experiences/@experience.Id" class="grid-item pos-@count" style="background: url(@url) no-repeat center center; background-size: cover;">
+            @if (@experience.Category.Name == "Mad")
+            {
+                <div class="red">
+                    @experience.Name
+                </div>
+            }
+            @if (@experience.Category.Name == "Natur")
+            {
+                <div class="green">
+                    @experience.Name
+                </div>
+            }
+            @if (@experience.Category.Name == "Musik")
+            {
+                <div class="purple">
+                    @experience.Name
+                </div>
+            }
+            @if (@experience.Category.Name == "Action")
+            {
+                <div class="orange">
+                    @experience.Name
+                </div>
+            }
+            @if (@experience.Category.Name == "Kultur")
+            {
+                <div class="blue">
+                    @experience.Name
+                </div>
+            }
+            @if (@experience.Category.Name == "Historie")
+            {
+                <div class="brown">
+                    @experience.Name
+                </div>
+            }
+        </a>
 
         @if (Model.Experiences.Count != 0)
         {

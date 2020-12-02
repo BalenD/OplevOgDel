@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,26 +10,28 @@ using Newtonsoft.Json;
 using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
 using System.Text;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Authentication;
 using OplevOgDel.Web.Models;
 using Microsoft.Extensions.Options;
 using OplevOgDel.Web.Models.Configuration;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OplevOgDel.Web.Services;
 
 namespace OplevOgDel.Web.Controllers
 {
     public class ExperienceController : Controller
     {
         private readonly ILogger<ExperienceController> _logger;
+        private readonly OplevOgDelService _oplevOgDelService;
         private ApiUrls _apiUrls;
 
         public ExperienceController(IOptions<ApiUrls> apiUrls,
                                     ILogger<ExperienceController> logger,
-                                    IConfiguration confirguration)
+                                    IConfiguration confirguration,
+                                    OplevOgDelService oplevOgDelService)
         {
             _apiUrls = apiUrls.Value;
             _logger = logger;
+            _oplevOgDelService = oplevOgDelService;
         }
 
         [HttpGet("/experiences/{id}")]
@@ -38,7 +39,7 @@ namespace OplevOgDel.Web.Controllers
         {
             string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
             string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
-            //string experienceRatingsEndPoint = APIAddress + $"api/experiences/{id}/ratings/";
+            //string experienceRatingsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Ratings;
 
             ViewData["ExperienceId"] = RouteData.Values["id"].ToString();
 
@@ -47,75 +48,56 @@ namespace OplevOgDel.Web.Controllers
 
             ExperienceViewModel viewModel = new ExperienceViewModel();
 
-            using (HttpClient client = new HttpClient())
-            {
-                //string accessToken = await HttpContext.GetTokenAsync("access_token");
-                //var request = new HttpRequestMessage(HttpMethod.Get, experiencesEndPoint);
-                //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                HttpResponseMessage response = await client.GetAsync(experiencesEndPoint);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDto>(result);
-                }
+            var responseExperience = await _oplevOgDelService.Client.GetAsync(experiencesEndPoint);
+            if (responseExperience.IsSuccessStatusCode)
+            {
+                viewModel.Experience = await responseExperience.Content.ReadAsAsync<ExperienceDto>();
             }
 
-            using (HttpClient client = new HttpClient())
+            var responseReviews = await _oplevOgDelService.Client.GetAsync(experienceReviewsEndPoint);
+            if (responseReviews.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await client.GetAsync(experienceReviewsEndPoint);
-                if (response.IsSuccessStatusCode) 
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Reviews = JsonConvert.DeserializeObject<List<ReviewDto>>(result);
-                }
+                viewModel.Reviews = await responseReviews.Content.ReadAsAsync<List<ReviewDto>>();
             }
+
             return View(viewModel);
         }
 
         [HttpGet("/experiences/createexperience")]
         public async Task<IActionResult> CreateExperience()
         {
+            string experiencesCategoriesEndPoint = _apiUrls.API + _apiUrls.Categories;
+
             CreateOneExperienceViewModel viewModel = new CreateOneExperienceViewModel();
 
-            using (HttpClient client = new HttpClient())
+            var responseCategory = await _oplevOgDelService.Client.GetAsync(experiencesCategoriesEndPoint);
+            if (responseCategory.IsSuccessStatusCode)
             {
-                HttpResponseMessage categoriesResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Categories);
-                if (categoriesResponse.IsSuccessStatusCode)
-                {
-                    var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    var categoriesTest = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
-                    viewModel.Categories = categoriesTest.Select(c => new SelectListItem() { Value = c.Name, Text = c.Name });
-                }
+                var result = await responseCategory.Content.ReadAsAsync<List<CategoryForExperienceDto>>();
+                viewModel.Categories = result.Select(c => new SelectListItem() { Value = c.Name, Text = c.Name });
             }
+
             return View(viewModel);
         }
 
         [HttpPost("/experiences/createexperience")]
         public async Task<IActionResult> CreateExperience(CreateOneExperienceDto experience)
         {
-            //if (experience == null || experience == null)
-            //{
-            //    ViewBag.Message = "Udfyld venligst begge felter!";
-            //    return View();
-            //}
+            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences;
 
             var profileId = User.Claims.First(x => x.Type == UserClaims.ProfileId).Value;
 
             experience.ProfileId = Guid.Parse(profileId);
-            
 
-            using (HttpClient client = new HttpClient())
+            var content = new StringContent(JsonConvert.SerializeObject(experience), Encoding.UTF8, "application/json");
+            var responseExperience = await _oplevOgDelService.Client.PostAsync(experiencesEndPoint, content);
+            if (responseExperience.IsSuccessStatusCode)
             {
-                var content = new StringContent(JsonConvert.SerializeObject(experience), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(_apiUrls.API + _apiUrls.Experiences, content);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    var getId = JsonConvert.DeserializeObject<ExperienceDto>(result);
-                    return Redirect(_apiUrls.Experiences + $"/{getId.Id}");
-                }
+                var getId = await responseExperience.Content.ReadAsAsync<ExperienceDto>();
+                return Redirect(_apiUrls.Experiences + $"/{getId.Id}");
             }
+
             return View();
         }
 
@@ -131,16 +113,14 @@ namespace OplevOgDel.Web.Controllers
             vm.CreateOneReview.ProfileId = Guid.Parse(profileId);
             vm.CreateOneReview.ExperienceId = id;
 
-            using (HttpClient client = new HttpClient())
+            var content = new StringContent(JsonConvert.SerializeObject(vm.CreateOneReview), Encoding.UTF8, "application/json");
+            var response = await _oplevOgDelService.Client.PostAsync(experienceReviewsEndPoint, content);
+            if (response.IsSuccessStatusCode)
             {
-                var content = new StringContent(JsonConvert.SerializeObject(vm.CreateOneReview), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(experienceReviewsEndPoint, content);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    return Redirect(_apiUrls.Experiences + $"/{id}");
-                }
+                var result = await response.Content.ReadAsStringAsync();
+                return Redirect(_apiUrls.Experiences + $"/{id}");
             }
+
             return Redirect(_apiUrls.Experiences + $"/{id}");
         }
 
