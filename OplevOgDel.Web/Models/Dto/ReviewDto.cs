@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OplevOgDel.Web.Models.Dto
 {
@@ -6,8 +7,8 @@ namespace OplevOgDel.Web.Models.Dto
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        //public Guid CreatorId { get; set; }
         public Guid ProfileId { get; set; }
-        public string CreatorName { get; set; }
+        public ProfileDto Profile { get; set; }
+        public List<ReviewReportDto> ReviewReports { get; set; }
     }
 }

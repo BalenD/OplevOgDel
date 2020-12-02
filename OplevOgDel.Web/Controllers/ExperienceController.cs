@@ -37,8 +37,8 @@ namespace OplevOgDel.Web.Controllers
         [HttpGet("/experiences/{id}")]
         public async Task<IActionResult> ExperienceAsync([FromRoute] Guid id)
         {
-            string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
-            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
+            string experiencesEndPoint = _apiUrls.Experiences + $"/{id}";
+            string experienceReviewsEndPoint = _apiUrls.Experiences + $"/{id}/" + _apiUrls.Reviews;
             //string experienceRatingsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Ratings;
 
             ViewData["ExperienceId"] = RouteData.Values["id"].ToString();
@@ -69,7 +69,7 @@ namespace OplevOgDel.Web.Controllers
         {
             string experiencesCategoriesEndPoint = _apiUrls.API + _apiUrls.Categories;
 
-            CreateOneExperienceViewModel viewModel = new CreateOneExperienceViewModel();
+            CreateExperienceViewModel viewModel = new CreateExperienceViewModel();
 
             var responseCategory = await _oplevOgDelService.Client.GetAsync(experiencesCategoriesEndPoint);
             if (responseCategory.IsSuccessStatusCode)
@@ -82,7 +82,7 @@ namespace OplevOgDel.Web.Controllers
         }
 
         [HttpPost("/experiences/createexperience")]
-        public async Task<IActionResult> CreateExperience(CreateOneExperienceDto experience)
+        public async Task<IActionResult> CreateExperience(CreateExperienceDto experience)
         {
             string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences;
 
@@ -95,7 +95,7 @@ namespace OplevOgDel.Web.Controllers
             if (responseExperience.IsSuccessStatusCode)
             {
                 var getId = await responseExperience.Content.ReadAsAsync<ExperienceDto>();
-                return Redirect(_apiUrls.Experiences + $"/{getId.Id}");
+                return Redirect($"/{_apiUrls.Experiences}/{getId.Id}");
             }
 
             return View();
@@ -105,23 +105,23 @@ namespace OplevOgDel.Web.Controllers
         public async Task<IActionResult> ExperienceReviewAsync([FromRoute] Guid id, ExperienceViewModel vm)
         {
             string experiencesEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}";
-            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}" + _apiUrls.Reviews;
+            string experienceReviewsEndPoint = _apiUrls.API + _apiUrls.Experiences + $"/{id}/" + _apiUrls.Reviews;
 
             var profileId = User.Claims.First(x => x.Type == UserClaims.ProfileId).Value;
 
-            vm.CreateOneReview.Description.ToString();
-            vm.CreateOneReview.ProfileId = Guid.Parse(profileId);
-            vm.CreateOneReview.ExperienceId = id;
+            vm.CreateReview.Description.ToString();
+            vm.CreateReview.ProfileId = Guid.Parse(profileId);
+            vm.CreateReview.ExperienceId = id;
 
-            var content = new StringContent(JsonConvert.SerializeObject(vm.CreateOneReview), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(vm.CreateReview), Encoding.UTF8, "application/json");
             var response = await _oplevOgDelService.Client.PostAsync(experienceReviewsEndPoint, content);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                return Redirect(_apiUrls.Experiences + $"/{id}");
+                return Redirect($"/{_apiUrls.Experiences}/{id}");
             }
 
-            return Redirect(_apiUrls.Experiences + $"/{id}");
+            return Redirect($"/{_apiUrls.Experiences}/{id}");
         }
 
         //[HttpPut("/experiences/{id}")]

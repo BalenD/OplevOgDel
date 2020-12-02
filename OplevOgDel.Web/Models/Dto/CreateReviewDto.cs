@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.Dto
 {
-    public class CreateOneReviewDto
+    public class CreateReviewDto
     {
         public string Description { get; set; }
         public Guid ProfileId { get; set; }

@@ -16,36 +16,36 @@ using OplevOgDel.Web.Models;
 using OplevOgDel.Web.Models.Configuration;
 using OplevOgDel.Web.Models.Dto;
 using OplevOgDel.Web.Models.ViewModel;
+using OplevOgDel.Web.Services;
 
 namespace OplevOgDel.Web.Controllers
 {
     [Authorize(Roles = Roles.Admin)]
     public class AdminController : Controller
     {
-        private ApiUrls _apiUrls;
+        private readonly ApiUrls _apiUrls;
+        private readonly OplevOgDelService _oplevOgDelService;
 
-        public AdminController(IOptions<ApiUrls> apiUrls)
+        public AdminController(IOptions<ApiUrls> apiUrls, OplevOgDelService oplevOgDelService)
         {
             _apiUrls = apiUrls.Value;
+            _oplevOgDelService = oplevOgDelService;
         }
         public async Task<IActionResult> ReportsAsync()
         {
+            // TODO: SLET
             var roleAdmin = User.FindFirst(ClaimTypes.Role).Value;
             var profileId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var role = User.Claims.First(x => x.Type == ClaimTypes.Role).Value;
             var token = User.FindFirst("access_token").Value;
+            // TODO SLUT.
 
             ReportsViewModel viewModel = new ReportsViewModel();
 
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response = await _oplevOgDelService.Client.GetAsync(_apiUrls.Reports);
+            if (response.IsSuccessStatusCode)
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Reports);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    viewModel.Experiences = JsonConvert.DeserializeObject<List<ExperienceDto>>(result);
-                }
+                viewModel.Experiences = await response.Content.ReadAsAsync<List<ExperienceDto>>();
             }
 
             return View(viewModel);
@@ -55,14 +55,10 @@ namespace OplevOgDel.Web.Controllers
         {
             ManageExperienceViewModel viewModel = new ManageExperienceViewModel();
 
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response = await _oplevOgDelService.Client.GetAsync(_apiUrls.Reports + $"/{id}");
+            if (response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await client.GetAsync(_apiUrls.API + _apiUrls.Reports + $"/{id}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    viewModel = JsonConvert.DeserializeObject<ManageExperienceViewModel>(result);
-                }
+                viewModel = await response.Content.ReadAsAsync<ManageExperienceViewModel>();
             }
 
             return View(viewModel);
@@ -75,18 +71,16 @@ namespace OplevOgDel.Web.Controllers
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage experienceResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Experiences + $"/{id}");
+                HttpResponseMessage experienceResponse = await _oplevOgDelService.Client.GetAsync(_apiUrls.Experiences + $"/{id}");
                 if (experienceResponse.IsSuccessStatusCode)
                 {
-                    var result = await experienceResponse.Content.ReadAsStringAsync();
-                    viewModel.Experience = JsonConvert.DeserializeObject<ExperienceDto>(result);
+                    viewModel.Experience = await experienceResponse.Content.ReadAsAsync<ExperienceDto>();
                 }
 
-                HttpResponseMessage categoriesResponse = await client.GetAsync(_apiUrls.API + _apiUrls.Categories);
+                HttpResponseMessage categoriesResponse = await _oplevOgDelService.Client.GetAsync(_apiUrls.Categories);
                 if (categoriesResponse.IsSuccessStatusCode)
                 {
-                    var result = await categoriesResponse.Content.ReadAsStringAsync();
-                    var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
+                    var categories = await categoriesResponse.Content.ReadAsAsync<List<CategoryDto>>();
                     viewModel.Categories = categories.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
                 }
             }
@@ -99,13 +93,10 @@ namespace OplevOgDel.Web.Controllers
         {
             var content = new StringContent(JsonConvert.SerializeObject(experience), System.Text.Encoding.UTF8, "application/json");
 
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response = await _oplevOgDelService.Client.PutAsync(_apiUrls.Experiences + $"/{id}", content);
+            if (response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await client.PutAsync(_apiUrls.API + _apiUrls.Experiences + $"/{id}", content);
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("ManageExperience", new { id });
-                }
+                return RedirectToAction("ManageExperience", new { id });
             }
 
             return RedirectToAction("EditExperience", new { id });

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using OplevOgDel.Web.Models.Dto;
-using System;
 using System.Collections.Generic;
 
 namespace OplevOgDel.Web.Models.ViewModel
 {
-    public class CreateOneExperienceViewModel
+    public class CreateExperienceViewModel
     {
-        public CreateOneExperienceDto Experience { get; set; }
+        public CreateExperienceDto Experience { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
     }
 }

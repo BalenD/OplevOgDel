@@ -76,8 +76,6 @@
                                 countFor++;
 
                             }}
-
-
                     </ul>
                 </div>
 
@@ -103,31 +101,6 @@
                                 </label>
                                 count++;
                             }}
-                        @*
-                            <label>
-                            <input name="category" value="restaurant" type="submit">
-                            <span class="red"><i class="fal fa-utensils"></i></span>
-                        </label>
-                        <label>
-                            <input name="category" value="Natur" type="submit">
-                            <span class="green"><i class="fal fa-tree-alt"></i></span>
-                        </label>
-                        <label>
-                            <input name="category" value="Musik" type="submit">
-                            <span class="purple"><i class="fal fa-guitar"></i></span>
-                        </label>
-                        <label>
-                            <input name="category" value="Aktion" type="submit">
-                            <span class="orange"><i class="fal fa-running"></i></span>
-                        </label>
-                        <label>
-                            <input type="checkbox">
-                            <span class="blue"><i class="fal fa-globe-europe"></i></span>
-                        </label>
-                        <label>
-                            <input type="checkbox">
-                            <span class="brown"><i class="fal fa-landmark"></i></span>
-                        </label>*@
                     </div>
                 </form>
 
@@ -136,38 +109,7 @@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
-        </nav>
-
-
-
-
-
-
-
-
-        @*<div class="text-center">
-            <h1 class="display-4">Welcome</h1>
-            <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-        </div>
-
-        <h2>Kategorier</h2>
-        @if (Model.Categories.Count != 0)
-        {
-            @foreach (var category in Model.Categories)
-            {
-                <span><strong>@category.Name</strong></span>
-            }
-        }
-        else
-        {
-
-            <p>Ingen kategorier fundet</p>
-        }
-
-            url = "https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png";
-        }
-        *@
-        
+        </nav>    
 
         @if (Model.Experiences.Count != 0)
         {
@@ -185,7 +127,8 @@
                     {
                         url = "https://www.capefearhabitat.org/wp-content/plugins/learnpress/assets/images/no-image.png";
                     }
-                <a href="/experiences/@experience.Id" class="grid-item pos-@count" style="background: url(@url) no-repeat center center; background-size: cover;">
+                    //href = "/experiences/@experience.Id"
+                <a asp-controller="Experience" asp-action="Experience" asp-route-id="@experience.Id" class="grid-item pos-@count" style="background: url(@url) no-repeat center center; background-size: cover;">
                     @if (@experience.Category.Name == "Mad")
                     {
                         <div class="red">
