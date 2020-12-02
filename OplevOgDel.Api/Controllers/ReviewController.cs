@@ -107,9 +107,9 @@ namespace OplevOgDel.Api.Controllers
             var reviewToAdd = _mapper.Map<Review>(createdReview);
             // add the necessary relations and id
             reviewToAdd.Id = Guid.NewGuid();
-            reviewToAdd.ExperienceId = experienceId;
-            var profileId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
-            reviewToAdd.ProfileId = Guid.Parse(profileId);
+            //reviewToAdd.ExperienceId = experienceId;
+            //var profileId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+            //reviewToAdd.ProfileId = Guid.Parse(profileId);
             reviewToAdd.CreatedOn = DateTime.Now;
 
             // save in database
