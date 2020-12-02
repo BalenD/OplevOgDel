@@ -1,6 +1,6 @@
 ﻿@model OplevOgDel.Web.Models.ViewModel.ExperienceViewModel
 @{
-    ViewData["Title"] = "Experience";
+    ViewData["Title"] = Model.Experience.Name;
 }
 
 <h1>Oplevelse</h1>
@@ -21,33 +21,36 @@ else
 }
 
 <h2>Anmeldelser</h2>
-@Html.HiddenFor(m => m.Experience.Id)
-<section class="col-md-6">
-    <div class="row">
-        <div class="col-md-12">
-            <form asp-action="ExperienceReviewAsync" asp-controller="Experience">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="CreateOneReview.Description" class="control-label"></label>
-                    <input asp-for="CreateOneReview.Description" class="form-control" />
-                    <span asp-validation-for="CreateOneReview.Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" formaction="/experiences/@ViewData["ExperienceId"]" class="btn btn-primary" />
-                </div>
-            </form>
+@if (User.Identity.IsAuthenticated && User.IsInRole(Roles.User))
+{
+    @Html.HiddenFor(m => m.Experience.Id)
+    <section class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="pt-1">Opret en anmeldelse</h5>
+                <form asp-action="ExperienceReviewAsync" asp-controller="Experience">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input asp-for="CreateReview.Description" class="form-control" />
+                        <span asp-validation-for="CreateReview.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Opret" formaction="/experiences/@ViewData["ExperienceId"]" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+}
+
 
 @if (Model.Reviews.Count != 0)
 {
     @foreach (var review in Model.Reviews)
     {
         <div class="text-center">
-            @*<h4>@review.CreatorName</h4> TODO:Whenever profile is done *@
             <h4>@review.ProfileId</h4>
-            <p>@review.CreatorName</p>
+            @*<p>@review.Profile.FirstName</p>*@
             <p>@review.Description</p>
         </div>
     }

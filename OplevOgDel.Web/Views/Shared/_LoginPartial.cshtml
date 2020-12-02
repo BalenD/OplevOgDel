@@ -10,6 +10,7 @@
         {
             <span class=" nav-link">Velkommen @User.Identity.Name</span>
             <a asp-controller="User" asp-action="Profile" class="nav-link nav-item btn btn-primary">Din profil</a>
+            <a asp-controller="Experience" asp-action="CreateExperience" class="nav-link nav-item btn btn-primary">Opret oplevelse</a>
         }
 
         <form asp-controller="User" asp-action="Logout">

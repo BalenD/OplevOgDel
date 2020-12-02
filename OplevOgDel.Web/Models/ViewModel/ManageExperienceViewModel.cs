@@ -1,8 +1,6 @@
 ﻿using OplevOgDel.Web.Models.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OplevOgDel.Web.Models.ViewModel
 {
@@ -15,6 +13,6 @@ namespace OplevOgDel.Web.Models.ViewModel
         public string Address { get; set; }
         public string City { get; set; }
         public List<ExperienceReportDto> ExperienceReports { get; set; }
-        public List<NewReviewDto> Reviews { get; set; }
+        public List<ReviewDto> Reviews { get; set; }
     }
 }

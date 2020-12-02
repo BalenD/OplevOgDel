@@ -2,7 +2,7 @@
 
 namespace OplevOgDel.Web.Models.Dto
 {
-    public class CreateOneExperienceDto
+    public class CreateExperienceDto
     {
         public Guid ProfileId { get; set; }
         public string Name { get; set; }

@@ -43,6 +43,7 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="experienceId">Id of experience to return reviews of</param>
         /// <response code="200">Returns all reviews that belong to an experience</response>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<ViewReviewDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllReviews([FromQuery] ReviewRequestParametersDto req, [FromRoute] Guid experienceId)
         {

@@ -21,7 +21,6 @@ namespace OplevOgDel.Api.Controllers
     /// </summary>
     [Route("api/experiences")]
     [Produces("application/json")]
-    [Authorize(Roles = Roles.AdminAndUser)]
     [ApiController]
     public class ExperienceController : ControllerBase
     {
@@ -42,7 +41,6 @@ namespace OplevOgDel.Api.Controllers
         /// <param name="req">Query to perform sorting, filtering, searching and pagination</param>
         /// <response code="200">Returns all the experiences</response>
         [HttpGet]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<ViewExperienceDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllExperiences([FromQuery] ExperienceRequestParametersDto req)
         {
@@ -105,6 +103,7 @@ namespace OplevOgDel.Api.Controllers
         /// <response code="400">Category is invalid</response>
         /// <response code="500">Problem occured during creation</response> 
         [HttpPost]
+        [Authorize(Roles = Roles.User)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorObject), StatusCodes.Status500InternalServerError)]

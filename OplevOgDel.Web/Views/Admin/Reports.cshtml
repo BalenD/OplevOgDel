@@ -30,7 +30,7 @@ else
     <p>Ingen rolle</p>
 }
 
-<h1>Rapporter</h1>
+<h1>Oplevelser med en tilknyttet rapport</h1>
 
 <table class="table">
     <thead>
@@ -45,10 +45,7 @@ else
             <tr>
                 <td>
                     @Html.ActionLink(@item.Name, "ManageExperience", new { id = item.Id })
-                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                 </td>
-
 
                 <td>
                     *W.I.P*
