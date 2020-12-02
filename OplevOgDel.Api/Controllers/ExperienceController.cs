@@ -131,10 +131,10 @@ namespace OplevOgDel.Api.Controllers
             var exprToAdd = _mapper.Map<Experience>(createdExpr);
 
             // add the necessary relations for creation
-            exprToAdd.Id = Guid.NewGuid();
+            //exprToAdd.Id = Guid.NewGuid();
             exprToAdd.Category = category;
-            var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
-            exprToAdd.ProfileId = Guid.Parse(profileId);
+            //var profileId = User.Claims.FirstOrDefault(x => x.Type == "profileId").Value;
+            //exprToAdd.ProfileId = Guid.Parse(profileId);
             exprToAdd.CreatedOn = DateTime.Now;
 
             // add the created experience to the database
