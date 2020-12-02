@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -8,6 +9,8 @@ using OplevOgDel.Web.Controllers.Base;
 using OplevOgDel.Web.Models;
 using OplevOgDel.Web.Models.Configuration;
 using OplevOgDel.Web.Models.Dto;
+using OplevOgDel.Web.Models.ViewModel;
+using OplevOgDel.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,16 +25,12 @@ namespace OplevOgDel.Web.Controllers
     public class UserController : Controller
     {
         private ApiUrls _apiUrls;
+        private readonly OplevOgDelService _oplevOgDelService;
 
-        public UserController(IOptions<ApiUrls> apiUrls)
+        public UserController(IOptions<ApiUrls> apiUrls, OplevOgDelService oplevOgDelService)
         {
             _apiUrls = apiUrls.Value;
-        }
-
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect("/");
+            _oplevOgDelService = oplevOgDelService;
         }
 
         public IActionResult Login()
@@ -87,6 +86,13 @@ namespace OplevOgDel.Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/");
+        }
+
         public IActionResult Register()
         {
             return View();
@@ -111,6 +117,29 @@ namespace OplevOgDel.Web.Controllers
                 ViewBag.Message = "Fejl med server, kontakt sidens administrator";
                 return View();
             }
+        }
+
+        //[Authorize(Roles = Roles.User)]
+        public async Task<IActionResult> Profile()
+        {
+            string endPoint = _apiUrls.Profiles + "/9600bf95-bf37-4e6d-aeed-53d84a96a205";
+
+            ProfileViewModel viewModel = new ProfileViewModel();
+
+            HttpResponseMessage response = await _oplevOgDelService.Client.GetAsync(endPoint);
+            if (response.IsSuccessStatusCode)
+            {
+                viewModel.Profile = await response.Content.ReadAsAsync<ProfileDto>();
+                if (viewModel.Profile.ListOfExps.Count != 0)
+                {
+                    viewModel.SelectedListOfExps = viewModel.Profile.ListOfExps[0];
+                    viewModel.ListOfListOfExps = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(viewModel.Profile.ListOfExps, "Id", "Name");
+                }
+
+                return View(viewModel);
+            }
+
+            return Redirect("/");
         }
     }
 }
