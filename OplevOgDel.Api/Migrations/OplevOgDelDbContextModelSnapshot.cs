@@ -395,7 +395,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("93e4f688-d9a0-4f8a-bc69-1d7f5a46101d"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ExperienceId = new Guid("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
-                            Path = "TestImage1.jpg",
+                            Path = "Apollo.jpg",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                         },
                         new
@@ -403,7 +403,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ExperienceId = new Guid("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
-                            Path = "TestImage2.jpg",
+                            Path = "Amager.jpg",
                             ProfileId = new Guid("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                         },
                         new
@@ -411,7 +411,47 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("052c9135-c787-4fc5-8e1d-64c20aeda9bc"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ExperienceId = new Guid("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
-                            Path = "TestImage2.jpg",
+                            Path = "Akustikken.jpg",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
+                        },
+                        new
+                        {
+                            Id = new Guid("17414f03-fb52-4c77-b46e-b40bd3837254"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExperienceId = new Guid("173bf385-9aba-408a-a7ea-8bfe892e91b3"),
+                            Path = "Dyrehaven.jpg",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
+                        },
+                        new
+                        {
+                            Id = new Guid("b47f5c92-9a1e-4328-a00a-d7be8fbecc5b"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExperienceId = new Guid("a11d3b85-04d9-4665-bea8-91ac47f6a2d8"),
+                            Path = "Kronborg.jpg",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
+                        },
+                        new
+                        {
+                            Id = new Guid("bf6a2c72-ea8d-4ec7-9787-7a43e642595f"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExperienceId = new Guid("c3965bec-3a76-40a9-b435-546d4cd2ad2f"),
+                            Path = "Zoo.jpg",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
+                        },
+                        new
+                        {
+                            Id = new Guid("44b64611-67c7-4230-b146-d8ac2c234639"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExperienceId = new Guid("ce9ba768-c6d0-4c1d-842e-2027eb3542d1"),
+                            Path = "Lousiana.jpg",
+                            ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
+                        },
+                        new
+                        {
+                            Id = new Guid("b9260b28-f0b1-4bdd-80c1-b55dd7283a57"),
+                            CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            ExperienceId = new Guid("f574dea5-088b-4ecf-a0ba-439381cdfabf"),
+                            Path = "Planetarium.jpg",
                             ProfileId = new Guid("62357886-d888-44f2-a929-c015a4b31dad")
                         });
                 });
@@ -710,7 +750,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("79539d93-2a2d-4600-abce-3f727e5cae7d"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "admin1@admin.dk",
-                            Password = "$2a$11$Sg1J1CNLikKUK3xQwlogVeAhFlCGcOHngy/nwisohw.oTzYvTgKaq",
+                            Password = "$2a$11$VC3/ge.OWDAK5C3eRAxHaO/TpmGvJ6lsFRtcVbHt7BvIdSdfi3.RK",
                             Role = "Admin",
                             Username = "admin1"
                         },
@@ -719,7 +759,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("5376bf6f-3b8c-443c-8c17-28071e8fd1ed"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user1@user.dk",
-                            Password = "$2a$11$ySOrR/7rgZZQ/6VMkZMtpu4CDLEO4TSRSGowob58alhf18btmC46K",
+                            Password = "$2a$11$9/ow7FZ2Iy7MT80l1G1XiehGQTnpeT9xcPmiJNTbkbd.3YwsmZgJu",
                             Role = "User",
                             Username = "user1"
                         },
@@ -728,7 +768,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("fa303d07-af85-41c7-8455-29fd9ae6bc9e"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user2@user.dk",
-                            Password = "$2a$11$8Pav8Jik667DR.ffCMM1fuL5CG1HHBjKXSkgvJjKZztEoL45S5prO",
+                            Password = "$2a$11$f0o2kcXGXMuTiWGdDktuzeR9Cnc2u7fQXmkz740nwyxyYvGHRF9bG",
                             Role = "User",
                             Username = "user2"
                         },
@@ -737,7 +777,7 @@ namespace OplevOgDel.Api.Migrations
                             Id = new Guid("53e881e9-1b7a-461f-a286-48476deb343d"),
                             CreatedOn = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "user3@user.dk",
-                            Password = "$2a$11$zvMIuLHiNGlt2ui2MAiscOP9fnws7BnkGqTQ./bsap5ooI4VAn4t2",
+                            Password = "$2a$11$deCL6gpyZHdFU3k0sqaPMuVpRZP97VVr2U/CWr6zLekYeEb1QmKca",
                             Role = "User",
                             Username = "user3"
                         });

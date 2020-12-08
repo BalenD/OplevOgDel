@@ -69,7 +69,7 @@ namespace OplevOgDel.Api.Data
                 new Picture() 
                 { 
                     Id = Guid.Parse("93E4F688-D9A0-4F8A-BC69-1D7F5A46101D"),
-                    Path = "TestImage1.jpg",
+                    Path = "Apollo.jpg",
                     ExperienceId = Guid.Parse("bd345b81-462b-4ba9-999f-48ff44fad5e8"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
@@ -77,7 +77,7 @@ namespace OplevOgDel.Api.Data
                 new Picture()
                 {
                     Id = Guid.Parse("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
-                    Path = "TestImage2.jpg",
+                    Path = "Amager.jpg",
                     ExperienceId = Guid.Parse("a030b459-a8b5-4bba-bcbd-b9a30176f7e4"),
                     ProfileId = Guid.Parse("9600bf95-bf37-4e6d-aeed-53d84a96a205")
                 },
@@ -85,8 +85,47 @@ namespace OplevOgDel.Api.Data
                 new Picture()
                 {
                     Id = Guid.Parse("052C9135-C787-4FC5-8E1D-64C20AEDA9BC"),
-                    Path = "TestImage2.jpg",
+                    Path = "Akustikken.jpg",
                     ExperienceId = Guid.Parse("82a5a437-35b3-44b8-b10a-01d13577b7f1"),
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                },
+                new Picture()
+                {
+                    Id = Guid.Parse("17414F03-FB52-4C77-B46E-B40BD3837254"),
+                    Path = "Dyrehaven.jpg",
+                    ExperienceId = Guid.Parse("173bf385-9aba-408a-a7ea-8bfe892e91b3"),
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                },
+                
+                new Picture()
+                {
+                    Id = Guid.Parse("B47F5C92-9A1E-4328-A00A-D7BE8FBECC5B"),
+                    Path = "Kronborg.jpg",
+                    ExperienceId = Guid.Parse("a11d3b85-04d9-4665-bea8-91ac47f6a2d8"),
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                },
+                
+                new Picture()
+                {
+                    Id = Guid.Parse("BF6A2C72-EA8D-4EC7-9787-7A43E642595F"),
+                    Path = "Zoo.jpg",
+                    ExperienceId = Guid.Parse("c3965bec-3a76-40a9-b435-546d4cd2ad2f"),
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                },
+                
+                new Picture()
+                {
+                    Id = Guid.Parse("44B64611-67C7-4230-B146-D8AC2C234639"),
+                    Path = "Lousiana.jpg",
+                    ExperienceId = Guid.Parse("ce9ba768-c6d0-4c1d-842e-2027eb3542d1"),
+                    ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
+                },
+
+                new Picture()
+                {
+                    Id = Guid.Parse("B9260B28-F0B1-4BDD-80C1-B55DD7283A57"),
+                    Path = "Planetarium.jpg",
+                    ExperienceId = Guid.Parse("f574dea5-088b-4ecf-a0ba-439381cdfabf"),
                     ProfileId = Guid.Parse("62357886-d888-44f2-a929-c015a4b31dad")
                 });
 
